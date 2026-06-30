@@ -1,0 +1,857 @@
+<!doctype html>
+<html lang="{{ app.request.locale|default('pl') }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>{% block title %}Strona główna{% endblock %}</title>
+
+        <link href="//cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet">
+
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body class="bg-white text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100">
+
+        <div
+            id="page-loader"
+            class="fixed inset-0 z-[99999] hidden items-center justify-center bg-zinc-950/40 backdrop-blur-[2px] opacity-0 transition-opacity duration-200"
+            aria-hidden="true"
+        >
+            <div
+                class="flex flex-col items-center gap-5 rounded-3xl bg-white px-10 py-8 shadow-2xl dark:bg-zinc-900"
+            >
+                <div
+                    role="status"
+                    aria-live="polite"
+                    class="flex flex-col items-center gap-4"
+                >
+                    <svg
+                        aria-hidden="true"
+                        class="h-12 w-12 animate-spin text-zinc-300 fill-blue-600 dark:text-zinc-700 dark:fill-yellow-400"
+                        viewBox="0 0 100 101"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+
+                        <path
+                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                            fill="currentFill"
+                        />
+                    </svg>
+
+                    <span class="text-base font-semibold tracking-wide text-zinc-800 dark:text-zinc-100">
+                {% trans %}Trwa ładowanie strony…{% endtrans %}
+            </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="sr-only focus-within:not-sr-only">
+            <div class="fixed left-1/2 top-0 z-[9999] flex -translate-x-1/2 gap-2 rounded-b-lg bg-white p-3 shadow-lg dark:bg-zinc-900">
+                <a href="#main" class="rounded-lg px-4 py-2 font-semibold text-blue-700 underline dark:text-yellow-400 {{ focusPrimary() }}">
+                    {% trans %}Przejdź do treści{% endtrans %}
+                </a>
+
+                <a href="#footer" class="rounded-lg px-4 py-2 font-semibold text-blue-700 underline dark:text-yellow-400 {{ focusPrimary() }}">
+                    {% trans %}Przejdź do stopki{% endtrans %}
+                </a>
+            </div>
+        </div>
+        <header>
+            <nav aria-label="{% trans %}Nawigacja górna{% endtrans %}" class="bg-white dark:bg-zinc-900">
+                <div class="flex flex-wrap items-center justify-between gap-2 max-w-screen-2xl min-h-[100px] mx-auto px-4 py-2.5 md:px-4">
+                    <a href="{{ url('student_dashboard') }}" class="flex items-center rounded-lg min-w-0 max-w-full {{ focusPrimary() }}">
+                        <div class="flex items-center justify-center gap-3 sm:gap-5">
+                            <figure class="flex flex-1 justify-end">
+                                <img
+                                    alt="{% trans %}Przejdź do pulpitu - logo Uniwersytetu Vizja{% endtrans %}"
+                                    class="block h-auto w-full max-w-[140px] sm:max-w-[200px] md:max-w-[260px] dark:hidden"
+                                    src="{{ asset('images/logo/header/' ~ app.request.locale ~ '.png') }}"
+                                >
+
+                                <img
+                                    alt="{% trans %}Przejdź do pulpitu - logo Uniwersytetu Vizja{% endtrans %}"
+                                    class="hidden h-auto w-full max-w-[140px] sm:max-w-[200px] md:max-w-[260px] dark:block"
+                                    src="{{ asset('images/logo/header/' ~ app.request.locale ~ '-transparent.png') }}"
+                                >
+                            </figure>
+
+                            <figure class="flex flex-1 justify-start">
+                                <img
+                                    alt="{% trans %}Logo Biura do spraw osób z niepełnosprawnościami{% endtrans %}"
+                                    class="block h-auto w-full max-w-[180px] sm:max-w-[260px] md:max-w-[320px] dark:hidden"
+                                    src="{{ asset('images/logo/bon/' ~ app.request.locale ~ '.png') }}"
+                                >
+
+                                <img
+                                    alt="{% trans %}Logo Biura do spraw osób z niepełnosprawnościami{% endtrans %}"
+                                    class="hidden h-auto w-full max-w-[180px] sm:max-w-[260px] md:max-w-[320px] dark:block"
+                                    src="{{ asset('images/logo/bon/' ~ app.request.locale ~ '-transparent.png') }}"
+                                >
+                            </figure>
+                        </div>
+                    </a>
+
+                    <div class="flex flex-wrap items-center justify-end gap-2 max-w-full min-w-0">
+                        {% include 'admin/_components/change-theme.html.twig' %}
+                        {% include 'student/_components/change-language.html.twig' %}
+
+                        <a href="{{ url('logout_full') }}" class="font-medium items-center p-2 rounded-lg text-sm dark:hover:bg-zinc-800 hover:bg-zinc-50 lg:block {{ focusPrimary() }}">
+                            {% trans %}Wyloguj{% endtrans %}
+                        </a>
+
+                        <button type="button"
+                            class="font-medium inline-flex items-center p-2 rounded-lg text-sm dark:hover:bg-zinc-800 hover:bg-zinc-50 lg:hidden {{ focusPrimary() }}"
+                            data-collapse-toggle="toggle-navigation"
+                            id="toggle-navigation-button"
+                        >
+                            <span class="sr-only">{% trans %}Otwórz nawigację{% endtrans %}</span>
+                            <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+
+            <nav id="toggle-navigation" aria-label="{% trans %}Nawigacja główna{% endtrans %}" class="bg-zinc-50 hidden dark:bg-zinc-800 lg:block {{ borderNavigation() }}">
+                <div class="grid mx-auto max-w-screen-2xl px-4">
+                    <div class="flex items-center min-w-0">
+                        <ul class="flex flex-col font-medium mt-0 text-base w-full min-w-0 lg:flex-row">
+                            <li class="min-w-0">
+                                <a id="pulpit" href="{{ url('student_dashboard') }}"
+                                    class="block w-full px-3 py-4 rounded-lg text-center wrap-break-word dark:hover:text-yellow-400 hover:text-blue-600 {{ focusPrimary() }}">
+                                    {% trans %}Pulpit{% endtrans %}
+                                </a>
+                            </li>
+
+                            <li class="min-w-0">
+                                <a id="ogloszenia"
+                                    href="{{ path('student_announcements') }}"
+                                    class="relative block w-full px-3 py-4 rounded-lg text-center wrap-break-word
+                                    dark:hover:text-yellow-400 hover:text-blue-600
+                                    {{ focusPrimary() }}
+                                    {{ hasNewAnnouncements ? 'font-semibold' : '' }}">
+
+                                    {% trans %}Ogłoszenia{% endtrans %}
+
+                                    {% if hasNewAnnouncements %}
+                                        <span class="absolute right-2 top-2 max-w-[calc(100%-0.5rem)]">
+                                            <span
+                                                class="relative inline-flex text-white hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium font-medium leading-5 rounded-base text-sm p-3 focus:outline-none">
+                                                <span class="sr-only">{% trans %}Nowe ogłoszenia{% endtrans %}</span>
+                                                <span
+                                                    class="absolute inline-flex items-center justify-center min-w-6 h-6 px-1 text-xs font-bold text-white bg-red-600 border-2 border-buffer rounded-full -top-2 -end-2">
+                                                    {{ count }}
+                                                </span>
+                                            </span>
+                                        </span>
+                                    {% endif %}
+                                </a>
+                            </li>
+                            <li class="min-w-0">
+                                <a id="konsultacje" href="{{ path('student_select_registration') }}"
+                                    class="block w-full px-3 py-4 rounded-lg text-center wrap-break-word dark:hover:text-yellow-400 hover:text-blue-600 {{ focusPrimary() }}">
+                                    {% trans %}Konsultacje{% endtrans %}
+                                </a>
+                            </li>
+                            {% if is_granted('ROLE_STUDENT') %}
+
+                                <li class="min-w-0">
+                                    <a id="wizyty" href="{{ path('student_office_registration_menu') }}"
+                                        class="block w-full px-3 py-4 rounded-lg text-center wrap-break-word dark:hover:text-yellow-400 hover:text-blue-600 {{ focusPrimary() }}">
+                                        {% trans %}Wizyty w BON{% endtrans %}
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if is_granted('ROLE_STUDENT') %}
+                                <li class="min-w-0">
+                                    <a id="wnioski"
+                                        href="{{ path('student_application_index') }}"
+                                        class="relative block w-full px-3 py-4 rounded-lg text-center wrap-break-word
+                                                                    dark:hover:text-yellow-400 hover:text-blue-600
+                                                                    {{ focusPrimary() }}
+                                                                    {{ hasNewEmployeeComment ? 'font-semibold' : '' }}">
+
+                                        {% trans %}Wnioski{% endtrans %}
+
+                                        {% if hasNewEmployeeComment %}
+                                            <span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500"></span>
+                                        {% endif %}
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li class="min-w-0">
+                                <a id="profil" href="{{ path('student_profile_index') }}"
+                                    class="block w-full px-3 py-4 rounded-lg text-center wrap-break-word dark:hover:text-yellow-400 hover:text-blue-600 {{ focusPrimary() }}">
+                                    {% trans %}Mój profil{% endtrans %}
+                                </a>
+                            </li>
+                            <li class="min-w-0">
+                                <a id="mapa" href="{{ url('student_website_map') }}"
+                                    class="block w-full px-3 py-4 rounded-lg text-center wrap-break-word dark:hover:text-yellow-400 hover:text-blue-600 {{ focusPrimary() }}">
+                                    {% trans %}Mapa strony{% endtrans %}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="bg-white flex items-center justify-center px-4">
+
+                <img
+                    alt="{% trans %}Logo Funduszy Europejskich{% endtrans %}"
+                    class="block w-full max-w-[800px] h-auto py-5"
+                    src="{{ asset('images/logo/unijne-logotypy/' ~ app.request.locale ~ '.png') }}"
+                >
+
+            </div>
+        </header>
+
+        {% if app.user and app.user.cookiesAccept is null %}
+            <div
+                id="cookie-consent"
+                aria-hidden="false"
+                tabindex="-1"
+                role="dialog"
+                class="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4"
+            >
+                <div class="relative w-full max-w-xl">
+                    <div class="rounded-lg bg-white shadow-xl dark:bg-gray-800">
+
+                        <div class="p-5 text-sm font-light">
+                            <h2
+                                id="cookie-consent-title"
+                                tabindex="-1"
+                                class="mb-3 text-lg font-semibold"
+                            >
+                                {% trans %}Informacje o plikach cookies{% endtrans %}
+                            </h2>
+
+                            <p class="mb-2">
+                                {% trans %}
+                                    Serwis Help VIZJA zapisuje w przeglądarce wyłącznie informacje niezbędne do prawidłowego działania strony.
+                                {% endtrans %}
+                            </p>
+
+                            <p>
+                                {% trans %}
+                                    Dotyczy to między innymi obsługi sesji użytkownika, zapamiętania wybranego motywu strony, ustawień dostępności oraz preferencji językowych.
+                                {% endtrans %}
+                            </p>
+
+                            <p class="mt-2">
+                                {% trans %}
+                                    Nie wykorzystujemy tych informacji do celów reklamowych ani profilowania marketingowego.
+                                {% endtrans %}
+                            </p>
+                        </div>
+
+                        <div class="flex justify-end border-t border-gray-200 p-5 dark:border-gray-700">
+                            <button
+                                type="button"
+                                id="cookie-consent-accept"
+                                class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                                data-accept-url="{{ path('student_cookies_accept') }}"
+                                data-token="{{ csrf_token('cookies_accept') }}"
+                            >
+                                {% trans %}Rozumiem{% endtrans %}
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if app.user.recommendedWebsite is null %}
+            <!-- Main modal -->
+            <div
+                id="browser-info-modal"
+                data-modal-backdrop="static"
+                tabindex="-1"
+                aria-hidden="true"
+                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+            >
+                <div class="relative p-4 w-full max-w-2xl max-h-full">
+                    <div
+                        class="relative bg-white border border-zinc-200 rounded-lg shadow-sm p-4 md:p-6 dark:bg-zinc-800 dark:border-zinc-700"
+                        role="dialog"
+                        aria-describedby="browser-info-description"
+                    >
+                        <div class="flex items-center justify-between border-b border-zinc-200 pb-4 md:pb-5 dark:border-zinc-700">
+                            <h2
+                                id="browser-info-title"
+                                tabindex="-1"
+                                class="text-lg font-semibold text-zinc-900 dark:text-white"
+                            >
+                                {% trans %}Ważna informacja{% endtrans %}
+                            </h2>
+
+                            <button
+                                type="button"
+                                class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-700 dark:hover:text-white {{ focusPrimary() }}"
+                                aria-label="{% trans %}Zamknij komunikat{% endtrans %}"
+                            >
+                                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div id="browser-info-description" class="space-y-4 py-4 md:py-6">
+                            <p>
+                                {% trans %}
+                                    Aby zapewnić poprawne działanie serwisu oraz najlepsze doświadczenie użytkownika,
+                                    zalecamy korzystanie z jednej z poniższych przeglądarek:
+                                {% endtrans %}
+                            </p>
+
+                            <ul class="space-y-3" aria-label="{% trans %}Zalecane przeglądarki{% endtrans %}">
+                                <li class="flex items-center gap-3">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 640 640"
+                                        class="w-7 h-7 shrink-0 rotate-120 bg-white rounded-full"
+                                        aria-hidden="true"
+                                        focusable="false"
+                                    >
+                                        <path
+                                            fill="#EA4335"
+                                            d="M64 320C64 273.4 76.5 229.6 98.3 191.1L208.1 382.3C230 421.5 271.9 448 320 448C334.3 448 347.1 445.7 360.8 441.4L284.5 573.6C159.9 556.3 64 449.3 64 320z"
+                                        />
+                                        <path
+                                            fill="#FBBC05"
+                                            d="M541.8 192L320 192C257.1 192 206.3 236.1 194.5 294.7L118.2 162.5C165 102.5 238 64 320 64C414.8 64 497.5 115.5 541.8 192z"
+                                        />
+                                        <path
+                                            fill="#34A853"
+                                            d="M429.1 385.6C441.4 366.4 448 343.1 448 320C448 281.8 431.2 247.5 404.7 224L557.4 224C569.4 253.6 576 286.1 576 320C576 461.4 461.4 575.1 320 576L429.1 385.6z"
+                                        />
+                                        <path
+                                            fill="#4285F4"
+                                            d="M408 320C408 368.6 368.6 408 320 408C271.4 408 232 368.6 232 320C232 271.4 271.4 232 320 232C368.6 232 408 271.4 408 320z"
+                                        />
+                                    </svg>
+
+                                    <span>Google Chrome</span>
+                                </li>
+
+                                <li class="flex items-center gap-3">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 640 640"
+                                        class="w-7 h-7 shrink-0 bg-white rounded-full"
+                                        aria-hidden="true"
+                                        focusable="false"
+                                    >
+                                        <path
+                                            fill="rgb(206, 0, 0)"
+                                            d="M385.9 96.7C215.7 96.7 133.3 320.5 238.4 451.8C274.9 497.2 327 527.4 385.9 527.4C422.2 527.4 456.2 516.3 485.3 497C441.5 536.2 383.4 560 320 560C316.1 560 312 560 308.1 559.7C176.6 553.6 72 445.1 72 312C72 175 183 64 320 64L320.8 64C383.9 64.3 441.5 88.1 485.2 127.1C456.2 107.7 422.1 96.7 385.9 96.7zM487.7 494.4C446.8 519.1 397 518 355.7 488.6C411.9 468.1 453.4 397 453.4 312C453.4 227.3 412.2 156.2 356 135.4C397.8 106.2 447.2 105.1 488.9 130.4C594.8 229.1 594.4 396.1 487.7 494.4z"
+                                        />
+                                    </svg>
+
+                                    <span>Opera</span>
+                                </li>
+                            </ul>
+
+                            <p>
+                                {% trans %}
+                                    Korzystanie z innych przeglądarek może powodować ograniczenia w działaniu niektórych funkcji.
+                                {% endtrans %}
+                            </p>
+                        </div>
+
+                        <div class="flex flex-col gap-3 border-t border-zinc-200 pt-4 md:pt-5 dark:border-zinc-700 sm:flex-row sm:justify-end">
+                            <button
+                                type="button"
+                                id="browser-info-accept"
+                                class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                                data-url="{{ path('student_recommended_website_accept') }}"
+                                data-csrf="{{ csrf_token('recommended_website_accept') }}"
+                            >
+                                {% trans %}Rozumiem{% endtrans %}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <main id="main" aria-labelledby="page-title">
+            <div class="mx-auto max-w-screen-2xl pb-8 pt-4 px-4 lg:py-10 min-w-0">
+                <div class='py-5 min-w-0' aria-live="polite" aria-atomic="true">
+                    {% include 'admin/_components/_flashes.html.twig' %}
+                </div>
+
+                {% block body %}{% endblock %}
+            </div>
+        </main>
+
+        <a
+            href="https://tlumacz.migam.org/Vizja"
+            rel="noopener noreferrer"
+            class="block bg-white p-5 shadow-lg transition hover:bg-zinc-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 {{ focusPrimaryWithPadding() }}"
+        >
+            <div class="flex items-center justify-center gap-4 text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="text-blue-600 dark:text-yellow-400" width="62.957" height="54.519" viewBox="0 0 62.957 54.519">
+                    <g id="Group_1629" data-name="Group 1629" transform="translate(-1810.663 -45.71)">
+                        <path id="Path_811" data-name="Path 811"
+                            d="M875.927,441.05s-5.065,3.9-10.513,2.974a3.223,3.223,0,0,0-3.536.165,81.1,81.1,0,0,1-8.289,2.5,3.581,3.581,0,0,0-2.724,2.087c-.29.58-1.855,4.579-1.855,4.579s-.174.869.29,1.043a12.784,12.784,0,0,0-.322,2.145c.032.58.264,2.956.264,2.956s1.333,2.319,5.622,4.7c0,0,4.834.29,7.171-1.217l-4.853,3.768a37.712,37.712,0,0,0-4.463.464s-3-4.53-5.49-.995c0,0-.838.309,1.143,1.4a12.223,12.223,0,0,1,2.9,2.377,8.77,8.77,0,0,0,6.042.479,43.46,43.46,0,0,0,5.025-1.867l-4.053,3.3-3.652,1.333s-4.224.29-4.083,2.666c0,0-.438.87,1.938.638s6.9-.348,12.346-5.68l-4.115,5.391s-1.42,1.62-.259,2.877a1.415,1.415,0,0,0,.413.235c.164.09.175.389.737-.212.211-.226.507-.519.849-.929.87-1.043,4.174-4.7,4.174-4.7a19.291,19.291,0,0,0,1.913-3.3c.29-.985,3.072-3.942,4.231-8.289,1.7-6.385,4.638-7.051,6.377-7.8,0,0,.6-7.4-3.225-13.081m-15.81,18.142s-2.616-.039-3.8,1.237a5.858,5.858,0,0,0-3.42-1.913s-.648-3.754-2.861-4.019c0,0,2.427-.328,3.874-3.776,0,0,1.971,1.1,5.595-.378a13.728,13.728,0,0,0,2.771,3.365,1.087,1.087,0,0,1,.483,1.082c-.158,1.221-.664,3.616-2.638,4.4"
+                            transform="translate(994.434 -379.289)" fill="currentColor" />
+                        <path id="Path_812" data-name="Path 812"
+                            d="M1.009,33.663s5.867-2.541,10.922-.306a3.223,3.223,0,0,0,3.468.707,81.073,81.073,0,0,1,8.649-.393A3.582,3.582,0,0,0,27.2,32.316c.423-.491,2.921-3.985,2.921-3.985s.382-.8-.025-1.083a12.771,12.771,0,0,0,.838-2c.111-.57.468-2.931.468-2.931s-.724-2.575-4.3-5.93c0,0-4.616-1.466-7.251-.578l5.628-2.463a37.709,37.709,0,0,0,4.441.645s1.8,5.127,5.079,2.31c0,0,.888-.094-.765-1.638a12.22,12.22,0,0,1-2.227-3.015A8.769,8.769,0,0,0,26.269,9.7a43.454,43.454,0,0,0-5.329.578l4.739-2.207,3.867-.4s4.167.755,4.612-1.584c0,0,.638-.736-1.723-1.093s-6.773-1.354-13.362,2.48l5.311-4.217s1.774-1.222.957-2.726C25.26.39,25.113.316,25,.208c-.137-.127-.074-.42-.766.025-.26.167-.619.379-1.05.693-1.1.8-5.2,3.529-5.2,3.529a19.282,19.282,0,0,0-2.664,2.734c-.523.884-3.945,3.068-6.134,7-3.216,5.773-6.225,5.7-8.1,6,0,0-2.4,7.027-.081,13.472M20.784,19.951s2.527.679,3.991-.266a5.857,5.857,0,0,0,2.847,2.693s-.292,3.8,1.788,4.6c0,0-2.434-.277-4.681,2.711,0,0-1.641-1.549-5.517-1.005A13.726,13.726,0,0,0,17.35,24.74a1.087,1.087,0,0,1-.2-1.168c.453-1.145,1.53-3.342,3.636-3.621"
+                            transform="translate(1810.663 45.715)" fill="currentColor" />
+                    </g>
+                </svg>
+
+                <div>
+                    <h2 class="text-lg font-semibold text-zinc-900 dark:text-white">
+                        {% trans %}Połącz się z tłumaczem języka migowego{% endtrans %}
+                    </h2>
+
+                    <p class="mt-1 text-base">
+                        {% trans %}Uniwersytet VIZJA - tlumacz.migam.org{% endtrans %}
+                    </p>
+                </div>
+            </div>
+        </a>
+
+        <footer class="bg-zinc-900 py-10 text-zinc-100" id="footer">
+            <div class="mx-auto max-w-screen-2xl px-4 text-center min-w-0">
+                <ul class="flex flex-col md:flex-row justify-center items-center min-w-0">
+                    <li class="min-w-0">
+                        <a href="{{ app.request.locale == 'pl'
+                        ? 'https://vizja.pl/kontakt/#biuro-rekrutacji'
+                        : 'https://vizja.pl/en/contact/#biuro-rekrutacji' }}"
+                            class="block px-4 py-2 rounded-lg underline hover:text-yellow-400 break-words {{ focusPrimary() }}">
+                            {% trans %}Biuro Rekrutacji{% endtrans %}
+                        </a>
+                    </li>
+                    <li class="min-w-0">
+
+                        <a href="{{ app.request.locale == 'pl'
+                        ? 'https://bon.vizja.pl/kontakt/'
+                        : 'https://vizja.pl/en/contact' }}" class="block px-4 py-2 rounded-lg underline hover:text-yellow-400 wrap-break-word {{ focusPrimary() }}">
+                            {% trans %}Kontakt{% endtrans %}
+                        </a>
+                    </li>
+                    <li class="min-w-0">
+
+                        <a href="{{ app.request.locale == 'pl'
+                        ? 'https://vizja.pl/kontakt/#social-media'
+                        : 'https://vizja.pl/en/contact/#social-media' }}" class="block px-4 py-2 rounded-lg underline hover:text-yellow-400 wrap-break-word {{ focusPrimary() }}">
+                            {% trans %}Social media{% endtrans %}
+                        </a>
+                    </li>
+                    <li class="min-w-0">
+                        <a href="{{ app.request.locale == 'pl'
+                        ? 'https://vizja.pl/polityka-prywatnosci'
+                        : 'https://vizja.pl/en/polityka-prywatnosci/' }}" class="block px-4 py-2 rounded-lg underline hover:text-yellow-400 wrap-break-word {{ focusPrimary() }}">
+                            {% trans %}Polityka prywatności{% endtrans %}
+                        </a>
+                    </li>
+
+                    <li class="min-w-0">
+                        <a href="{{ url('app_student_accesibilitystatement_index') }}" class="block px-4 py-2 rounded-lg underline hover:text-yellow-400 wrap-break-word {{ focusPrimary() }}">
+                            {% trans %}Deklaracja dostępności{% endtrans %}
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="my-10"></div>
+
+                <div class="flex flex-col justify-center items-center min-w-0">
+                    {% if app.request.locale == 'pl' %}
+                        <img alt="{% trans %}Logo Uniwersytetu Vizja{% endtrans %}"
+                            class="block w-full max-w-[260px] h-auto mb-10"
+                            src="{{ asset('images/logo/uv/logo_pl_PL_poziom_kontra.png') }}">
+                    {% elseif app.request.locale == 'en' %}
+                        <img alt="{% trans %}Logo Uniwersytetu Vizja{% endtrans %}"
+                            class="block w-full max-w-[260px] h-auto mb-10"
+                            src="{{ asset('images/logo/uv/logo_en_US_poziom_kontra.png') }}">
+                    {% endif %}
+
+                </div>
+
+                <div class="flex flex-col justify-center items-center gap-y-2 text-sm min-w-0">
+                    <div class="wrap-break-word">
+                        {% trans %}ul. Okopowa 59{% endtrans %}
+                    </div>
+                    <div class="wrap-break-word">
+                        01-043, {% trans %}Warszawa{% endtrans %}
+                    </div>
+                    <div class="wrap-break-word">
+                        {% trans %}piętro{% endtrans %} II, {% trans %}pokój{% endtrans %} 233
+                    </div>
+                    <div class="mt-10 mb-5 px-4 w-full min-w-0">
+                        <div class="max-w-screen-2xl mx-auto text-left min-w-0">
+                            <div class="max-w-none wrap-break-word min-w-0">
+                                {% trans %}Program do zarządzania usługami Biura ds. Osób z Niepełnosprawnościami (BON) został opracowany przez Uniwersytet VIZJA w ramach realizacji projektu{% endtrans %}
+                                <a class="underline wrap-break-word" rel="noopener noreferrer"
+                                    href="https://vizja.pl/projekty-europejskie/vizja-home-uczelnia-dla-wszystkich/">
+                                    {% trans %}Vizja Home – Uczelnia dla wszystkich{% endtrans %}
+                                </a>
+                                {% trans %}w ramach programu Fundusze Europejskie dla Rozwoju Społecznego 2021-2027 współfinansowanego ze środków Europejskiego Funduszu Społecznego Plus i objęty jest w całości licencją{% endtrans %}
+                                <a class="underline wrap-break-word" rel="noopener noreferrer"
+                                    href="https://creativecommons.org/licenses/by/4.0/legalcode.pl">
+                                    {% trans %}Creative Commons Uznanie autorstwa CC BY 4.0{% endtrans %}
+                                </a>.
+                                <p class="mt-2">
+                                    <a class="underline wrap-break-word" rel="noopener noreferrer"
+                                        href="{{ url('student_license_index') }}">
+                                        {% trans %}Więcej o Help VIZJA i licencji{% endtrans %}
+                                    </a>
+                                </p>
+
+                                <div class="mt-7">
+                                    <div class="flex flex-wrap items-center gap-2" role="img" aria-label="{% trans %}Logo licencji Creative Commons – Uznanie autorstwa{% endtrans %}">
+                                        <svg class="fill-white w-8 h-8 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                                            <path
+                                                d="M317.8 278.9L284.6 296.2C275.2 276.6 259.4 276.3 257.1 276.3C235 276.3 223.9 290.9 223.9 320.1C223.9 343.7 233.1 363.9 257.1 363.9C271.6 363.9 281.7 356.8 287.7 342.6L318.3 358.1C312.1 369.6 292.6 397.1 253.2 397.1C230.6 397.1 179.2 386.8 179.2 320.1C179.2 261.4 222.2 243 251.8 243C282.5 243 304.5 254.9 317.8 278.9zM460.8 278.9L428 296.2C418.5 276.4 402.3 276.3 400.1 276.3C378 276.3 366.9 290.9 366.9 320.1C366.9 343.6 376.1 363.9 400.1 363.9C414.5 363.9 424.7 356.8 430.6 342.6L461.6 358.1C459.5 361.9 440.2 397.1 396.5 397.1C373.8 397.1 322.5 387.2 322.5 320.1C322.5 261.4 365.5 243 395.1 243C425.8 243 447.7 254.9 460.7 278.9zM319.6 72C176.7 72 72 187.1 72 320.1C72 458.5 185.6 568.1 319.6 568.1C449.5 568.1 568 467.2 568 320.1C568 182.2 461.4 72 319.6 72zM320.5 522.8C208 522.8 116.8 429.8 116.8 320C116.8 214.6 202.2 116.7 320.5 116.7C433 116.7 523.3 206.2 523.3 320C523.3 441.7 423.6 522.8 320.5 522.8z" />
+                                        </svg>
+                                        <svg class="fill-white w-8 h-8 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                                            <path
+                                                d="M386.9 258.4L386.9 359.8L358.6 359.8L358.6 480.3L281.5 480.3L281.5 359.9L253.2 359.9L253.2 258.4C253.2 254 254.8 250.2 257.8 247.1C260.9 244 264.7 242.4 269.1 242.4L371 242.4C375.1 242.4 378.8 244 382.1 247.1C385.2 250.3 386.9 254 386.9 258.4zM354.4 193.9C354.6 213 339.4 228.6 320.3 228.8C301.2 229 285.6 213.8 285.4 194.7C285.2 175.6 300.4 160 319.5 159.8C338.6 159.6 354.2 174.8 354.4 193.9zM319.6 72C461.4 72 568 182.1 568 320C568 467.1 449.5 568 319.6 568C185.6 568 72 458.5 72 320C72 187.1 176.7 72 319.6 72zM320.4 116.7C202.2 116.7 116.7 214.6 116.7 320C116.7 429.8 207.9 522.8 320.4 522.8C423.6 522.8 523.2 441.7 523.2 320C523.3 206.2 433 116.7 320.4 116.7z" />
+                                        </svg>
+                                    </div>
+
+                                    <div class="mt-2 wrap-break-word">
+                                        {% trans %}Ikony Creative Commons (CC){% endtrans %}:
+                                        <a
+                                            class="underline wrap-break-word"
+                                            rel="noopener noreferrer"
+                                            target="_blank"
+                                            href="https://fontawesome.com/"
+                                        >
+                                            Font Awesome
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const cookieModal = document.getElementById('cookie-consent');
+                const cookieAcceptButton = document.getElementById('cookie-consent-accept');
+
+                const browserModalElement = document.getElementById('browser-info-modal');
+                const browserAcceptButton = document.getElementById('browser-info-accept');
+
+                const STORAGE_KEY = 'help_vizja_browser_info_last_seen';
+                const ONE_HOUR = 60 * 60 * 1000;
+
+                let activeTrapContainer = null;
+                let previouslyFocusedElement = null;
+                let browserModal = null;
+
+                if (browserModalElement && window.Modal) {
+                    browserModal = new Modal(browserModalElement, {
+                        backdrop: 'static',
+                        closable: false
+                    });
+                }
+
+                function getFocusableElements(container) {
+                    return Array.from(container.querySelectorAll(
+                        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                    )).filter(el => !el.disabled && !el.getAttribute('aria-hidden'));
+                }
+
+                function enableFocusTrap(container, initialElement = null) {
+                    if (!container) return;
+
+                    disableFocusTrap();
+
+                    previouslyFocusedElement = document.activeElement;
+                    activeTrapContainer = container;
+
+                    const focusable = getFocusableElements(container);
+                    const firstFocusable = focusable[0];
+                    const lastFocusable = focusable[focusable.length - 1];
+
+                    setTimeout(() => {
+                        if (initialElement instanceof HTMLElement) {
+                            initialElement.focus();
+                        } else {
+                            firstFocusable?.focus();
+                        }
+                    }, 50);
+
+                    container._focusTrapHandler = function (event) {
+                        if (event.key !== 'Tab') return;
+
+                        const elements = getFocusableElements(container);
+                        const first = elements[0];
+                        const last = elements[elements.length - 1];
+
+                        if (!first || !last) {
+                            event.preventDefault();
+                            return;
+                        }
+
+                        if (event.shiftKey && document.activeElement === first) {
+                            event.preventDefault();
+                            last.focus();
+                            return;
+                        }
+
+                        if (!event.shiftKey && document.activeElement === last) {
+                            event.preventDefault();
+                            first.focus();
+                        }
+                    };
+
+                    container.addEventListener('keydown', container._focusTrapHandler);
+                }
+
+                function disableFocusTrap() {
+                    if (activeTrapContainer?._focusTrapHandler) {
+                        activeTrapContainer.removeEventListener('keydown', activeTrapContainer._focusTrapHandler);
+                        delete activeTrapContainer._focusTrapHandler;
+                    }
+
+                    activeTrapContainer = null;
+                }
+
+                function restoreFocus() {
+                    previouslyFocusedElement?.focus?.();
+                    previouslyFocusedElement = null;
+                }
+
+                function lockPage() {
+                    document.documentElement.classList.add('overflow-hidden');
+                    document.body.classList.add('overflow-hidden');
+                }
+
+                function unlockPage() {
+                    document.documentElement.classList.remove('overflow-hidden');
+                    document.body.classList.remove('overflow-hidden');
+                }
+
+                function openBrowserModalIfNeeded() {
+                    if (!browserModal || !browserModalElement || !browserAcceptButton) {
+                        unlockPage();
+                        restoreFocus();
+                        return;
+                    }
+
+                    const lastSeen = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
+
+                    if ((Date.now() - lastSeen) < ONE_HOUR) {
+                        unlockPage();
+                        restoreFocus();
+                        return;
+                    }
+
+                    lockPage();
+                    browserModal.show();
+
+                    setTimeout(() => {
+                        browserModalElement.setAttribute('aria-hidden', 'false');
+                        enableFocusTrap(browserModalElement, document.getElementById('browser-info-title'));
+                    }, 100);
+                }
+
+                browserAcceptButton?.addEventListener('click', async function () {
+                    browserAcceptButton.disabled = true;
+
+                    try {
+                        const response = await fetch(browserAcceptButton.dataset.url, {
+                            method: 'POST',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: new URLSearchParams({
+                                _token: browserAcceptButton.dataset.csrf
+                            })
+                        });
+
+                        if (!response.ok) {
+                            throw new Error('Request failed');
+                        }
+
+                        localStorage.setItem(STORAGE_KEY, String(Date.now()));
+
+                        disableFocusTrap();
+                        browserModalElement.setAttribute('aria-hidden', 'true');
+                        browserModal?.hide();
+
+                        unlockPage();
+                        restoreFocus();
+                    } catch (error) {
+                        console.error(error);
+                        browserAcceptButton.disabled = false;
+                        alert('{{ "Nie udało się zapisać potwierdzenia. Spróbuj ponownie."|trans }}');
+                    }
+                });
+
+                if (cookieModal && cookieAcceptButton) {
+                    lockPage();
+                    enableFocusTrap(cookieModal, document.getElementById('cookie-consent-title'));
+
+                    cookieAcceptButton.addEventListener('click', async function () {
+                        cookieAcceptButton.disabled = true;
+
+                        try {
+                            const response = await fetch(cookieAcceptButton.dataset.acceptUrl, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                body: new URLSearchParams({
+                                    _token: cookieAcceptButton.dataset.token
+                                })
+                            });
+
+                            if (!response.ok) {
+                                throw new Error('Request failed');
+                            }
+
+                            window.location.reload();
+                        } catch (error) {
+                            console.error(error);
+                            cookieAcceptButton.disabled = false;
+                            alert('{{ "Nie udało się zapisać potwierdzenia. Spróbuj ponownie."|trans }}');
+                        }
+                    });
+
+                    return;
+                }
+
+                openBrowserModalIfNeeded();
+            });
+        </script>
+
+        <script>
+            (function () {
+                const loader = document.getElementById('page-loader');
+                if (!loader) return;
+
+                let loaderTimer = null;
+                let watchdogTimer = null;
+                let visible = false;
+
+                const DELAY = 800;
+                const WATCHDOG = 4000;
+
+                function showLoader() {
+                    visible = true;
+
+                    loader.classList.remove('hidden', 'opacity-0');
+                    loader.classList.add('flex');
+
+                    requestAnimationFrame(() => {
+                        loader.classList.add('opacity-100');
+                    });
+
+                    document.documentElement.classList.add('overflow-hidden');
+                    document.body.classList.add('overflow-hidden');
+                }
+
+                function hideLoader() {
+                    clearTimeout(loaderTimer);
+                    clearTimeout(watchdogTimer);
+
+                    visible = false;
+
+                    loader.classList.remove('opacity-100');
+                    loader.classList.add('opacity-0');
+
+                    document.documentElement.classList.remove('overflow-hidden');
+                    document.body.classList.remove('overflow-hidden');
+
+                    setTimeout(() => {
+                        if (!visible) {
+                            loader.classList.remove('flex');
+                            loader.classList.add('hidden');
+                        }
+                    }, 200);
+                }
+
+                function scheduleLoader() {
+                    clearTimeout(loaderTimer);
+                    clearTimeout(watchdogTimer);
+
+                    loaderTimer = setTimeout(() => {
+                        showLoader();
+
+                        // zabezpieczenie dla pobierania plików / anulowanej nawigacji
+                        watchdogTimer = setTimeout(hideLoader, WATCHDOG);
+                    }, DELAY);
+                }
+
+                function shouldSkipLink(link, event) {
+                    const href = link.getAttribute('href');
+
+                    if (!href) return true;
+                    if (event.defaultPrevented) return true;
+                    if (event.button !== 0) return true;
+                    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return true;
+                    if (link.target && link.target !== '_self') return true;
+                    if (link.hasAttribute('download')) return true;
+                    if (link.dataset.noLoader !== undefined) return true;
+
+                    if (
+                        href.startsWith('#') ||
+                        href.startsWith('mailto:') ||
+                        href.startsWith('tel:') ||
+                        href.startsWith('javascript:')
+                    ) {
+                        return true;
+                    }
+
+                    const url = new URL(href, window.location.href);
+
+                    if (url.origin !== window.location.origin) return true;
+
+                    const downloadExtensions = [
+                        '.pdf', '.zip', '.rar', '.7z',
+                        '.doc', '.docx', '.xls', '.xlsx',
+                        '.csv', '.xml',
+                        '.jpg', '.jpeg', '.png', '.webp'
+                    ];
+
+                    return downloadExtensions.some(ext =>
+                        url.pathname.toLowerCase().endsWith(ext)
+                    );
+                }
+
+                document.addEventListener('click', function (event) {
+                    const link = event.target.closest('a[href]');
+                    if (!link) return;
+
+                    if (shouldSkipLink(link, event)) {
+                        hideLoader();
+                        return;
+                    }
+
+                    scheduleLoader();
+                });
+
+                document.addEventListener('submit', function (event) {
+                    if (!(event.target instanceof HTMLFormElement)) return;
+                    if (event.target.dataset.noLoader !== undefined) return;
+
+                    scheduleLoader();
+                });
+
+                window.addEventListener('load', hideLoader);
+                window.addEventListener('pageshow', hideLoader);
+                window.addEventListener('pagehide', hideLoader);
+                window.addEventListener('focus', hideLoader);
+                window.addEventListener('visibilitychange', function () {
+                    if (!document.hidden) hideLoader();
+                });
+            })();
+        </script>
+
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

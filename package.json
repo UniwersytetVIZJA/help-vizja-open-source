@@ -1,0 +1,38 @@
+{
+    "devDependencies": {
+        "@babel/core": "^7.17.0",
+        "@babel/preset-env": "^7.16.0",
+        "@hotwired/stimulus": "^3.0.0",
+        "@symfony/stimulus-bridge": "^3.2.0 || ^4.0.0",
+        "@symfony/webpack-encore": "^6.0.0",
+        "@tailwindcss/postcss": "^4.1.10",
+        "core-js": "^3.38.0",
+        "postcss": "^8.5.5",
+        "postcss-loader": "^8.1.1",
+        "regenerator-runtime": "^0.13.9",
+        "sass": "^1.89.2",
+        "sass-loader": "^16.0.5",
+        "tailwindcss": "^4.1.10",
+        "ts-loader": "^9.5.2",
+        "typescript": "^5.8.3",
+        "webpack": "^5.74.0",
+        "webpack-cli": "^6.0.1"
+    },
+    "license": "UNLICENSED",
+    "private": true,
+    "scripts": {
+        "dev-server": "encore dev-server",
+        "dev": "encore dev",
+        "watch": "encore dev --watch",
+        "build": "encore production --progress"
+    },
+    "dependencies": {
+        "@fullcalendar/core": "^6.1.19",
+        "@fullcalendar/daygrid": "^6.1.19",
+        "@fullcalendar/interaction": "^6.1.19",
+        "@fullcalendar/timegrid": "^6.1.19",
+        "flowbite": "^3.1.2",
+        "flowbite-datepicker": "^2.0.0",
+        "fullcalendar": "^6.1.19"
+    }
+}

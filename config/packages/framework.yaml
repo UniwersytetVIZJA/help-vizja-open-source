@@ -1,0 +1,22 @@
+framework:
+    secret: '%env(APP_SECRET)%'
+    session: true
+
+    default_locale: 'pl'
+    translator:
+        default_path: '%kernel.project_dir%/translations'
+        fallbacks: [ 'pl' ]
+
+#    error_controller: 'App\Controller\ErrorController'
+
+when@test:
+    framework:
+        session:
+            storage_factory_id: session.storage.factory.mock_file
+        test: true
+        ide: false
+
+        default_locale: 'pl'
+        translator:
+            default_path: '%kernel.project_dir%/translations'
+            fallbacks: [ 'pl' ]

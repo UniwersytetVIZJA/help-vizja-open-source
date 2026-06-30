@@ -1,0 +1,38 @@
+<button
+    type="button"
+    aria-expanded="false"
+    id="user-options-button"
+    data-dropdown-toggle="user-options-dropdown"
+    class="bg-zinc-950 inline-flex h-10 w-10 items-center justify-center rounded-full text-sm text-white focus:outline-none focus:ring-3 focus:ring-blue-300 overflow-hidden"
+>
+    <span class="avatar-initials hidden font-semibold">
+        {{ app.user ? app.user.initials }}
+    </span>
+
+    <img
+        src="{{ path('admin_user_ms_avatar') }}"
+        alt="{{ app.user ? app.user.initials }}"
+        class="rounded-full h-full w-full object-cover"
+        onerror="
+            this.style.display='none';
+            this.parentElement.querySelector('.avatar-initials').classList.remove('hidden');
+        "
+    >
+</button>
+
+<div class="bg-white divide-zinc-100 divide-y hidden min-w-52 rounded-lg shadow-sm w-auto z-10 dark:bg-zinc-700 dark:divide-zinc-600" id="user-options-dropdown">
+    <div class="px-4 py-3 text-center">
+        <span class="block font-semibold text-sm">
+            {% if app.user %}
+                {{ app.user.firstName }} {{ app.user.lastName }}
+            {% endif %}
+        </span>
+    </div>
+    <ul aria-labelledby="user-options-button" class="p-2 text-center text-sm">
+        <li>
+            <a href="{{ url('admin_logout_full') }}" class="block px-4 py-2 rounded-lg dark:hover:bg-zinc-600 focus:outline-none focus:ring-3 focus:ring-blue-300 hover:bg-zinc-100">
+                {% trans %}Wyloguj{% endtrans %}
+            </a>
+        </li>
+    </ul>
+</div>

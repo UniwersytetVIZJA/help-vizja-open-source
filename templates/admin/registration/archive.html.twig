@@ -1,0 +1,247 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block title %}{% trans %}Archiwum konsultacji{% endtrans %} | Admin Help VIZJA{% endblock %}
+
+{% block body %}
+    <section class="space-y-6 max-w-7xl mx-5">
+
+        <header class="mb-6 flex items-start justify-between gap-4">
+            {{ website_path([
+                { label: 'Zapisy na konsultacje'|trans, route: 'admin_registration' },
+                { label: 'Archiwum konsultacji'|trans },
+            ]) }}
+        </header>
+
+        <h1 class="font-semibold text-xl md:text-2xl lg:text-3xl">
+            {% trans %}Archiwum zapisów{% endtrans %}
+        </h1>
+
+        <div class="mt-2 flex flex-col sm:flex-row sm:items-start gap-4">
+            <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('admin_registration') }}">
+                {% trans %}Wróć do aktywnych zapisów{% endtrans %}
+            </a>
+        </div>
+
+        {% if registration is empty %}
+            {{ empty_state(
+                'Brak archiwalnych zapisów'|trans,
+                'Pojawią się tu tylko zakończone spotkania'|trans
+            ) }}
+        {% else %}
+
+            {% set grouped = {} %}
+            {% for r in registration %}
+                {% set key = r.startsAt|date('Y-m-d') %}
+                {% set grouped = grouped|merge({
+                    (key): (grouped[key]|default([]))|merge([r])
+                }) %}
+            {% endfor %}
+
+            {% set dayKeys = grouped|keys|sort|reverse %}
+
+            <div class="flex items-center gap-3 min-w-0">
+                <div id="days-strip"
+                    class="min-w-0 flex-1 overflow-x-auto"
+                    style="-webkit-overflow-scrolling: touch;">
+                    <div class="flex min-w-max items-stretch gap-3 py-1">
+
+                        {% for dayKey in dayKeys %}
+                            {% set count = grouped[dayKey]|length %}
+
+                            <div type="button"
+                                class="day-tile w-28 shrink-0 cursor-pointer overflow-hidden rounded-xl border bg-white text-center transition dark:border-zinc-700 dark:bg-zinc-900 sm:w-32 {{ borderPrimary() }} {{ focusPrimary() }}"
+                                data-day="{{ dayKey }}"
+                                aria-pressed="false">
+
+                                <div class="px-3 py-2">
+                                    <div class="wrap-break-word text-sm font-semibold">
+                                        {{ dayKey|date('d.m.Y') }}
+                                    </div>
+
+                                    <div class="wrap-break-word text-xs font-bold">
+                                        {% if app.locale == 'en' %}
+                                            {{ dayKey|date('l')|trans }}
+                                        {% else %}
+                                            {{ dayKey|format_datetime(pattern='EEEE', locale='pl')|capitalize }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="border-t border-zinc-200 px-3 py-2 text-xs font-medium dark:border-zinc-700">
+                                    {% trans %}Konsultacji{% endtrans %}: {{ count }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div id="days-content" class="rounded-xl border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900">
+                {% for dayKey in dayKeys %}
+                    <div class="day-panel hidden" data-day-panel="{{ dayKey }}">
+                        <div class="space-y-4 min-w-0">
+
+                            {% for r in grouped[dayKey] %}
+                                {% set total = r.capacity ?? 0 %}
+                                {% set used = r.registeredStudents is defined and r.registeredStudents is not null ? r.registeredStudents|length : 0 %}
+
+                                {% set pct = total > 0 ? ((used / total) * 100)|round(0, 'floor') : 0 %}
+                                {% set pct = pct < 0 ? 0 : (pct > 100 ? 100 : pct) %}
+
+                                {% set barClass =
+                                    pct == 100 ? 'bg-red-500' :
+                                    (pct >= 60 ? 'bg-orange-300' : 'bg-green-500') %}
+
+                                <div
+                                    class="overflow-hidden rounded-xl border bg-zinc-50 dark:bg-zinc-800 {{ borderPrimary() }}">
+
+                                    <div class="border-b border-zinc-200 px-4 py-3 dark:border-zinc-700">
+                                        <div class="flex shrink-0 items-center gap-2 text-sm font-semibold lg:w-44">
+                                            <svg class="h-4 w-4 text-gray-800 dark:text-white"
+                                                aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                fill="none"
+                                                viewBox="0 0 24 24">
+                                                <path stroke="currentColor"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z">
+                                                </path>
+                                            </svg>
+
+                                            <span class="wrap-break-word">
+                                                {{ r.startsAt|date('H:i') }} - {{ r.endsAt|date('H:i') }}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="px-4 py-4 flex flex-col lg:flex-row lg:items-stretch gap-4">
+
+                                        <div class="flex-1 min-w-0 flex flex-col gap-3">
+                                            <div class="min-w-0 flex items-center gap-3">
+
+                                                <div
+                                                    class="w-17 h-17 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-semibold overflow-hidden shrink-0 dark:bg-yellow-400">
+                                                    <span class="avatar-initials hidden">
+                                                        {{ r.specialist.initials }}
+                                                    </span>
+
+                                                    <img
+                                                        src="{{ path('admin_ms_user_photo', { upn: r.specialist.email }) }}"
+                                                        alt="{{ r.specialist.initials }}"
+                                                        class="rounded-full w-17 h-17 object-cover"
+                                                        onerror="
+                                                            this.style.display='none';
+                                                            this.parentElement.querySelector('.avatar-initials').classList.remove('hidden');
+                                                        ">
+                                                </div>
+
+                                                <div class="min-w-0">
+                                                    <div class="font-semibold truncate">
+                                                        {{ r.specialist.firstName ?? '' }} {{ r.specialist.lastName ?? '' }}
+                                                    </div>
+
+                                                    <div class="text-sm opacity-70 truncate">
+                                                        {{ r.title.value ?? '' }}
+                                                    </div>
+
+                                                    <div class="text-sm opacity-70 truncate">
+                                                        {% trans %}Język{% endtrans %}: {{ r.language.value ?? '' }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mt-auto flex flex-wrap items-center gap-2">
+                                                <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                                                    href="{{ url('admin_read_registration', { registrationId: r.id }) }}">
+                                                    {% trans %}Podgląd{% endtrans %}
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="lg:w-44 shrink-0 flex lg:justify-end">
+                                            <div class="min-w-0 w-full">
+                                                <div class="text-sm font-medium">
+                                                    {% trans %}Zapisanych{% endtrans %}:
+                                                    <span class="font-semibold">{{ used }}</span> / {{ total }}
+                                                </div>
+
+                                                <div
+                                                    class="border-2 mt-2 h-3 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-zinc-700"
+                                                    role="progressbar"
+                                                    aria-label="{% trans %}Zapełnienie zapisów{% endtrans %}"
+                                                    aria-valuemin="0"
+                                                    aria-valuemax="{{ total }}"
+                                                    aria-valuenow="{{ used }}">
+                                                    <div class="{{ barClass }} h-3 rounded-full"
+                                                        style="width: {{ pct }}%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% endif %}
+    </section>
+
+    {% include '_paginator/paginator.html.twig' with { pagination: pagination } %}
+
+    <script>
+        (function () {
+            const tiles = Array.from(document.querySelectorAll('.day-tile'));
+            const panels = Array.from(document.querySelectorAll('.day-panel'));
+
+            if (!tiles.length) return;
+
+            function setActive(day) {
+                panels.forEach(p => {
+                    p.classList.toggle('hidden', p.dataset.dayPanel !== day);
+                });
+
+                tiles.forEach(t => {
+                    const isActive = t.dataset.day === day;
+                    t.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+
+                    t.classList.toggle('bg-blue-600', isActive);
+                    t.classList.toggle('dark:bg-yellow-400', isActive);
+                    t.classList.toggle('text-white', isActive);
+                    t.classList.toggle('dark:text-zinc-900', isActive);
+
+                    if (!isActive) {
+                        t.classList.add('bg-white', 'dark:bg-zinc-900', 'border-zinc-200', 'dark:border-zinc-700');
+                    } else {
+                        t.classList.remove('bg-white', 'dark:bg-zinc-900', 'border-zinc-200', 'dark:border-zinc-700');
+                    }
+                });
+
+                const activeTile = tiles.find(t => t.dataset.day === day);
+                activeTile?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+
+            tiles.forEach(t => {
+                t.addEventListener('click', () => setActive(t.dataset.day));
+            });
+
+            setActive(tiles[0].dataset.day);
+        })();
+    </script>
+{% endblock %}

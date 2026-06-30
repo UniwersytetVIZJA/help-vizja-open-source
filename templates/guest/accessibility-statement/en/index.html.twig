@@ -1,0 +1,236 @@
+{% extends 'guest/_layouts/after-login.html.twig' %}
+
+{% block title %}Accessibility Statement | Help VIZJA{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block body %}
+    <main class="mx-auto max-w-5xl space-y-10 px-4 py-8 text-zinc-900 dark:text-white sm:px-6 lg:px-8">
+        <h1 id="page-title" class="text-3xl font-bold tracking-tight sm:text-4xl">
+            Accessibility Statement
+        </h1>
+
+        <section id="a11y-wstep" class="space-y-4">
+            <h2 class="sr-only">Introduction</h2>
+
+            <p>
+                <span id="a11y-podmiot">VIZJA University</span>
+                is committed to making its
+                <span id="a11y-zakres">website</span>
+                accessible, in accordance with the Act of April 4, 2019 on digital accessibility of websites and mobile applications of public bodies.
+            </p>
+
+            <p>
+                The Accessibility Statement applies to the website
+                <a id="a11y-url" href="https://help.vizja.pl" class="underline underline-offset-4 hover:no-underline {{ focusPrimary() }}">
+                    https://help.vizja.pl
+                </a>.
+            </p>
+        </section>
+
+        <section class="rounded-xl border-2 border-zinc-500 bg-white p-4 dark:border-zinc-400 dark:bg-zinc-900">
+            <h2 class="sr-only">Publication and update dates</h2>
+
+            <ul class="list-disc space-y-2 pl-6">
+                <li>
+                    Date of website publication:
+                    <time id="a11y-data-publikacja" datetime="2026-06-24">24 June 2026</time>
+                </li>
+                <li>
+                    Date of last major update:
+                    <time id="a11y-data-aktualizacja" datetime="2026-06-24">24 June 2026</time>
+                </li>
+            </ul>
+        </section>
+
+        <section class="space-y-4">
+            <h2 class="text-2xl font-semibold">
+                The state of digital accessibility
+            </h2>
+
+            <p id="a11y-status">
+                This website fully complies with the annex to the Act of 4 April 2019 on digital accessibility of websites and mobile applications of public bodies.
+            </p>
+        </section>
+
+        <section class="space-y-4">
+            <h2 class="text-2xl font-semibold">
+                Preparation of Accessibility Statement
+            </h2>
+
+            <ul class="list-disc space-y-2 pl-6">
+                <li>
+                    Date of preparing the Accessibility Statement:
+                    <time id="a11y-data-sporzadzenie" datetime="2026-06-24">24 June 2026</time>
+                </li>
+                <li>
+                    Date of the last review of the Accessibility Statement:
+                    <time id="a11y-data-przeglad" datetime="2026-06-24">24 June 2026</time>
+                </li>
+            </ul>
+
+            <p>
+                We prepared the statement based on a self-assessment according to
+                <a
+                    href="https://www.gov.pl/attachment/1a3e2bb5-6d60-4897-ac2f-07a8e91e70ed"
+                    class="underline underline-offset-4 hover:no-underline {{ focusPrimary() }}"
+                >
+                    Checklist for assessing the digital accessibility of a website v. 2.2
+                    <span class="sr-only">, DOCX document, 0.12 MB</span>
+                </a>.
+                The results are presented in the report in Polish:
+                <a
+                    href="{{ asset('files/Raport_Samooceny_dostępnosci_cyfrowej_strony_HelpVizja_24.06.2026.pdf') }}"
+                    class="underline underline-offset-4 hover:no-underline {{ focusPrimary() }}"
+                >
+                    Raport samooceny dostępności cyfrowej strony Help VIZJA (dokument PDF, 0,75 MB)
+                </a>.
+            </p>
+        </section>
+
+        <section class="space-y-4">
+            <h2 class="text-2xl font-semibold">
+                Feedback and contact information
+            </h2>
+
+            <p>
+                You can report all digital accessibility issues with this website to
+                <span id="a11y-kontakt">Office for students with disabilities</span>:
+                via email
+                <a id="a11y-email" href="mailto:bon@vizja.pl" class="underline underline-offset-4 hover:no-underline {{ focusPrimary() }}">bon@vizja.pl</a>
+                or by phone
+                <a id="a11y-telefon" href="tel:+48533118733" class="underline underline-offset-4 hover:no-underline {{ focusPrimary() }}">(+48) 533 118 733</a>.
+            </p>
+
+            <p>Everyone has the right to request the digital accessibility of this website or its elements.</p>
+
+            <p>When making such a request, please provide:</p>
+
+            <ul class="list-disc space-y-2 pl-6">
+                <li>your name,</li>
+                <li>your contact information, for example phone number or email,</li>
+                <li>the exact address of the website where the digital accessibility issue is located,</li>
+                <li>a description of the problem and how you would like it to be resolved.</li>
+            </ul>
+
+            <p>We will respond to your request as quickly as possible, no later than within 7 days of receiving it.</p>
+            <p>If this timeframe is too short for us, we will inform you. In this information, we will provide a new date by which we will correct the reported errors or provide the information in an
+                alternative way. This new date will not be longer than 2 months.</p>
+            <p>If we are unable to ensure the digital accessibility of the website or content indicated in your request, we will propose an alternative way to access it.</p>
+        </section>
+
+        <section id="a11y-procedura" class="space-y-4">
+            <h2 class="text-2xl font-semibold">
+                Handling requests and complaints related to accessibility
+            </h2>
+
+            <p>If we refuse to ensure the digital accessibility you requested in response to your request, and you do not agree with this refusal, you have the right to file a complaint.</p>
+            <p>You also have the right to file a complaint if you disagree with the alternative access method we proposed in response to your request for digital accessibility.</p>
+
+            <p>You can file a complaint by post or email to the Accessibility Coordinator:</p>
+
+            <address class="not-italic">
+                <strong>Joanna Ksieniewicz</strong> – Accessibility Coordinator<br>
+                VIZJA University, Office for students with disabilities<br>
+                Okopowa 59 Street, 01-043 Warsaw<br>
+                email:
+                <a href="mailto:j.ksieniewicz@vizja.pl" class="underline underline-offset-4 hover:no-underline {{ focusPrimary() }}">
+                    j.ksieniewicz@vizja.pl
+                </a>
+            </address>
+
+            <p>
+                <a
+                    href="https://www.gov.pl/web/gov/zloz-wniosek-o-zapewnienie-dostepnosci-cyfrowej-strony-internetowej-lub-aplikacji-mobilnej"
+                    class="underline underline-offset-4 hover:no-underline {{ focusPrimary() }}"
+                >
+                    Helpful information can be found on the government portal gov.pl
+                </a>.
+            </p>
+
+            <p>
+                You can also inform the
+                <a href="https://bip.brpo.gov.pl/" class="underline underline-offset-4 hover:no-underline {{ focusPrimary() }}">
+                    Ombudsman
+                </a>
+                and request intervention in your case.
+            </p>
+        </section>
+
+        <section class="space-y-6">
+            <h2 class="text-2xl font-semibold">
+                Other information
+            </h2>
+
+            <section id="a11y-architektura" class="space-y-4">
+                <h3 class="text-xl font-semibold">
+                    Architectural accessibility
+                </h3>
+
+                <section class="space-y-4">
+                    <h4 class="text-lg font-semibold">
+                        Main Building of VIZJA University
+                    </h4>
+
+                    <address class="not-italic">
+                        Okopowa 59 Street<br>
+                        01-043, Warsaw
+                    </address>
+
+                    <p>We ensure architectural accessibility by providing:</p>
+
+                    <ul class="list-disc space-y-2 pl-6">
+                        <li>a barrier-free environment around the University building, allowing easy and quick access to the nearest public transport stop, accessible to people who use wheelchairs,
+                            people who are blind or partially sighted, people with strollers, and those using bicycles or scooters;
+                        </li>
+                        <li>an accessible entrance to the building, appropriately wide entrance doors, no level differences, an intercom at the entrance, and reception staff available to provide
+                            assistance upon request;
+                        </li>
+                        <li>lifts designed for accessibility, featuring Braille markings and wide enough to allow people who use wheelchairs, people using crutches, or those with other mobility needs
+                            to reach every floor of the building;
+                        </li>
+                        <li>wide and spacious circulation areas such as corridors and halls;</li>
+                        <li>a clear, intuitive, and easy-to-understand layout of the building;</li>
+                        <li>appropriate signage for people with visual impairments, for example marking key rooms and circulation routes with Braille signs;</li>
+                        <li>organizational units of the University that are clearly and simply marked and free from architectural barriers, especially those supporting people with specific access
+                            requirements, including people with disabilities;
+                        </li>
+                        <li>parking spaces in the underground car park – 4 designated spaces for people with disabilities, properly marked, with direct, barrier-free access from the car park to every
+                            level of the building;
+                        </li>
+                        <li>barrier-free access to classrooms, computer labs, lecture halls, sports facilities, and other rooms where classes are held, ensuring access for people with mobility
+                            needs.
+                        </li>
+                    </ul>
+                </section>
+            </section>
+
+            <section id="a11y-komunikacja" class="space-y-4">
+                <h3 class="text-xl font-semibold">
+                    Communication and Information Accessibility
+                </h3>
+
+                <ul class="list-disc space-y-2 pl-6">
+                    <li>The University provides support through various communication channels, including email, telephone, SMS text messages, the MS Teams application, the website, and remote access
+                        to a sign language interpreter via the website and application.
+                    </li>
+                    <li>The University provides access to devices, software, and teaching aids, including portable induction loops, to support learning and communication with people who are hard of
+                        hearing or deaf.
+                    </li>
+                    <li>The University provides, where possible and upon request from a person with special needs, including a person with a disability, alternative ways of communication with
+                        administrative and teaching staff, as well as other people involved in the organization and delivery of education.
+                    </li>
+                    <li>The University provides blind users with access to an information and navigation system that supports wayfinding from the nearest public transport stop to the University
+                        courtyard and building, and then to the Office for students with disabilities and key student service departments.
+                    </li>
+                </ul>
+            </section>
+        </section>
+    </main>
+{% endblock %}

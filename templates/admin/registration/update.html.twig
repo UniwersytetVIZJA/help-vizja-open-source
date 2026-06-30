@@ -1,0 +1,173 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+{% form_theme form 'student/_layouts/form-tailwind.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block title %}{% trans %}Edycja konsultacji{% endtrans %} | Admin Help VIZJA{% endblock %}
+
+{% block body %}
+    <header class="mb-6 flex items-start justify-between gap-4">
+        {{ website_path([
+            { label: 'Zapisy na konsultacje'|trans, route: 'admin_registration' },
+            { label: 'Edycja konsultacji'|trans },
+        ]) }}
+    </header>
+
+    <div class="max-w-3xl rounded-2xl p-6">
+        <div class="flex items-start justify-between mb-4">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+                {% trans %}Edycja konsultacji{% endtrans %}
+            </h1>
+        </div>
+
+        {{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
+
+        <div class="bg-zinc-100 rounded-2xl p-6 mb-6 dark:bg-zinc-800">
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans %}Dane zapisu{% endtrans %}</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            </div>
+
+            <fieldset class="bg-zinc-100 rounded-2xl p-6 mb-6 dark:bg-zinc-800">
+                <legend class="sr-only">
+                    {% trans %}Dane zapisu{% endtrans %}
+                </legend>
+
+                <div class="space-y-4">
+                    {% if form.comment is defined %}
+                        <div>
+                            {{ form_row(form.comment, {
+                                label: 'Komentarz wewnętrzny',
+                                attr: { placeholder: 'Uwagi lub informacje administracyjne' }
+                            }) }}
+                        </div>
+                    {% endif %}
+
+                    {{ form_row(form.title) }}
+                    {{ form_row(form.language) }}
+
+                    <div class="max-w-56">
+                        {{ form_row(form.capacity) }}
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {{ form_row(form.startsAt) }}
+                        {{ form_row(form.endsAt) }}
+                    </div>
+
+                    {{ form_row(form.description) }}
+                    {{ form_row(form.specialist) }}
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="rounded-2xl border border-amber-300 bg-amber-50 p-6 shadow-sm dark:border-amber-600 dark:bg-amber-900/20 mb-6">
+            <h2 class="text-2xl font-semibold text-amber-800 dark:text-amber-300 mb-4">
+                {% trans %}Awaryjny link do spotkania Teams{% endtrans %}
+            </h2>
+
+            <p class="text-base text-amber-700 dark:text-amber-200 mb-3">
+                {% trans %}Tutaj możesz wprowadzić tymczasowy link do spotkania Teams tylko dla tego zapisu.
+                    Nie wpłynie to na pozostałe rekordy.{% endtrans %}
+            </p>
+
+            {{ form_row(form.teamsMeetingUrl, {
+                label: 'Link do spotkania Teams (awaryjny)',
+                attr: {
+                    placeholder: 'https://teams.microsoft.com/l/meetup-join/...',
+                    class: 'text-sm'
+                },
+                help: 'Ten link nadpisze domyślny adres spotkania tylko dla tego zapisu.'
+            }) }}
+        </div>
+
+        <div class="bg-zinc-100 rounded-2xl p-6 shadow-sm mb-6 dark:bg-zinc-800">
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans %}Metadane{% endtrans %}</h2>
+            <dl class="text-base text-gray-600 dark:text-gray-300 space-y-2">
+                <div><span class="font-medium">{% trans %}ID zapisu:{% endtrans %}</span> {{ registration.id }}</div>
+                {% if registration.createdAt is defined %}
+                    <div><span class="font-medium">{% trans %}Utworzono:{% endtrans %}</span> {{ registration.createdAt|date('d.m.Y H:i') }}</div>
+                {% endif %}
+                {% if registration.updatedAt is defined %}
+                    <div><span class="font-medium">{% trans %}Ostatnia edycja:{% endtrans %}</span> {{ registration.updatedAt|date('d.m.Y H:i') }}</div>
+                {% endif %}
+            </dl>
+        </div>
+
+        {# Akcje #}
+        <div class="md:col-span-5 flex items-center justify-start gap-2 pt-1">
+            <button class="cursor-pointer {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+                {% trans %}Zapisz zmiany{% endtrans %}
+            </button>
+            <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('admin_registration') }}">
+                {% trans %}Wróć do zapisów{% endtrans %}
+            </a>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const summary = document.getElementById('form_error_summary');
+            if (summary) summary.focus();
+
+            const starts = document.getElementById('{{ form.startsAt.vars.id }}');
+            const ends = document.getElementById('{{ form.endsAt.vars.id }}');
+
+            if (starts && ends) {
+                const parseLocalDateTime = (value) => {
+                    if (!value) return null;
+                    const v = value.includes('T') ? value : value.replace(' ', 'T');
+                    const d = new Date(v);
+                    return isNaN(d.getTime()) ? null : d;
+                };
+
+                const formatForInput = (dateObj) => {
+                    const pad = (n) => String(n).padStart(2, '0');
+                    const y = dateObj.getFullYear();
+                    const m = pad(dateObj.getMonth() + 1);
+                    const d = pad(dateObj.getDate());
+                    const hh = pad(dateObj.getHours());
+                    const mm = pad(dateObj.getMinutes());
+                    return `${ y }-${ m }-${ d }T${ hh }:${ mm }`;
+                };
+
+                const plusOneHour = (dateObj) => new Date(dateObj.getTime() + 60 * 60 * 1000);
+
+                const maybeAutofillEnds = () => {
+                    const s = parseLocalDateTime(starts.value);
+                    if (!s) return;
+
+                    const e = parseLocalDateTime(ends.value);
+
+                    if (!e || e.getTime() <= s.getTime()) {
+                        ends.value = formatForInput(plusOneHour(s));
+
+                        // jeśli masz walidację "na żywo" po stronie JS, to czasem warto wywołać change/input:
+                        ends.dispatchEvent(new Event('input', { bubbles: true }));
+                        ends.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                };
+
+                starts.addEventListener('change', maybeAutofillEnds);
+                starts.addEventListener('input', maybeAutofillEnds);
+
+                maybeAutofillEnds();
+            }
+        });
+
+        document.addEventListener('click', function (e) {
+            const t = e.target.closest('[data-focus-target]');
+            if (!t) return;
+            const id = t.getAttribute('data-focus-target');
+            const field = document.getElementById(id);
+            if (field) field.focus();
+        });
+    </script>
+{% endblock %}

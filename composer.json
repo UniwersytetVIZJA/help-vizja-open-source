@@ -1,0 +1,120 @@
+{
+    "type": "project",
+    "license": "CC-BY-4.0",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=8.4",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "ext-soap": "*",
+        "beberlei/doctrineextensions": "^1.5",
+        "craue/formflow-bundle": "^3.7",
+        "damienharper/auditor-bundle": "^6.2.3",
+        "doctrine/dbal": "^3.10.4",
+        "doctrine/doctrine-bundle": "^2.18.2",
+        "doctrine/doctrine-migrations-bundle": "^3.7.0",
+        "doctrine/orm": "^3.6.2",
+        "exercise/htmlpurifier-bundle": "^5.2",
+        "friendsofsymfony/ckeditor-bundle": "^2.7.1",
+        "giggsey/libphonenumber-for-php": "^9.0.23",
+        "guzzlehttp/guzzle": "7.9",
+        "knplabs/knp-paginator-bundle": "^6.10.0",
+        "knpuniversity/oauth2-client-bundle": "^2.20.1",
+        "laminas/laminas-soap": "^2.15",
+        "microsoft/kiota-authentication-phpleague": "^1.5.2",
+        "microsoft/microsoft-graph": "2.3",
+        "odolbeau/phone-number-bundle": "^4.2.5",
+        "php-http/promise": "1.2",
+        "phpdocumentor/reflection-docblock": "^5.6.6",
+        "phpoffice/phpspreadsheet": "^5.4",
+        "phpoffice/phpword": "^1.4",
+        "phpstan/phpdoc-parser": "^2.3.2",
+        "setasign/fpdi-tcpdf": "^2.3",
+        "symfony/console": "7.3.*",
+        "symfony/dotenv": "7.3.*",
+        "symfony/flex": "^2.10.0",
+        "symfony/framework-bundle": "7.3.*",
+        "symfony/http-client": "7.3.*",
+        "symfony/http-foundation": "7.3.*",
+        "symfony/mailer": "7.3.*",
+        "symfony/monolog-bundle": "^4.0",
+        "symfony/property-access": "7.3.*",
+        "symfony/property-info": "7.3.*",
+        "symfony/rate-limiter": "7.3.*",
+        "symfony/runtime": "7.3.*",
+        "symfony/security-bundle": "7.3.*",
+        "symfony/serializer": "7.3.*",
+        "symfony/stimulus-bundle": "^2.32.0",
+        "symfony/translation": "7.3.*",
+        "symfony/twig-bundle": "7.3.*",
+        "symfony/uid": "7.3.*",
+        "symfony/validator": "7.3.*",
+        "symfony/webpack-encore-bundle": "^2.4",
+        "symfony/yaml": "7.3.*",
+        "symfonycasts/reset-password-bundle": "^1.24",
+        "tales-from-a-dev/flowbite-bundle": "^0.9.2",
+        "thenetworg/oauth2-azure": "2.2",
+        "twig/extra-bundle": "^2.12|^3.23.0",
+        "twig/string-extra": "^3.23.0",
+        "twig/twig": "^2.12|^3.23.0",
+        "vich/uploader-bundle": "^2.9.1",
+        "vlucas/phpdotenv": "^5.6.3"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true,
+            "symfony/flex": true,
+            "symfony/runtime": true,
+            "tbachert/spi": true
+        },
+        "bump-after-update": true,
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "replace": {
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php74": "*",
+        "symfony/polyfill-php80": "*",
+        "symfony/polyfill-php81": "*",
+        "symfony/polyfill-php82": "*"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "ckeditor:install": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "7.3.*"
+        }
+    },
+    "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^4.3.1",
+        "symfony/maker-bundle": "^1.65.1"
+    }
+}

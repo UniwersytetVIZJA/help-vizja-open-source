@@ -1,0 +1,380 @@
+{% extends 'student/_layouts/after-login.html.twig' %}
+
+{% block title %}{% trans %}Kalendarz{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+
+    <style>
+        :root {
+            --fc-border-color: oklch(87.1% 0.006 286.286);
+        }
+
+        .dark {
+            --fc-border-color: oklch(55.2% 0.016 285.938);
+        }
+
+        .fc .fc-scrollgrid-section-sticky > * {
+            background: transparent;
+        }
+
+        .fc-event {
+            overflow: hidden;
+            padding: .25rem !important;
+        }
+
+        .fc-daygrid-dot-event {
+            padding: inherit;
+        }
+
+        .fc-daygrid-event {
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: wrap-break-word;
+        }
+
+        .fc-daygrid-dot-event:hover {
+            background: oklch(48.8% 0.243 264.376);
+        }
+
+        .dark .fc-daygrid-dot-event:hover {
+            background: oklch(90.5% 0.182 98.111);
+        }
+
+        .fc-event:after {
+            display: none !important;
+        }
+
+        .fc,
+        .fc * {
+            min-width: 0;
+        }
+
+        .fc .fc-toolbar {
+            gap: .75rem;
+        }
+
+        .fc .fc-toolbar.fc-header-toolbar {
+            margin-bottom: 1rem;
+        }
+
+        .fc .fc-toolbar-title {
+            overflow-wrap: anywhere;
+            word-break: wrap-break-word;
+            text-align: center;
+        }
+
+        .fc .fc-toolbar-chunk {
+            min-width: 0;
+        }
+
+        .fc .fc-button-group,
+        .fc .fc-toolbar-chunk {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+            justify-content: center;
+        }
+
+        .fc .fc-scrollgrid {
+            width: 100% !important;
+        }
+
+        .fc .fc-view-harness,
+        .fc .fc-scroller,
+        .fc .fc-scroller-liquid-absolute {
+            overflow: visible !important;
+        }
+
+        .fc .fc-col-header-cell-cushion,
+        .fc .fc-daygrid-day-number,
+        .fc .fc-list-event-title,
+        .fc .fc-timegrid-slot-label-cushion,
+        .fc .fc-timegrid-axis-cushion {
+            overflow-wrap: anywhere;
+            word-break: wrap-break-word;
+            white-space: normal;
+        }
+
+        .fc .fc-daygrid-day-frame {
+            min-height: 6rem;
+        }
+
+        @media (max-width: 640px) {
+            .fc .fc-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .fc .fc-toolbar-title {
+                font-size: 1rem;
+            }
+
+            .fc .fc-button-group,
+            .fc .fc-toolbar-chunk {
+                width: 100%;
+            }
+
+            .fc .fc-button-group > *,
+            .fc .fc-toolbar-chunk > * {
+                flex: 1 1 auto;
+            }
+
+            .fc .fc-daygrid-day-frame {
+                min-height: 4.5rem;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+    <script src="{{ asset('fullcalendar-6.1.20/dist/index.global.js') }}"></script>
+    <script src="{{ asset('fullcalendar-6.1.20/packages/core/locales/pl.global.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const calEl = document.getElementById('calendar');
+            const loadingEl = document.getElementById('calendar-loading');
+
+            const calendar = new FullCalendar.Calendar(calEl, {
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+
+                locale: 'pl',
+                timeZone: 'Europe/Warsaw',
+                firstDay: 1,
+                height: 'auto',
+                initialView: 'dayGridMonth',
+
+                eventSources: [
+                    {
+                        url: '{{ path("student_api_calendar_events") }}',
+                        method: 'GET',
+                        extraParams: () => ({ scope: 'student' })
+                    },
+                    {
+                        url: '{{ path("student_api_calendar_events_bon") }}',
+                        method: 'GET',
+                        extraParams: () => ({ scope: 'bon' }),
+                        color: '#3b82f6',
+                        textColor: '#ffffff'
+                    }
+                ],
+
+                eventTimeFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
+
+                loading(isLoading) {
+                    if (!loadingEl) return;
+                    loadingEl.classList.toggle('hidden', !isLoading);
+                },
+
+                eventClick(info) {
+                    info.jsEvent?.preventDefault?.();
+                    const url = info.event.url || info.event.extendedProps?.url;
+                    if (url) {
+                        window.open(url, '_blank', 'noopener');
+                        return;
+                    }
+
+                    const e = info.event;
+                    alert(`${ e.title }\n${ e.start?.toLocaleString('pl-PL') }`);
+                },
+
+                eventContent(arg) {
+                    const nodes = [];
+
+                    if (arg.timeText) {
+                        const time = document.createElement('div');
+                        time.className = 'text-xs opacity-80';
+                        time.textContent = arg.timeText;
+                        nodes.push(time);
+                    }
+
+                    const title = document.createElement('div');
+                    title.className = 'fc-event-title';
+                    title.textContent = arg.event.title;
+                    nodes.push(title);
+
+                    const ep = arg.event.extendedProps || {};
+                    const name = ep.specialistName;
+
+                    const rawMode = (ep.meetingMode ?? ep.mode ?? (ep.isOnline === true ? 'online' : (ep.isOnline === false ? 'stationary' : null)));
+                    const mode = rawMode === 'online' || rawMode === true
+                        ? '{% trans %}Online{% endtrans %}'
+                        : (rawMode === 'stationary' || rawMode === 'stacjonarne' || rawMode === false
+                            ? '{% trans %}Stacjonarnie{% endtrans %}'
+                            : null);
+
+                    if (name) {
+                        const sub = document.createElement('div');
+                        sub.className = 'text-xs opacity-80';
+                        sub.textContent = name.firstName + ' ' + name.lastName;
+                        nodes.push(sub);
+                    }
+
+                    if (mode) {
+                        const sub2 = document.createElement('div');
+                        sub2.className = 'text-xs opacity-80';
+                        sub2.textContent = mode;
+                        nodes.push(sub2);
+                    }
+
+                    const wrap = document.createElement('div');
+                    nodes.forEach(n => wrap.appendChild(n));
+                    return { domNodes: [wrap] };
+                },
+
+                eventDidMount(info) {
+                    const ep = info.event.extendedProps || {};
+                    const name = ep.specialistName;
+                    const rawMode = (ep.meetingMode ?? ep.mode ?? (ep.isOnline === true ? 'online' : (ep.isOnline === false ? 'stationary' : null)));
+                    const mode = rawMode === 'online' || rawMode === true
+                        ? '{% trans %}Online{% endtrans %}'
+                        : (rawMode === 'stationary' || rawMode === 'stacjonarne' || rawMode === false
+                            ? '{% trans %}Stacjonarnie{% endtrans %}'
+                            : null);
+
+                    const parts = [info.event.title];
+                    if (name) parts.push(name);
+                    if (mode) parts.push(mode);
+                    info.el.title = parts.join('\n');
+
+                    if (info.view.type.startsWith('list') && (name || mode)) {
+                        const container = info.el.querySelector('.fc-list-event-title, .fc-list-event-dot') || info.el;
+
+                        if (mode) {
+                            const tagMode = document.createElement('span');
+                            tagMode.className = 'ml-2 text-xs opacity-80';
+                            tagMode.textContent = `• ${ mode }`;
+                            container.appendChild(tagMode);
+                        }
+                    }
+                },
+
+                eventClassNames: function (arg) {
+                    return [
+                        'bg-blue-600',
+                        'p-2',
+                        'rounded-xl',
+                        'text-white',
+                        'dark:bg-yellow-400',
+                        'dark:text-black',
+
+                        'focus:outline-none',
+                        'focus:ring-3',
+                        'focus:ring-offset-3',
+                        'focus:ring-offset-white',
+                        'focus:ring-blue-500',
+                        'dark:focus:ring-yellow-400',
+                        'dark:focus:ring-offset-black'
+                    ];
+                },
+
+                dayCellDidMount: function (info) {
+                    const date = info.date;
+                    const label = date.toLocaleDateString('pl-PL', {
+                        weekday: 'long',
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    });
+
+                    info.el.removeAttribute('aria-labelledby');
+                    info.el.setAttribute('aria-label', label);
+                    info.el.setAttribute('title', label);
+                },
+
+                datesSet: function (info) {
+
+                    document.querySelectorAll('.fc-button').forEach(function (item) {
+                        item.classList.remove('fc-prev-button', 'fc-button', 'fc-button-primary');
+                        item.classList.add(
+                            'bg-blue-600', 'font-medium', 'inline-flex', 'items-center', 'justify-center',
+                            'px-4', 'py-2', 'relative', 'rounded-full', 'text-white', 'text-sm',
+                            'whitespace-normal', 'max-w-full', 'dark:bg-yellow-400', 'dark:text-black',
+                            'dark:hover:bg-yellow-300', 'hover:bg-blue-700', 'lg:px-5', 'lg:py-2.5',
+                            'focus:outline-none', 'ring-offset-3', 'ring-offset-white', 'focus:ring-3',
+                            'focus:ring-blue-500', 'dark:focus:ring-yellow-400',
+                            'dark:ring-offset-zinc-900', 'mx-1'
+                        );
+                    });
+
+                    const todayButton = document.querySelector('.fc-today-button');
+
+                    if (todayButton) {
+
+                        const now = new Date();
+                        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+                        const start = new Date(info.start.getFullYear(), info.start.getMonth(), info.start.getDate());
+                        const end = new Date(info.end.getFullYear(), info.end.getMonth(), info.end.getDate());
+
+                        const isTodayVisible = today >= start && today < end;
+
+                        todayButton.disabled = isTodayVisible;
+
+                        if (isTodayVisible) {
+                            todayButton.classList.add('opacity-50', 'cursor-not-allowed');
+                            todayButton.setAttribute('aria-disabled', 'true');
+                        } else {
+                            todayButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                            todayButton.setAttribute('aria-disabled', 'false');
+                        }
+                    }
+
+                    document.querySelectorAll('.fc-prev-button, .fc-next-button').forEach(el => {
+                        el.removeAttribute('aria-pressed');
+                        el.removeAttribute('aria-current');
+                    });
+
+                    document.querySelectorAll('#calendar button').forEach(el => {
+
+                        let title = el.getAttribute('title');
+
+                        if (!title) return;
+
+                        if (title === 'Poprzedni') title = 'Poprzedni miesiąc';
+                        if (title === 'Następny') title = 'Następny miesiąc';
+
+                        el.setAttribute('aria-label', title);
+                    });
+                    const table = document.querySelector('.fc-scrollgrid table');
+
+                    if (table) {
+                        let caption = table.querySelector('#calendar-caption');
+
+                        if (!caption) {
+                            caption = document.createElement('caption');
+                            caption.id = 'calendar-caption';
+                            table.prepend(caption);
+                        }
+
+                        table.setAttribute('aria-labelledby', 'calendar-caption');
+                    }
+                    document.querySelectorAll('#calendar [role="presentation"]').forEach(el => {
+                        el.removeAttribute('role');
+                    });
+
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="p-4 min-w-0">
+        <h1 class="wrap-break-words text-2xl font-bold text-zinc-800 dark:text-white">{% trans %}Kalendarz{% endtrans %}</h1>
+        <div class="mb-5 mt-5 flex flex-wrap gap-2">
+            <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_dashboard') }}">
+                {% trans %}Wróć do Pulpitu{% endtrans %}
+            </a>
+        </div>
+
+        <div id="calendar" class="rounded-lg min-w-0"></div>
+    </div>
+{% endblock %}

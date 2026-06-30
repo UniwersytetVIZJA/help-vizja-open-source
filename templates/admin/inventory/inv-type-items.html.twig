@@ -1,0 +1,242 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+
+{% block stylesheets %}{{ encore_entry_link_tags('admin_default') }}{% endblock %}
+{% block javascripts %}{{ encore_entry_script_tags('admin_default') }}{% endblock %}
+{% block title %}{% trans %}Lista sprzętów{% endtrans %} [{{ item.value }} - {{ type.type }}] | Admin Help VIZJA{% endblock %}
+    {% block body %}
+        <header class="mb-6 space-y-4">
+            {{ website_path([
+                { label: 'Ustawienia'|trans, route: 'admin_settings' },
+                { label: 'Inwentaryzacja sprzętu'|trans, route: 'admin_inventory' },
+                { label: 'Lista typów sprzętu'|trans, route: 'admin_inventory_equipment', route_params: { item: item.id } },
+                { label: 'Sprzęt do wypożyczenia'|trans }
+            ]) }}
+        </header>
+
+        <div class="mb-6 w-full max-w-3xl">
+            <label
+                for="settings-search"
+                class="mb-2 block text-sm font-medium text-zinc-900 dark:text-white"
+            >
+                {% trans %}Szukaj sprzętu{% endtrans %}
+            </label>
+
+            <div class="relative">
+                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <svg
+                        class="h-5 w-5 text-zinc-500 dark:text-zinc-400"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-width="2"
+                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+                        />
+                    </svg>
+                </div>
+
+                <input
+                    id="settings-search"
+                    type="search"
+                    placeholder="{% trans %}Szukaj sprzętu…{% endtrans %}"
+                    class="w-full rounded-xl
+                border-2 border-zinc-500 dark:border-zinc-400
+                bg-white dark:bg-zinc-900
+                py-2.5 pl-10 pr-4
+                text-sm text-zinc-900 dark:text-white
+                placeholder-zinc-500 dark:placeholder-zinc-400
+                {{ focusPrimaryWithPadding() }}"
+                    oninput="filterCards(this.value)"
+                >
+            </div>
+        </div>
+
+        <section class="rounded-lg bg-white p-4 dark:bg-zinc-900 sm:p-6">
+            <h1 class="break-words text-xl font-semibold text-zinc-900 dark:text-white sm:text-2xl md:text-3xl">
+                {% trans %}Lista sprzętu dla{% endtrans %} {{ item.value }} - {{ type.type }}
+            </h1>
+
+            <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+                <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }} w-full justify-center sm:w-auto"
+                    href="{{ url('admin_create_inv_type_item', { item: item.id, inventoryTypeId: type.id }) }}">
+                    {% trans %}Dodaj sprzęt{% endtrans %}
+                </a>
+
+                <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }} w-full justify-center sm:w-auto"
+                    href="{{ url('admin_inv_excel_export', { inventoryTypeId: type.id }) }}">
+                    {% trans %}Eksport Excel{% endtrans %}
+                </a>
+            </div>
+
+            {% if inventories is empty %}
+                <div class="mt-10 rounded-lg border border-dashed border-zinc-300 p-8 text-center dark:border-zinc-700">
+                    <p class="text-zinc-600 dark:text-zinc-300">
+                        {% trans %}Brak pozycji w inwentarzu{% endtrans %}
+                    </p>
+                </div>
+            {% else %}
+
+                {% set grouped = {} %}
+                {% for inv in inventories %}
+                    {% set key = inv.status is not empty ? inv.status : 'Nieznany' %}
+                    {% set grouped = grouped|merge({
+                        (key): (grouped[key]|default([]))|merge([inv])
+                    }) %}
+                {% endfor %}
+
+                {% set order = ['Wolny','Zarezerwowany','Wypożyczony','Nieznany'] %}
+
+
+                {% for status in grouped|keys|sort %}
+                    <div class="mt-8">
+                        <div class="flex items-center gap-3">
+                            <div class="h-px flex-1 bg-zinc-200 dark:bg-zinc-700"></div>
+                            <div
+                                class="shrink-0 rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
+                                {{ status }}
+                            </div>
+                            <div class="h-px flex-1 bg-zinc-200 dark:bg-zinc-700"></div>
+                        </div>
+
+                        <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                            {% for inv in grouped[status] %}
+                                {% set chipClasses =
+                                    status == 'Dostępny'
+                                    ? 'bg-emerald-700 text-white dark:bg-green-500 dark:text-white'
+                                    : (status == 'Zarezerwowany'
+                                    ? 'bg-amber-500 text-white dark:bg-amber-500 dark:text-white'
+                                    : (status == 'Wypożyczony'
+                                    ? 'bg-sky-600 text-white dark:bg-sky-600 dark:text-white'
+                                    : 'bg-zinc-500 text-white dark:bg-zinc-500 dark:text-white')) %}
+
+                                {% set title = inv.serialNumber %}
+
+                                {% set header_right_html %}
+                                    <span
+                                        class="mt-2 inline-flex w-fit items-center rounded-full px-2.5 py-1 text-xs font-medium sm:mt-0 {{ chipClasses }}"
+                                    >
+                                        {{ status }}
+                                    </span>
+                                {% endset %}
+
+                                {% set body_html %}
+                                    {% if inv.status is same as('Wypożyczony') %}
+                                        <dl class="space-y-2 text-sm">
+                                            {% if inv.student %}
+                                                <div class="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                                                    Wypożyczony przez:
+                                                    <dt class="text-zinc-500 dark:text-zinc-400">
+                                                        {{ inv.student.firstName }} {{ inv.student.lastName }}
+                                                    </dt>
+                                                </div>
+                                            {% endif %}
+                                        </dl>
+
+                                        <dl class="space-y-2 text-sm mt-2">
+                                            {% if inv.student %}
+                                                <div class="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                                                    Termin wypożyczenia:
+                                                    <dt class="text-zinc-500 dark:text-zinc-400">
+                                                        {{ inv.rentStart|date('d.m.Y') }}
+                                                        - {{ inv.rentEnd|date('d.m.Y') }}
+                                                    </dt>
+                                                </div>
+                                            {% endif %}
+                                        </dl>
+                                    {% endif %}
+
+                                    <dl class="space-y-2 text-sm mt-2">
+                                        {% if inv.description %}
+                                            <div class="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                                                {% trans %}Opis{% endtrans %}:
+                                                <dt class="text-zinc-500 dark:text-zinc-400">
+                                                    {{ inv.description }}
+                                                </dt>
+                                            </div>
+                                        {% endif %}
+                                    </dl>
+                                {% endset %}
+
+                                {% set actions_html %}
+                                    <div class="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+                                        {% if inv.status is same as('Wypożyczony') %}
+                                            <a
+                                                href="{{ path('admin_return_inv_item', { inventoryId: inv.id }) }}"
+                                                class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }} w-full justify-center sm:w-auto"
+                                            >
+                                                {% trans %}Dodaj zwrot{% endtrans %}
+                                            </a>
+                                        {% endif %}
+
+                                        <a
+                                            class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }} w-full justify-center sm:w-auto"
+                                            href="{{ path('admin_update_inv_item', { item: item.id, inventoryId: type.id, inventory: inv.id }) }}"
+                                        >
+                                            {% trans %}Edytuj{% endtrans %}
+                                        </a>
+
+                                        {% set formId  = 'delete-inv-form-' ~ inv.id %}
+                                        {% set modalId = 'deleteInvModal-' ~ inv.id %}
+
+                                        <form
+                                            id="{{ formId }}"
+                                            method="post"
+                                            action="{{ path('admin_delete_inv', { item: item.id, inventoryType: type.id, inventory: inv.id }) }}"
+                                            class="w-full sm:w-auto"
+                                        >
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ inv.id) }}">
+
+                                            <button
+                                                type="button"
+                                                data-modal-target="{{ modalId }}"
+                                                data-modal-toggle="{{ modalId }}"
+                                                class="{{ buttonDelete() }} w-full justify-center sm:w-auto"
+                                            >
+                                                {{ 'Usuń'|trans }}
+                                            </button>
+                                        </form>
+
+                                        {% include 'admin/_components/confirm-modal.html.twig' with {
+                                            modalId: modalId,
+                                            formId: formId,
+                                            title: 'Usuwanie pozycji'|trans,
+                                            message: 'Na pewno chcesz usunąć sprzęt o nr seryjnym: <br><strong>'|trans ~ inv.serialNumber ~ '</strong>?',
+                                            warningText: 'Operacja jest nieodwracalna.'|trans,
+                                            confirmLabel: 'Usuń'|trans,
+                                            cancelLabel: 'Anuluj'|trans
+                                        } %}
+                                    </div>
+                                {% endset %}
+
+                                {{ inventory_card(
+                                    title,
+                                    body_html,
+                                    actions_html,
+                                    { header_right_html: header_right_html }
+                                ) }}
+
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </section>
+
+
+        <script>
+            function filterCards(q = '') {
+                q = (q || '').trim().toLowerCase();
+                const cards = document.querySelectorAll('[data-card]');
+                cards.forEach(c => {
+                    const text = (c.innerText || '').toLowerCase();
+                    c.style.display = text.includes(q) ? '' : 'none';
+                });
+            }
+        </script>
+    {% endblock %}

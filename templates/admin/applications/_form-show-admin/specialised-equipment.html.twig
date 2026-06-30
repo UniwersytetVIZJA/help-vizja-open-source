@@ -1,0 +1,30 @@
+<ul class="divide-y">
+    <li class="flex justify-between py-3">
+        <span class="text-gray-600 dark:text-gray-400">{% trans %}Wypożyczany sprzęt{% endtrans %}</span>
+        <div class="text-right font-medium text-gray-900 dark:text-white space-y-1">
+            {% for item in application.equipment %}
+                <p>- {{ item.value }}</p>
+            {% else %}
+                <p>—</p>
+            {% endfor %}
+        </div>
+    </li>
+
+    <li class="flex justify-between py-3">
+        <span class="text-gray-600 dark:text-gray-400">{% trans %}Data wypożyczenia sprzętu{% endtrans %}</span>
+        <span class="font-medium text-gray-900 dark:text-white">
+      {{ application.rentStart ? application.rentStart|date('d.m.Y') : '—' }}
+      -
+      {{ application.rentEnd ? application.rentEnd|date('d.m.Y') : '—' }}
+    </span>
+    </li>
+
+    <li class="flex items-start justify-between gap-4 py-3">
+        <span class="text-gray-600 dark:text-gray-400 shrink-0 w-56">{% trans %}Uzasadnienie{% endtrans %}</span>
+        <span class="ml-auto font-medium text-gray-900 dark:text-white flex-[1_1_0%] min-w-0 break-all whitespace-pre-wrap text-right">
+        {{ application.description }}
+        </span>
+
+    </li>
+
+</ul>

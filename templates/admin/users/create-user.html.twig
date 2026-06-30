@@ -1,0 +1,79 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+{% form_theme form 'student/_layouts/form-tailwind.html.twig' %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block title %}{% trans %}Dodawanie użytkownika{% endtrans %}{% endblock %}
+
+
+{% block body %}
+    {{ form_start(form, {
+        attr: {
+            class: 'space-y-8',
+            novalidate: 'novalidate',
+            role: 'form',
+            'aria-describedby': 'form_instructions'
+        }
+    }) }}
+
+    <p id="form_instructions" class="sr-only">
+        {% trans %}Formularz zgłoszeniowy. Pola wymagane oznaczono gwiazdką. Na początku znajduje się podsumowanie błędów{% endtrans %}
+    </p>
+
+    {# ===== Podsumowanie błędów ===== #}
+    {% set childErrors = [] %}
+    {% for child in form %}
+        {% if child.vars.errors|length %}
+            {% set childErrors = childErrors|merge([{
+                id: child.vars.id,
+                label: child.vars.label is not empty ? child.vars.label : child.vars.name|capitalize,
+                errors: child.vars.errors
+            }]) %}
+        {% endif %}
+    {% endfor %}
+    {% if form_errors(form) is not empty or childErrors is not empty %}
+        {% include '_partials/form-errors.html.twig' with { form: form, childErrors: childErrors } %}
+    {% endif %}
+
+    <div class="max-w-xl space-y-4 w-full">
+        {{ form_row(form.email) }}
+        {{ form_row(form.roles) }}
+        {{ form_row(form.isActive) }}
+    </div>
+
+
+    <div class="gap-4 sm:flex sm:items-center">
+        <button class="cursor-pointer {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+            {% trans %}Utwórz{% endtrans %}
+        </button>
+
+        <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('admin_users') }}">
+            {% trans %}Wróć do listy{% endtrans %}
+        </a>
+    </div>
+
+    {{ form_end(form) }}
+
+    <script>
+        // Fokus na podsumowaniu błędów po załadowaniu
+        document.addEventListener('DOMContentLoaded', function () {
+            const summary = document.getElementById('form_error_summary');
+            if (summary) summary.focus();
+        });
+
+        // Skok do pola po kliknięciu w pozycję z podsumowania błędów
+        document.addEventListener('click', function (e) {
+            const t = e.target.closest('[data-focus-target]');
+            if (!t) return;
+            const id = t.getAttribute('data-focus-target');
+            const field = document.getElementById(id);
+            if (field) field.focus();
+        });
+    </script>
+{% endblock %}

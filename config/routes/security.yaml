@@ -1,0 +1,9 @@
+admin_logout:
+    methods: GET
+    path:
+        pl: /admin/wyloguj
+
+student_logout:
+    methods: GET
+    path:
+        pl: /wyloguj

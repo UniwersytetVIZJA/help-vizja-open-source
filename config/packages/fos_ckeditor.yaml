@@ -1,0 +1,20 @@
+# Read the documentation: https://symfony.com/doc/current/bundles/FOSCKEditorBundle/index.html
+
+twig:
+    form_themes:
+        - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
+
+#fos_ck_editor:
+#    autoload: true
+#    base_path: "build/ckeditor"
+#    js_path: "build/ckeditor/ckeditor.js"
+
+fos_ck_editor:
+    autoload: true
+    configs:
+        default:
+            versionCheck: false
+    base_path: "https://cdn.ckeditor.com/4.22.1/full-all/"
+    js_path: "https://cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"
+
+

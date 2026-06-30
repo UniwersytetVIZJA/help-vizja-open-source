@@ -1,0 +1,40 @@
+controllers:
+    resource:
+        namespace: App\Controller
+        path: ../src/Controller/
+    type: attribute
+
+app_homepage:
+    path: /
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        path: /zaloguj
+
+guest_app_homepage:
+    path: /gosc
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        path: /zaloguj
+
+admin_app_homepage:
+    path: /admin
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        path: /admin/zaloguj
+
+dictionary_value_add:
+    path: /admin/dictionary/{id}/value/add
+    controller: App\Controller\Admin\DictionaryController::addValue
+    methods: [ GET, POST ]
+
+ms_login:
+    path: /ms/login
+    controller: App\Controller\MsAuthController::login
+
+ms_callback:
+    path: /ms/callback
+    controller: App\Controller\MsAuthController::callback
+
+admin_logout_full:
+    path: /admin/logout-full
+    controller: App\Controller\AzureLogout::logout

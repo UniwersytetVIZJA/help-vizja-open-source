@@ -1,0 +1,205 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+
+{% block title %}{% trans %}Mapa strony{% endtrans %} | Admin Help VIZJA{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block body %}
+    <section class="space-y-8">
+        <header class="space-y-3">
+            <h1 id="page-title" class="text-2xl font-bold md:text-3xl">
+                {% trans %}Mapa strony{% endtrans %}
+            </h1>
+
+            <p class="max-w-3xl text-zinc-700 dark:text-zinc-300">
+                {% trans %}Poniżej znajduje się lista najważniejszych sekcji administracyjnych serwisu Help VIZJA.{% endtrans %}
+            </p>
+        </header>
+
+        <nav aria-labelledby="page-title" class="space-y-8">
+
+            <section aria-labelledby="dashboard-heading" class="space-y-4">
+                <h2 id="dashboard-heading" class="text-xl font-semibold">
+                    {% trans %}Panel administracyjny{% endtrans %}
+                </h2>
+
+                <ul class="list-disc space-y-3 ps-6">
+                    <li>
+                        <a href="{{ path('admin_dashboard') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Pulpit administratora{% endtrans %}
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section aria-labelledby="applications-heading" class="space-y-4">
+                <h2 id="applications-heading" class="text-xl font-semibold">
+                    {% trans %}Wnioski{% endtrans %}
+                </h2>
+
+                <ul class="list-disc space-y-3 ps-6">
+                    <li>
+                        <a href="{{ path('admin_applications') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Lista wniosków{% endtrans %}
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section aria-labelledby="consultations-heading" class="space-y-4">
+                <h2 id="consultations-heading" class="text-xl font-semibold">
+                    {% trans %}Konsultacje{% endtrans %}
+                </h2>
+
+                <ul class="list-disc space-y-3 ps-6">
+                    <li>
+                        <a href="{{ path('admin_registration') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Lista zapisów na konsultacje{% endtrans %}
+                        </a>
+
+                        <ul class="mt-2 ml-4 list-disc space-y-1">
+                            <li>
+                                <a href="{{ path('admin_create_registration') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                                    {% trans %}Utwórz nowy zapis{% endtrans %}
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ path('admin_registration_archive') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                                    {% trans %}Archiwum konsultacji{% endtrans %}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section aria-labelledby="office-heading" class="space-y-4">
+                <h2 id="office-heading" class="text-xl font-semibold">
+                    {% trans %}Wizyty w biurze BON{% endtrans %}
+                </h2>
+
+                <ul class="list-disc space-y-3 ps-6">
+                    <li>
+                        <a href="{{ path('admin_office_registration_terms') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Kalendarz wizyt w BON{% endtrans %}
+                        </a>
+
+                        <ul class="mt-2 ml-4 list-disc space-y-1">
+                            <li>
+                                <a href="{{ path('admin_office_registration_terms_create') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                                    {% trans %}Dodaj nowy termin{% endtrans %}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section aria-labelledby="inventory-heading" class="space-y-4">
+                <h2 id="inventory-heading" class="text-xl font-semibold">
+                    {% trans %}Inwentaryzacja{% endtrans %}
+                </h2>
+
+                <ul class="list-disc space-y-3 ps-6">
+                    <li>
+                        <a href="{{ path('admin_inventory') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Zarządzaj sprzętem{% endtrans %}
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section aria-labelledby="settings-heading" class="space-y-4">
+                <h2 id="settings-heading" class="text-xl font-semibold">
+                    {% trans %}Ustawienia{% endtrans %}
+                </h2>
+
+                <ul class="list-disc space-y-3 ps-6">
+                    <li>
+                        <a href="{{ path('admin_settings') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Ustawienia strony{% endtrans %}
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ path('admin_users') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Lista pracowników{% endtrans %}
+                        </a>
+
+                        <ul class="mt-2 ml-4 list-disc space-y-1">
+                            <li>
+                                <a href="{{ path('admin_users_create') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                                    {% trans %}Dodaj pracownika{% endtrans %}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="{{ path('admin_students') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Lista studentów{% endtrans %}
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ path('admin_dictionaries') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Lista słowników{% endtrans %}
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ path('admin_faq') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}FAQ{% endtrans %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('admin_questionnaire') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Ankieta oceny aplikacji{% endtrans %}
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ path('admin_announcement') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Lista ogłoszeń{% endtrans %}
+                        </a>
+
+                        <ul class="mt-2 ml-4 list-disc space-y-1">
+                            <li>
+                                <a href="{{ path('admin_create_announcement') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                                    {% trans %}Dodaj ogłoszenie{% endtrans %}
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ path('admin_announcements_archive') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                                    {% trans %}Archiwum ogłoszeń{% endtrans %}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section aria-labelledby="account-heading" class="space-y-4">
+                <h2 id="account-heading" class="text-xl font-semibold">
+                    {% trans %}Konto{% endtrans %}
+                </h2>
+
+                <ul class="list-disc space-y-3 ps-6">
+                    <li>
+                        <a href="{{ path('admin_logout_full') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Wyloguj{% endtrans %}
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </nav>
+    </section>
+{% endblock %}

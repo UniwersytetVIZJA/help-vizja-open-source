@@ -1,0 +1,336 @@
+{% extends 'student/_layouts/after-login.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block title %}{% trans %}Szczegóły wniosku{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block body %}
+
+    <section class="min-h-screen rounded-lg bg-white px-4 py-10 dark:bg-zinc-900">
+        <div class="flex flex-wrap gap-2">
+            <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_dashboard') }}">
+                {% trans %}Wróć do pulpitu{% endtrans %}
+            </a>
+            <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_application_index') }}">
+                {% trans %}Wróć do złożonych wniosków{% endtrans %}
+            </a>
+        </div>
+
+        <br>
+        <h1 class="wrap-break-word">
+            <span class="text-zinc-600 dark:text-zinc-300">{% trans %}Numer wniosku{% endtrans %}</span>
+        </h1>
+        <span class="wrap-break-word font-medium text-zinc-900 dark:text-white">
+            {% if application.applicationNumber %}
+                {{ application.applicationNumber }}
+            {% else %}
+                -
+            {% endif %}
+            <br>
+        </span>
+
+        <br>
+
+        <div class="mx-auto max-w-3xl space-y-8 min-w-0">
+
+            {% set statusColors = {
+                'Zaakceptowany': 'bg-green-100 text-green-800 border-green-300 dark:bg-green-500',
+                'W trakcie': 'bg-yellow-500 text-yellow-800 border-yellow-300',
+                'Odrzucony': 'bg-red-50 text-red-800 border-red-300 dark:bg-red-500',
+                'Nowy': 'text-blue-800 border-blue-300'
+            }[application.status]|default('bg-zinc-100 text-zinc-700 border-zinc-300') %}
+
+            {% set statusIcons = {
+                'Zaakceptowany': '<svg class="w-5 h-5 text-green-600 dark:text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>',
+                'W trakcie': '<svg class="w-6 h-6 text-zinc-800 dark:text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
+                ',
+                'Odrzucony': '<svg class="w-6 h-6 text-zinc-800 dark:text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd"/>
+                </svg>
+                ',
+                'Nowy': '<svg class="w-5 h-5 text-blue-600 dark:text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+            }[application.status]|default('<svg class="w-5 h-5 text-zinc-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"/></svg>') %}
+
+            {% set statuses = {
+                'Nowy': {
+                    'pl': 'Nowy',
+                    'en': 'New'
+                },
+                'W trakcie': {
+                    'pl': 'W trakcie',
+                    'en': 'In progress'
+                },
+                'Odrzucony': {
+                    'pl': 'Odrzucony',
+                    'en': 'Rejected'
+                },
+                'Zaakceptowany': {
+                    'pl': 'Zaakceptowany',
+                    'en': 'Accepted'
+                }
+            } %}
+
+            <div class="{{ statusColors }} flex items-center rounded-xl border p-4 min-w-0 {{ borderPrimary() }}">
+                <div class="mr-3 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border bg-white text-xl font-semibold">
+                    {{ statusIcons|raw }}
+                </div>
+                <div class="min-w-0">
+                    <h2 class="wrap-break-word font-semibold text-zinc-900 dark:text-white">{% trans %}Status{% endtrans %}</h2>
+                    <p class="wrap-break-word text-lg font-medium text-zinc-700 dark:text-zinc-200">{{ statuses[application.status][app.request.locale]|default(application.status) }}</p>
+                </div>
+            </div>
+
+            {# === SEKCJA DODATKOWA: Uwagi pracownika === #}
+            {% if application.employeeComment is not empty %}
+                <div class="rounded-xl border bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                    <div class="mb-4 flex min-w-0 items-center">
+                        <div class="mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-300 text-green-700">
+                            <svg class="h-6 w-6 text-zinc-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17h6l3 3v-3h2V9h-2M4 4h11v8H9l-3 3v-3H4V4Z" />
+                            </svg>
+                        </div>
+                        <h2 class="wrap-break-word text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Uwagi pracownika{% endtrans %}</h2>
+                    </div>
+                    <p class="wrap-break-word text-zinc-800 dark:text-zinc-300">{{ application.employeeComment }}</p>
+                </div>
+            {% endif %}
+
+            {# === SEKCJA DODATKOWA: Karta adaptacji === #}
+            {% if application.adaptationCard is not empty %}
+                <div class="rounded-xl border bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                    <div class="mb-4 flex min-w-0 items-center">
+                        <div class="mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-300 text-green-700">
+                            <svg class="h-6 w-6 text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 9h3m-3 3h3m-3 3h3m-6 1c-.306-.613-.933-1-1.618-1H7.618c-.685 0-1.312.387-1.618 1M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm7 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+                            </svg>
+                        </div>
+                        <h2 class="wrap-break-word text-lg font-semibold text-zinc-900 dark:text-white">
+                            {% trans %}Karta adaptacji{% endtrans %}
+                        </h2>
+                    </div>
+
+                    <div class="prose prose-sm mb-6 max-w-none wrap-break-word text-zinc-600 dark:text-zinc-300">
+                        <p>
+                            {% trans %}
+                                Poniżej znajdują się pliki dołączone przez pracownika w ramach karty adaptacji.
+                                Dokumenty te określają zakres oraz obowiązywanie przyznanych dostosowań.
+                            {% endtrans %}
+                        </p>
+                    </div>
+
+                    <div class="my-6 divide-y border-t divide-zinc-200 dark:divide-zinc-700"></div>
+
+                    <p class="mb-4 wrap-break-word text-zinc-800 dark:text-zinc-300">
+                        {% trans %}Data wydania karty adaptacji{% endtrans %}:
+                        <strong>{{ application.adaptationCardIssueDate|date('d.m.Y') }}</strong>
+                    </p>
+
+                    <p class="mb-4 wrap-break-word text-zinc-800 dark:text-zinc-300">
+                        {% trans %}Okres trwania karty adaptacji{% endtrans %}:
+                        <strong>{{ application.adaptationCard.value }}</strong>
+                    </p>
+
+                    {% if employeeFiles is not empty %}
+                        <ul class="space-y-3 divide-y divide-zinc-200 dark:divide-zinc-700">
+                            {% for file in employeeFiles %}
+                                <li class="flex flex-col gap-3 rounded-lg border border-zinc-200 bg-zinc-100 px-4 py-3 dark:border-zinc-600 dark:bg-zinc-700 sm:flex-row sm:items-center sm:justify-between">
+                                    <div class="flex min-w-0 items-center space-x-2">
+                                        <svg class="h-6 w-6 shrink-0 text-zinc-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                            viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M18 6H6m12 4H6m12 4H6m12 4H6" />
+                                        </svg>
+
+                                        <span class="wrap-break-word text-zinc-800 dark:text-zinc-200">
+                                            {{ file.originalName }}
+                                        </span>
+                                    </div>
+
+                                    <span class="wrap-break-word text-sm text-zinc-800 dark:text-zinc-300">
+                                        .{{ file.extension }}, {{ fileSize }} KB
+                                    </span>
+
+                                    <a href="{{ path('student_application_file_download', { fileId: file.id }) }}"
+                                        class="flex shrink-0 items-center space-x-2">
+                                        <span>{% trans %}Pobierz{% endtrans %}</span>
+                                        <svg class="h-6 w-6 text-zinc-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.374a1 1 0 1 0-1.56 1.25l4 5a1 1 0 0 0 1.56 0l4-5a1 1 0 1 0-1.56-1.25L13 11.15Z"
+                                                clip-rule="evenodd" />
+                                            <path fill-rule="evenodd"
+                                                d="M9.657 15.874 7.358 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2.358l-2.3 2.874a3 3 0 0 1-4.685 0ZM17 16a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+
+            {# === SEKCJA 1: Podstawowe informacje === #}
+            <div class="rounded-xl border bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                <div class="mb-4 flex min-w-0 items-center">
+                    <div class="mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+                        <svg class="h-6 w-6 text-zinc-800 dark:text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 6H5m2 3H5m2 3H5m2 3H5m2 3H5m11-1a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2M7 3h11a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm8 7a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+                        </svg>
+                    </div>
+                    <h2 class="wrap-break-word text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Podstawowe informacje{% endtrans %}</h2>
+                </div>
+
+                <ul class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                    <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <span class="wrap-break-word text-zinc-600 dark:text-zinc-300">{% trans %}Data złożenia{% endtrans %}</span>
+                        <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ application.createdAt|date('d.m.Y H:i') }}</span>
+                    </li>
+                    <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <span class="wrap-break-word text-zinc-600 dark:text-zinc-300">{% trans %}Numer albumu{% endtrans %}</span>
+                        <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ application.albumNumber }}</span>
+                    </li>
+                    <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <span class="wrap-break-word text-zinc-600 dark:text-zinc-300">{% trans %}Imię i nazwisko{% endtrans %}</span>
+                        <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ application.student.firstName }} {{ application.student.lastName }}</span>
+                    </li>
+                    <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <span class="wrap-break-word text-zinc-600 dark:text-zinc-300">{% trans %}Adres e-mail{% endtrans %}</span>
+                        <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ application.student.email }}</span>
+                    </li>
+                    <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <span class="wrap-break-word text-zinc-600 dark:text-zinc-300">{% trans %}Telefon{% endtrans %}</span>
+                        <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">+{{ application.phone.countryCode }} {{ application.phone.nationalNumber }}</span>
+                    </li>
+                </ul>
+            </div>
+
+            {# === SEKCJA 2: Studia === #}
+            <div class="rounded-xl border bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                <div class="mb-4 flex min-w-0 items-center">
+                    <div class="mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+                        <svg class="h-6 w-6 text-zinc-800 dark:text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 20v-9l-4 1.125V20h4Zm0 0h8m-8 0V6.66667M16 20v-9l4 1.125V20h-4Zm0 0V6.66667M18 8l-6-4-6 4m5 1h2m-2 3h2" />
+                        </svg>
+
+                    </div>
+                    <h2 class="wrap-break-word text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Studia{% endtrans %}</h2>
+                </div>
+
+                <ul class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                    <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <span class="wrap-break-word text-zinc-600 dark:text-zinc-300">{% trans %}Tryb studiów{% endtrans %}</span>
+                        <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">   {% if application.studyMode is same as 'Z' %}
+                                {% trans %}Zaoczny{% endtrans %}
+                            {% else %}
+                                {% trans %}Stacjonarny{% endtrans %}
+                            {% endif %}</span>
+                    </li>
+                    <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <span class="wrap-break-word text-zinc-600 dark:text-zinc-300">{% trans %}Kierunek{% endtrans %}</span>
+                        <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ application.faculty }}</span>
+                    </li>
+                    <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <span class="wrap-break-word text-zinc-600 dark:text-zinc-300">{% trans %}Wydział{% endtrans %}</span>
+                        <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ application.department }}</span>
+                    </li>
+                    <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <span class="wrap-break-word text-zinc-600 dark:text-zinc-300">{% trans %}Dziekan{% endtrans %}</span>
+                        <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ application.dean }}</span>
+                    </li>
+                    <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <span class="wrap-break-word text-zinc-600 dark:text-zinc-300">{% trans %}Semestr{% endtrans %}</span>
+                        <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ application.semester }}</span>
+                    </li>
+                    <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <span class="wrap-break-word text-zinc-600 dark:text-zinc-300">{% trans %}Rok{% endtrans %}</span>
+                        <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ application.year }}</span>
+                    </li>
+                </ul>
+            </div>
+
+            {# === SEKCJA 3: Wniosek === #}
+            <div class="rounded-xl border bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                <div class="mb-4 flex min-w-0 items-center">
+                    <div class="mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+                        <svg class="h-6 w-6 text-zinc-800 dark:text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z" />
+                        </svg>
+
+                    </div>
+                    <h2 class="wrap-break-word text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Wniosek{% endtrans %}</h2>
+                </div>
+
+                <ul class="divide-y divide-zinc-200 dark:divide-zinc-700 min-w-0">
+                    {% include 'student/application/_form-show/' ~ application.type.hiddenValue ~ '.html.twig' %}
+                </ul>
+            </div>
+
+            {# === SEKCJA 4: Pliki === #}
+            <div class="rounded-xl border bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                <div class="mb-4 flex min-w-0 items-center">
+                    <div class="mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-700">
+                        <svg class="h-6 w-6 text-zinc-800 dark:text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2m-8 1V4m0 12-4-4m4 4 4-4" />
+                        </svg>
+
+                    </div>
+                    <h2 class="wrap-break-word text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Wgrane pliki{% endtrans %}</h2>
+                </div>
+
+                {% if files is not empty %}
+                    <ul class="space-y-3">
+                        {% for file in files %}
+                            <li class="flex flex-col gap-3 rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-3 dark:border-zinc-600 dark:bg-zinc-700 sm:flex-row sm:items-center sm:justify-between">
+                                <div class="flex min-w-0 items-center space-x-2">
+                                    <svg class="h-6 w-6 shrink-0 text-zinc-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6H6m12 4H6m12 4H6m12 4H6" />
+                                    </svg>
+
+                                    <span class="truncate wrap-break-word text-zinc-800 dark:text-zinc-200">{{ file.originalName }}</span>
+                                </div>
+                                <span class="wrap-break-word text-zinc-800 dark:text-zinc-200">.{{ file.extension }}, {{ fileSize }} KB</span>
+                                <a href="{{ path('student_application_file_show', { fileId: file.id }) }}"
+                                    class="flex shrink-0 items-center space-x-2"
+                                    target="_blank"
+                                    rel="noopener noreferrer">
+                                        <span>
+                                            {% trans %}Otwórz{% endtrans %}
+                                            <span class="sr-only">
+                                                {{ file.originalName }} - {% trans %}otwiera się w nowym oknie{% endtrans %}
+                                            </span>
+                                        </span>
+                                    <svg class="h-6 w-6 text-zinc-800 dark:text-white"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778" />
+                                    </svg>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="wrap-break-word text-zinc-800 dark:text-zinc-300">{% trans %}Brak wgranych plików{% endtrans %}</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

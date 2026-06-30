@@ -1,0 +1,308 @@
+{% extends 'student/_layouts/after-login.html.twig' %}
+{% block title %}{% trans %}Profil konta{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block body %}
+    <section class="bg-white py-1 antialiased dark:bg-zinc-900 md:py-1">
+        <div class="max-w-screen-xxl px-4 2xl:px-0 min-w-0">
+            <h1 class="mb-4 wrap-break-word text-xl font-semibold text-zinc-900 dark:text-white sm:text-2xl md:mb-6">
+                {% trans %}Profil konta{% endtrans %}
+            </h1>
+
+            <div class="mt-2 mb-5">
+                <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_dashboard') }}">
+                    {% trans %}Wróć do Pulpitu{% endtrans %}
+                </a>
+            </div>
+
+            <div class="gap-8 lg:flex min-w-0">
+                <!-- Sidenav -->
+                <aside id="sidebar"
+                       class="hidden h-full max-w-80 shrink-0 overflow-y-auto bg-zinc-50 p-3 dark:bg-zinc-800 lg:block lg:rounded-lg {{ borderPrimary() }}">
+                    <div class="flex w-full min-w-0 items-center justify-between">
+                        <div class="flex min-w-0 items-center">
+                            {% if app.user %}
+                                <img
+                                    src="{{ path('user_ms_avatar') }}"
+                                    alt="{% trans %}Zdjęcie profilowe{% endtrans %}"
+                                    class="mr-3 h-8 w-8 shrink-0 rounded-md"
+                                    onerror="this.style.display='none'; this.textContent='{{ app.user.initials|e('js') }}';">
+                            {% endif %}
+
+                            <div class="min-w-0 text-left">
+                                <div class="mb-0.5 wrap-break-word font-semibold leading-none text-zinc-900 dark:text-white">
+                                    {% if app.user %}
+                                        {{ app.user.firstName }} {{ app.user.lastName }}
+                                    {% endif %}
+                                </div>
+                                <div class="wrap-break-word text-sm text-zinc-800 dark:text-zinc-300">
+                                    {{ app.user.email }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ul class="mt-5 space-y-2 border-t border-zinc-100 pt-5 dark:border-zinc-700">
+                        <li>
+                            <a href="{{ url('logout_full') }}"
+                               class="group flex items-center rounded-lg p-2 text-base font-medium text-red-700 hover:bg-red-50 dark:text-red-300 dark:hover:bg-zinc-700 {{ focusPrimaryWithPadding() }}">
+                                <svg class="h-6 w-6 flex-shrink-0 text-red-700 transition duration-75 dark:text-red-300"
+                                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                     fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2" />
+                                </svg>
+                                <span class="ml-3 flex-1 wrap-break-word">{% trans %}Wyloguj się{% endtrans %}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </aside>
+
+                <!-- Right content -->
+                <div class="grid w-full min-w-0 grid-cols-2 gap-4">
+
+                    <div class="col-span-2 grid gap-4 rounded-lg bg-zinc-50 p-6 dark:bg-zinc-800 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 {{ borderPrimary() }}">
+                        {% if is_granted('ROLE_STUDENT') %}
+                            <div class="flex min-w-0 items-center space-x-4">
+                                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded bg-zinc-100 dark:bg-zinc-700">
+                                    <svg class="h-6 w-6 text-zinc-800 dark:text-zinc-400" fill="currentColor"
+                                         viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+                                        <path fill-rule="evenodd"
+                                              d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                                              clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <dl class="min-w-0">
+                                    <dt class="wrap-break-word text-zinc-800 dark:text-zinc-300">{% trans %}Złożone wnioski{% endtrans %}</dt>
+                                    <dd class="wrap-break-word text-xl font-bold text-zinc-900 dark:text-white">{{ countApplication }}</dd>
+                                </dl>
+                            </div>
+                        {% endif %}
+
+                        <div class="flex min-w-0 items-center space-x-4">
+                            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded bg-zinc-100 dark:bg-zinc-700">
+                                <svg class="h-6 w-6 text-zinc-800 dark:text-zinc-400" aria-hidden="true"
+                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                     viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd"
+                                          d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z"
+                                          clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <dl class="min-w-0">
+                                <dt class="wrap-break-word text-zinc-800 dark:text-zinc-300">{% trans %}Twoje zapisy na konsultacje{% endtrans %}</dt>
+                                <dd class="wrap-break-word text-xl font-bold text-zinc-900 dark:text-white">{{ countRegistration }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="col-span-2 rounded-lg bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                        <h2 class="flex items-center border-b border-zinc-200 pb-4 text-xl font-semibold leading-none text-zinc-900 dark:border-zinc-700 dark:text-white md:pb-6">
+                            {% trans %}Informacje o koncie{% endtrans %}
+                        </h2>
+
+                        <div class="my-4 grid gap-4 md:my-6 md:grid-cols-2 md:gap-12">
+                            <div class="space-y-4 min-w-0">
+                                <div class="flex min-w-0 items-center space-x-4">
+                                    {% if app.user %}
+                                        <img
+                                            src="{{ path('user_ms_avatar') }}"
+                                            alt="{% trans %}Zdjęcie profilowe{% endtrans %}"
+                                            class="mr-3 h-16 w-16 shrink-0 rounded-lg"
+                                            onerror="this.style.display='none'; this.textContent='{{ app.user.initials|e('js') }}';">
+                                    {% endif %}
+
+                                    <div class="min-w-0">
+                                        <p class="wrap-break-word text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
+                                            {{ app.user.firstName }} {{ app.user.lastName }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <dl class="min-w-0">
+                                    <dt class="wrap-break-word font-semibold text-zinc-900 dark:text-white">
+                                        {% trans %}Adres mailowy{% endtrans %}
+                                    </dt>
+                                    <dd class="wrap-break-word text-zinc-800 dark:text-zinc-300">
+                                        {{ app.user.email }}
+                                    </dd>
+                                </dl>
+
+                                {% if is_granted('ROLE_STUDENT') %}
+                                    <dl class="min-w-0">
+                                        <dt class="wrap-break-word font-semibold text-zinc-900 dark:text-white">
+                                            {% trans %}Numer albumu{% endtrans %}
+                                        </dt>
+                                        <dd class="wrap-break-word text-zinc-800 dark:text-zinc-300">
+                                            {% if app.user.albumNumber is not empty %}
+                                                {{ app.user.albumNumber }}
+                                            {% else %}
+                                                {% trans %}Nieuzupełniony{% endtrans %}
+                                            {% endif %}
+                                        </dd>
+                                    </dl>
+
+                                    <dl class="min-w-0">
+                                        <dt class="wrap-break-word font-semibold text-zinc-900 dark:text-white">{% trans %}Numer telefonu{% endtrans %}</dt>
+                                        <dd class="wrap-break-word text-zinc-800 dark:text-zinc-300">
+                                            {% if app.user.phone is not empty %}
+                                                +{{ app.user.phone.countryCode }} {{ app.user.phone.nationalNumber }}
+                                            {% else %}
+                                                {% trans %}Nieuzupełniony{% endtrans %}
+                                            {% endif %}
+                                        </dd>
+                                    </dl>
+
+                                    <dl class="min-w-0">
+                                        <dt class="wrap-break-word font-semibold text-zinc-900 dark:text-white">{% trans %}Wydział{% endtrans %}</dt>
+                                        <dd class="wrap-break-word text-zinc-800 dark:text-zinc-300">
+                                            {% if app.user.wydzialVerbis is not empty %}
+                                                {{ app.user.wydzialVerbis }}
+                                            {% else %}
+                                                {% trans %}Nieuzupełniony{% endtrans %}
+                                            {% endif %}
+                                        </dd>
+                                    </dl>
+
+                                    <dl class="min-w-0">
+                                        <dt class="wrap-break-word font-semibold text-zinc-900 dark:text-white">{% trans %}Kierunek{% endtrans %}</dt>
+                                        <dd class="wrap-break-word text-zinc-800 dark:text-zinc-300">
+                                            {% if app.user.kierunekVerbis is not empty %}
+                                                {{ app.user.kierunekVerbis }}
+                                            {% else %}
+                                                {% trans %}Nieuzupełniony{% endtrans %}
+                                            {% endif %}
+                                        </dd>
+                                    </dl>
+
+                                    <dl class="min-w-0">
+                                        <dt class="wrap-break-word font-semibold text-zinc-900 dark:text-white">{% trans %}Tryb studiów{% endtrans %}</dt>
+                                        <dd class="wrap-break-word text-zinc-800 dark:text-zinc-300">
+                                            {% if app.user.trybZajecVerbis is not empty %}
+                                                {% if app.user.trybZajecVerbis is same as 'Z'  %}
+                                                    Zaoczny
+                                                    {% else %}
+                                                        Stacjonarny
+                                                        {% endif %}
+                                            {% else %}
+                                                {% trans %}Nieuzupełniony{% endtrans %}
+                                            {% endif %}
+                                        </dd>
+                                    </dl>
+
+                                    <dl class="min-w-0">
+                                        <dt class="wrap-break-word font-semibold text-zinc-900 dark:text-white">{% trans %}Rok studiów{% endtrans %}</dt>
+                                        <dd class="wrap-break-word text-zinc-800 dark:text-zinc-300">
+                                            {% if app.user.rokStudiowVerbis is not empty %}
+                                                {{ app.user.rokStudiowVerbis }}
+                                            {% else %}
+                                                {% trans %}Nieuzupełniony{% endtrans %}
+                                            {% endif %}
+                                        </dd>
+                                    </dl>
+
+                                    <dl class="min-w-0">
+                                        <dt class="wrap-break-word font-semibold text-zinc-900 dark:text-white">{% trans %}Semestr studiów{% endtrans %}</dt>
+                                        <dd class="wrap-break-word text-zinc-800 dark:text-zinc-300">
+                                            {% if app.user.semestrVerbis is not empty %}
+                                                {{ app.user.semestrVerbis }}
+                                            {% else %}
+                                                {% trans %}Nieuzupełniony{% endtrans %}
+                                            {% endif %}
+                                        </dd>
+                                    </dl>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% if is_granted('ROLE_STUDENT') %}
+                            <div class="border-t border-zinc-200 pt-4 dark:border-zinc-700 md:pt-6">
+{#                                <a class="font-semibold {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_profile_update_data') }}">#}
+{#                                    {% trans %}Edytuj swoje dane{% endtrans %}#}
+{#                                </a>#}
+                                <a class="font-semibold {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_profile_update_data_verbis') }}">
+                                    {% trans %}Zaktualizuj swoje dane (Verbis){% endtrans %}
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {# Najbliższy zapis #}
+                    <div class="col-span-2 rounded-lg bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                        <div class="mb-4 border-b border-zinc-200 pb-4 dark:border-zinc-700 md:mb-6 md:pb-6">
+                            <h2 class="wrap-break-word text-xl font-semibold leading-none text-zinc-900 dark:text-white">
+                                {% trans %}Twój najbliższy zapis na konsultacje{% endtrans %}
+                            </h2>
+                        </div>
+
+                        {% if latestRegistration %}
+                            <span class="me-2 inline-block wrap-break-word rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-300">
+                                {{ latestRegistration.registration.title.value }}
+                            </span>
+
+                            <dl class="min-w-0">
+                                <dt class="mt-2 wrap-break-word font-semibold text-zinc-900 dark:text-white">{% trans %}Specjalista{% endtrans %}:</dt>
+                                <dd class="wrap-break-word text-zinc-800 dark:text-zinc-300">
+                                    {{ latestRegistration.registration.specialist.firstName }} {{ latestRegistration.registration.specialist.lastName }}
+                                </dd>
+
+                                <dt class="mt-2 wrap-break-word font-semibold text-zinc-900 dark:text-white">{% trans %}Data zapisu{% endtrans %}:</dt>
+                                <dd class="wrap-break-word text-zinc-800 dark:text-zinc-300">
+                                    {{ latestRegistration.registration.startsAt|date('d.m.Y') }} | {{ latestRegistration.registration.startsAt|date('H:i') }}
+                                    - {{ latestRegistration.registration.endsAt|date('H:i') }}
+                                </dd>
+
+                                <dt class="mt-2 wrap-break-word font-semibold text-zinc-900 dark:text-white">{% trans %}Tryb{% endtrans %}:</dt>
+                                <dd class="wrap-break-word text-zinc-800 dark:text-zinc-300">{{ latestRegistration.meetingMode }}</dd>
+                            </dl>
+
+                            <div class="mt-4 flex flex-wrap gap-2 border-t border-zinc-200 pt-4 dark:border-zinc-700 md:mt-6 md:pt-6">
+                                <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                                    href="{{ url('student_read_registration', { registrationId: latestRegistration.registration.id }) }}">
+                                    {% trans %}Szczegóły konsultacji{% endtrans %}
+                                </a>
+
+                                <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_my_registrations') }}">
+                                    {% trans %}Moje wszystkie konsultacje{% endtrans %}
+                                </a>
+                            </div>
+                        {% else %}
+                            <p class="wrap-break-word text-zinc-800 dark:text-zinc-300">
+                                {% trans %}Aktualnie nie jesteś zapisany/-a na żadne konsultacje{% endtrans %}
+                            </p>
+                        {% endif %}
+                    </div>
+
+                    {# Ankieta — przeniesiona do grida #}
+                    <div class="col-span-2 rounded-lg bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                        <h2 class="mb-2 mt-4 wrap-break-word text-xl font-semibold leading-none text-zinc-900 dark:text-white">
+                            {% trans %}Podziel się swoją opinią{% endtrans %}!
+                        </h2>
+                        <p class="mb-4 wrap-break-word text-zinc-800 dark:text-zinc-300">
+                            {% trans %}Czy korzystanie z aplikacji jest dla Ciebie proste? Podziel się swoją opinią w anonimowej ankiecie.{% endtrans %}
+                        </p>
+
+                        <div class="mt-4 border-zinc-200 pt-4 dark:border-zinc-700 md:mt-6 md:pt-6">
+                            <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_questionnaire') }}">
+                                {% trans %}Wypełnij ankietę{% endtrans %}
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
+{% endblock %}

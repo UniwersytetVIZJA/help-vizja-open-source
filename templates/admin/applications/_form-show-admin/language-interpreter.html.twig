@@ -1,0 +1,17 @@
+<ul class="divide-y">
+    <li class="flex justify-between py-3">
+        <span class="text-gray-600 dark:text-gray-400">{% trans %}Na kiedy{% endtrans %}</span>
+        <div class="text-right font-medium text-gray-900 dark:text-white space-y-1">
+            {% for item in application.request %}
+                <p>- {{ item.value }}</p>
+            {% else %}
+                <p>—</p>
+            {% endfor %}
+        </div>
+    </li>
+
+    <li class="flex justify-between py-3">
+        <span class="text-gray-600 dark:text-gray-400">{% trans %}Uzasadnienie{% endtrans %}</span>
+        <span class="font-medium text-gray-900 dark:text-white">{{ application.justification }}</span>
+    </li>
+</ul>

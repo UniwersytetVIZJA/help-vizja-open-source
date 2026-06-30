@@ -1,0 +1,909 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+{% form_theme formAdaptationCard 'student/_layouts/form-tailwind.html.twig' %}
+{% form_theme formStatus 'student/_layouts/form-tailwind.html.twig' %}
+{% form_theme formComment 'student/_layouts/form-tailwind.html.twig' %}
+
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block title %}
+    {% trans %}Wniosek{% endtrans %}
+    {% if application.applicationNumber %}
+        {{ application.applicationNumber }}
+    {% endif %} | Admin Help VIZJA
+{% endblock %}
+
+{% block body %}
+    <section class="px-4 py-10 rounded-lg min-h-screen">
+        {{ website_path([
+            { label: 'Wnioski'|trans, route: 'admin_applications' },
+            { label: 'Szczegóły wniosku'|trans },
+        ]) }}
+
+        <br>
+        <h1>
+            <span class="text-zinc-600 dark:text-zinc-400">{% trans %}Numer wniosku{% endtrans %}</span></h1>
+        <span class="font-medium text-zinc-900 dark:text-white">
+             {% if application.applicationNumber %}
+                 {{ application.applicationNumber }}
+             {% else %}
+                 -
+             {% endif %}
+            <br></span>
+        <br>
+        <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('admin_application_update', { applicationId: application.id }) }}">
+            {% trans %}Edytuj wniosek{% endtrans %}
+        </a>
+
+        <div class=" mx-auto max-w-3xl space-y-8">
+
+            {% set statusColors = {
+                'Zaakceptowany': 'bg-green-100 text-green-800 border-green-300 dark:bg-green-500',
+                'W trakcie': 'bg-yellow-500 text-yellow-800 border-yellow-300',
+                'Odrzucony': 'bg-red-50 text-red-800 border-red-300 dark:bg-red-500',
+                'Nowy': 'text-blue-800 border-blue-300'
+            }[application.status]|default('bg-zinc-100 text-zinc-700 border-zinc-300') %}
+
+            {% set statusIcons = {
+                'Zaakceptowany': '<svg class="w-5 h-5 text-green-600 dark:text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>',
+                'W trakcie': '<svg class="w-6 h-6 text-zinc-800 dark:text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
+                ',
+                'Odrzucony': '<svg class="w-6 h-6 text-zinc-800 dark:text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd"/>
+                </svg>
+                ',
+                'Nowy': '<svg class="w-5 h-5 text-blue-600 dark:text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+            }[application.status]|default('<svg class="w-5 h-5 text-zinc-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"/></svg>') %}
+
+            <div class=" border {{ statusColors }} rounded-xl p-4 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 flex items-center justify-center rounded-full bg-white border text-xl font-semibold">
+                            {{ statusIcons|raw }}
+                        </div>
+                        <div>
+                            {% if application.status in ['Nowy', 'W trakcie', 'Zaakceptowany', 'Odrzucony'] %}
+                                <h2 class="font-semibold text-zinc-900 dark:text-white">{% trans %}Status{% endtrans %}</h2>
+                                <p class="font-medium text-zinc-700 dark:text-white text-lg">
+                                    {{ application.status }}
+                                </p>
+                            {% else %}
+                                <h2 class="font-semibold text-zinc-900 dark:text-zinc-900">{% trans %}Status{% endtrans %}</h2>
+                                <p class="font-medium text-zinc-700 dark:text-zinc-700 text-lg">
+                                    {{ application.status }}
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <button type="button"
+                        id="status_toggle_btn"
+                        class="{{ buttonSecondary() }} {{ focusPrimary() }}"
+                        aria-expanded="false"
+                        aria-controls="status_editor">
+                        {% trans %}Zmień status{% endtrans %}
+                    </button>
+                </div>
+
+                {{ form_start(formStatus) }}
+                <div id="status_editor" class="mt-4 hidden" role="region" aria-label="Edytor statusu">
+                    {{ form_row(formStatus.status, {
+                        row_attr:   { class: 'space-y-1' },
+                        label:      'Wybierz status',
+                        label_attr: { class: 'block text-sm font-medium text-zinc-800 dark:text-zinc-800 mb-1' },
+                        attr:       { id: 'status_select', class: 'w-full' }
+                    }) }}
+
+                    {{ form_rest(formStatus) }}
+
+                    <div class="mt-3 flex items-center gap-2">
+                        <button class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }} cursor-pointer" type="submit">
+                            {% trans %}Zapisz{% endtrans %}
+                        </button>
+
+                        <button type="button" id="status_cancel_btn"
+                            class="inline-flex items-center rounded-lg px-3 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300
+    hover:bg-zinc-100 dark:hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-400">
+                            {% trans %}Anuluj{% endtrans %}
+                        </button>
+                    </div>
+                </div>
+                {{ form_end(formStatus) }}
+            </div>
+
+            <script>
+                (function () {
+                    const btn = document.getElementById('status_toggle_btn');
+                    const panel = document.getElementById('status_editor');
+                    const cancel = document.getElementById('status_cancel_btn');
+
+                    if (!btn || !panel) return;
+
+                    function toggleEditor(show) {
+                        const isHidden = panel.classList.contains('hidden');
+                        const willShow = (typeof show === 'boolean') ? show : isHidden;
+                        panel.classList.toggle('hidden', !willShow);
+                        btn.setAttribute('aria-expanded', String(willShow));
+                        if (willShow) {
+                            const select = document.getElementById('status_select');
+                            if (select) select.focus();
+                        }
+                    }
+
+                    btn.addEventListener('click', () => toggleEditor());
+                    if (cancel) cancel.addEventListener('click', () => toggleEditor(false));
+                })();
+            </script>
+
+            <div class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 flex items-center justify-center rounded-full bg-orange-300/70 text-green-700">
+                            <svg class="w-6 h-6 text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17h6l3 3v-3h2V9h-2M4 4h11v8H9l-3 3v-3H4V4Z" />
+                            </svg>
+                        </div>
+                        <h2 class="text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Uwagi pracownika{% endtrans %}</h2>
+                    </div>
+
+                    {% set hasComment = application.employeeComment is not empty %}
+                    {{ form_start(formComment) }}
+                    <button type="button"
+                        id="comment_toggle_btn"
+                        class="{{ buttonSecondary() }}
+                            {{ focusPrimary() }}"
+                        aria-expanded="false"
+                        aria-controls="comment_editor"
+                        aria-label="{{ hasComment ? 'Edytuj uwagi pracownika' : 'Dodaj uwagi pracownika' }}">
+
+                        {{ hasComment ? 'Edytuj uwagi' : 'Dodaj uwagi' }}
+                    </button>
+                </div>
+
+                {% if hasComment %}
+                    <p class="text-zinc-600 dark:text-zinc-300 whitespace-pre-line">{{ application.employeeComment }}</p>
+                {% else %}
+                    <p class="text-zinc-500 dark:text-zinc-400">{% trans %}Brak uwag{% endtrans %}</p>
+                {% endif %}
+
+                <div id="comment_editor" class="mt-4 hidden" role="region" aria-label="Edytor uwag pracownika">
+                    <div>
+                        {{ form_row(formComment.employeeComment, {
+                            row_attr: { class: 'space-y-1' },
+                            label: hasComment ? 'Edytuj uwagi' : 'Dodaj uwagi',
+                            label_attr: { class: 'block text-sm font-medium text-zinc-800 dark:text-zinc-200 mb-1' },
+                            attr: {
+                                id: 'employee_comment_input',
+                                rows: 5,
+                                class: 'w-full rounded-lg border border-zinc-300 bg-zinc-50 dark:bg-zinc-700 px-3 py-2 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
+                            }
+                        }) }}
+                    </div>
+
+                    <div class="mt-3 flex items-center gap-2">
+                        <button class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }} cursor-pointer" type="submit">
+                            {% trans %}Zapisz{% endtrans %}
+                        </button>
+                        {{ form_end(formComment) }}
+                        <button type="button" id="comment_cancel_btn"
+                            class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Anuluj{% endtrans %}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                (function () {
+                    const btn = document.getElementById('comment_toggle_btn');
+                    const panel = document.getElementById('comment_editor');
+                    const cancel = document.getElementById('comment_cancel_btn');
+
+                    if (!btn || !panel) return;
+
+                    function toggleEditor(show) {
+                        const isHidden = panel.classList.contains('hidden');
+                        const willShow = (typeof show === 'boolean') ? show : isHidden;
+                        panel.classList.toggle('hidden', !willShow);
+                        btn.setAttribute('aria-expanded', String(willShow));
+                        if (willShow) {
+                            const ta = document.getElementById('employee_comment_input');
+                            if (ta) ta.focus();
+                        }
+                    }
+
+                    btn.addEventListener('click', () => toggleEditor());
+                    if (cancel) cancel.addEventListener('click', () => toggleEditor(false));
+                })();
+            </script>
+
+            {% if isEducationalProcess %}
+                <div class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 shadow-sm">
+                    {{ form_start(formAdaptationCard, { attr: { class: 'space-y-6' } }) }}
+
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 flex items-center justify-center rounded-full bg-orange-300/70 text-green-700">
+                                <svg class="w-6 h-6 text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 9h3m-3 3h3m-3 3h3m-6 1c-.306-.613-.933-1-1.618-1H7.618c-.685 0-1.312.387-1.618 1M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm7 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+                                </svg>
+                            </div>
+
+                            <div class="leading-tight">
+                                <h2 class="text-lg font-semibold text-zinc-900 dark:text-white">
+                                    {% trans %}Karta adaptacji{% endtrans %}
+                                </h2>
+                                <p class="text-sm text-zinc-500 dark:text-zinc-400">
+                                    {% trans %}Wybierz wzór z listy i dołącz pliki{% endtrans %}
+                                </p>
+                            </div>
+                        </div>
+                        <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('admin_docx_generate', { applicationId: application.id }) }}">
+                            {% trans %}Karta adaptacji - Word{% endtrans %}
+                        </a>
+
+                        <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('admin_pdf_generate', { applicationId: application.id }) }}">
+                            {% trans %}Karta adaptacji - PDF{% endtrans %}
+                        </a>
+                        <div class="flex items-center gap-2">
+                            <button class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }} cursor-pointer" type="submit">
+                                {% trans %}Zapisz{% endtrans %}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-zinc-200 dark:border-zinc-700 pt-5">
+                        <div class="w-full sm:w-auto mb-8">
+                            <div class="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+                                <div class="w-full sm:w-[360px]">
+
+                                    <label
+                                        for="{{ formAdaptationCard.adaptationCardIssueDate.vars.id }}"
+                                        class="mb-2 block text-zinc-500 dark:text-zinc-400"
+                                    >
+                                        {% trans %}Wybierz datę wydania karty adaptacji{% endtrans %}
+                                    </label>
+
+                                    {{ form_widget(formAdaptationCard.adaptationCardIssueDate) }}
+                                    {{ form_errors(formAdaptationCard.adaptationCardIssueDate) }}
+
+                                </div>
+                                <div class="w-full sm:w-[360px]">
+
+                                    <label
+                                        for="{{ formAdaptationCard.adaptationCard.vars.id }}"
+                                        class="mb-2 block text-zinc-500 dark:text-zinc-400"
+                                    >
+                                        {% trans %}Wybierz okres trwania karty adaptacji{% endtrans %}
+                                    </label>
+
+                                    {{ form_widget(formAdaptationCard.adaptationCard) }}
+                                    {{ form_errors(formAdaptationCard.adaptationCard) }}
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <h3 id="files_heading" class="font-semibold text-zinc-900 dark:text-white">
+                                    {% trans %}Załączniki{% endtrans %}
+                                </h3>
+                                <p id="files_hint" class="text-zinc-500 dark:text-zinc-400">
+                                    {% trans %}Możesz dodać maksymalnie 3 pliki{% endtrans %}
+                                </p>
+                            </div>
+
+                            <div class="shrink-0">
+                                <button type="button"
+                                    id="add_file_btn"
+                                    class="add_file_btn {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }} disabled:opacity-50 disabled:cursor-not-allowed"
+                                    aria-controls="file_wrapper"
+                                    data-wrapper-id="file_wrapper">
+                                    {% trans %}Dodaj plik{% endtrans %}
+                                </button>
+                                <span id="files_live" class="sr-only files_live" aria-live="polite"></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 space-y-3">
+                            <div id="file_wrapper"
+                                class="space-y-3"
+                                role="group"
+                                aria-labelledby="files_heading"
+                                aria-describedby="files_hint files_counter"
+                                data-prototype="{{ form_widget(formAdaptationCard.files.vars.prototype)|e('html_attr') }}"
+                                data-max="3"
+                                data-existing-count="{{ formAdaptationCard.files|filter(fileField => fileField.vars.data and fileField.vars.data.id)|length }}"
+                                data-entry-class="file-field"
+                                data-index="{{ formAdaptationCard.files|length }}"
+                            >
+                                {% for fileField in formAdaptationCard.files %}
+                                    {% set employeeFile = fileField.vars.data %}
+
+                                    <div class="{{ employeeFile and employeeFile.id ? 'existing-file' : 'file-field' }} rounded-xl bg-zinc-50 px-4 py-2 dark:bg-zinc-800 {{ borderPrimary() }}">
+                                        {% if employeeFile and employeeFile.id %}
+                                            <div class="flex items-center justify-between gap-3">
+                <span class="file-name truncate text-sm font-semibold">
+                    {{ employeeFile.originalName ?? 'Załącznik' }}
+                </span>
+
+                                                <div class="flex shrink-0 items-center gap-2">
+                                                    <a
+                                                        href="{{ path('admin_application_file_show', { fileId: employeeFile.id }) }}"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }} inline-flex items-center"
+                                                        aria-label="{% trans %}Podgląd pliku{% endtrans %}: {{ employeeFile.originalName ?? 'Załącznik' }}"
+                                                    >
+                                                        {% trans %}Podgląd{% endtrans %}
+                                                    </a>
+
+                                                    <button
+                                                        type="button"
+                                                        class="{{ buttonDelete() }} remove-file-btn inline-flex items-center"
+                                                        aria-label="{% trans %}Usuń plik{% endtrans %}: {{ employeeFile.originalName ?? 'Załącznik' }}"
+                                                    >
+                                                        <svg
+                                                            class="h-4 w-4"
+                                                            viewBox="0 0 24 24"
+                                                            fill="none"
+                                                            aria-hidden="true"
+                                                            focusable="false"
+                                                        >
+                                                            <path
+                                                                d="M6 6l12 12M18 6L6 18"
+                                                                stroke="currentColor"
+                                                                stroke-width="2"
+                                                                stroke-linecap="round"
+                                                            />
+                                                        </svg>
+
+                                                        {% trans %}Usuń{% endtrans %}
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="sr-only">
+                                                <div class="sr-only">
+                                                    {{ form_widget(fileField, { attr: { class: 'file-input', tabindex: '-1', 'aria-hidden': 'true' } }) }}
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <div class="sr-only">
+                                                <div class="sr-only">
+                                                    {{ form_widget(fileField, { attr: { class: 'file-input', tabindex: '-1', 'aria-hidden': 'true' } }) }}
+                                                </div>
+                                            </div>
+
+                                            <div class="flex items-center justify-between gap-3">
+                <span class="file-name truncate text-sm">
+                    {% trans %}Nie wybrano pliku{% endtrans %}
+                </span>
+
+                                                <button
+                                                    type="button"
+                                                    class="{{ buttonDelete() }} remove-file-btn inline-flex items-center rounded-xl px-3 py-1.5 text-sm font-medium {{ focusPrimaryWithPadding() }}"
+                                                    aria-label="{% trans %}Usuń niewybrany plik{% endtrans %}"
+                                                >
+                                                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                                                        <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                                    </svg>
+
+                                                    {% trans %}Usuń{% endtrans %}
+                                                </button>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <p id="files_counter" class="text-sm text-zinc-600 dark:text-zinc-300">
+                                {% trans %}Liczba dodanych plików{% endtrans %}:
+                                <span data-counter-for="file_wrapper">{{ formAdaptationCard.files|length }}</span>/3
+                            </p>
+                        </div>
+                    </div>
+
+                    {{ form_end(formAdaptationCard) }}
+                </div>
+            {% endif %}
+
+            <div class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 shadow-sm">
+                <div class="flex items-center mb-4">
+                    <div class="w-9 h-9 flex items-center justify-center rounded-full bg-blue-100 text-blue-700 mr-3">
+                        <svg class="w-6 h-6 text-zinc-800 dark:text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 6H5m2 3H5m2 3H5m2 3H5m2 3H5m11-1a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2M7 3h11a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm8 7a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+                        </svg>
+                    </div>
+                    <h2 class="text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Podstawowe informacje{% endtrans %}</h2>
+                </div>
+
+                <ul class="divide-y divide-zinc-200 dark:divide-zinc-700">
+
+                    <li class="flex justify-between py-3">
+                        <span class="text-zinc-600 dark:text-zinc-400">{% trans %}Data złożenia{% endtrans %}</span>
+                        <span class="font-medium text-zinc-900 dark:text-white">{{ application.createdAt|date('d.m.Y H:i') }}</span>
+                    </li>
+                    <li class="flex justify-between py-3">
+                        <span class="text-zinc-600 dark:text-zinc-400">{% trans %}Numer albumu{% endtrans %}</span>
+                        <span class="font-medium text-zinc-900 dark:text-white">{{ application.albumNumber }}</span>
+                    </li>
+                    <li class="flex justify-between py-3">
+                        <span class="text-zinc-600 dark:text-zinc-400">{% trans %}Imię i nazwisko{% endtrans %}</span>
+                        <span class="font-medium text-zinc-900 dark:text-white">{{ application.student.firstName }} {{ application.student.lastName }}</span>
+                    </li>
+                    <li class="flex justify-between py-3">
+                        <span class="text-zinc-600 dark:text-zinc-400">{% trans %}Adres e-mail{% endtrans %}</span>
+                        <span class="font-medium text-zinc-900 dark:text-white">{{ application.student.email }}</span>
+                    </li>
+                    <li class="flex justify-between py-3">
+                        <span class="text-zinc-600 dark:text-zinc-400">{% trans %}Telefon{% endtrans %}</span>
+                        <span class="font-medium text-zinc-900 dark:text-white">+{{ application.phone.countryCode }} {{ application.phone.nationalNumber }}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 shadow-sm">
+                <div class="flex items-center mb-4">
+                    <div class="w-9 h-9 flex items-center justify-center rounded-full bg-blue-100 text-blue-700 mr-3">
+                        <svg class="w-6 h-6 text-zinc-800 dark:text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 20v-9l-4 1.125V20h4Zm0 0h8m-8 0V6.66667M16 20v-9l4 1.125V20h-4Zm0 0V6.66667M18 8l-6-4-6 4m5 1h2m-2 3h2" />
+                        </svg>
+
+                    </div>
+                    <h2 class="text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Studia{% endtrans %}</h2>
+                </div>
+
+                <ul class="divide-y divide-zinc-200 dark:divide-zinc-700">
+
+                    <li class="flex justify-between py-3">
+                        <span class="text-zinc-600 dark:text-zinc-400">{% trans %}Tryb{% endtrans %}</span>
+                        <span class="font-medium text-zinc-900 dark:text-white">
+                            {% if application.studyMode is not empty %}
+                                {% if application.studyMode is same as 'Z' %}
+                                    Zaoczny
+                                {% else %}
+                                    Stacjonarny
+                                {% endif %}
+                            {% endif %}
+                        </span>
+                    </li>
+                    <li class="flex justify-between py-3">
+                        <span class="text-zinc-600 dark:text-zinc-400">{% trans %}Kierunek{% endtrans %}</span>
+                        <span class="font-medium text-zinc-900 dark:text-white">{{ application.faculty }}</span>
+                    </li>
+                    <li class="flex justify-between py-3">
+                        <span class="text-zinc-600 dark:text-zinc-400">{% trans %}Wydział{% endtrans %}</span>
+                        <span class="font-medium text-zinc-900 dark:text-white">{{ application.department }}</span>
+                    </li>
+                    <li class="flex justify-between py-3">
+                        <span class="text-zinc-600 dark:text-zinc-400">{% trans %}Dziekan{% endtrans %}</span>
+                        <span class="font-medium text-zinc-900 dark:text-white">{{ application.dean }}</span>
+                    </li>
+                    <li class="flex justify-between py-3">
+                        <span class="text-zinc-600 dark:text-zinc-400">{% trans %}Rok{% endtrans %}</span>
+                        <span class="font-medium text-zinc-900 dark:text-white">{{ application.year }}</span>
+                    </li>
+                    <li class="flex justify-between py-3">
+                        <span class="text-zinc-600 dark:text-zinc-400">{% trans %}Semestr{% endtrans %}</span>
+                        <span class="font-medium text-zinc-900 dark:text-white">{{ application.semester }}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 shadow-sm">
+                <div class="flex items-center mb-4">
+                    <div class="w-9 h-9 flex items-center justify-center rounded-full bg-blue-100 text-blue-700 mr-3">
+                        <svg class="w-6 h-6 text-zinc-800 dark:text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z" />
+                        </svg>
+                    </div>
+                    <h2 class="text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Wniosek{% endtrans %}</h2>
+                </div>
+
+                <ul class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                    {% include 'student/application/_form-show/' ~ application.type.hiddenValue ~ '.html.twig' %}
+                </ul>
+            </div>
+
+            <div class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 shadow-sm">
+                <div class="flex items-center mb-4">
+                    <div class="w-9 h-9 flex items-center justify-center rounded-full bg-green-100 text-green-700 mr-3">
+                        <svg class="w-6 h-6 text-zinc-800 dark:text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2m-8 1V4m0 12-4-4m4 4 4-4" />
+                        </svg>
+
+                    </div>
+                    <h2 class="text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Wgrane pliki{% endtrans %}</h2>
+                </div>
+
+                {% if files is not empty %}
+                    <ul class="space-y-3">
+                        {% for file in files %}
+                            <li class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between bg-zinc-50 dark:bg-zinc-700 rounded-lg px-4 py-3 border border-zinc-200 dark:border-zinc-600 relative">
+
+                                <div class="flex items-center gap-2 min-w-0 flex-1">
+                                    <svg class="w-6 h-6 shrink-0 text-zinc-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6H6m12 4H6m12 4H6m12 4H6" />
+                                    </svg>
+
+                                    <span class="text-zinc-800 dark:text-zinc-200 truncate">
+                    {{ file.originalName }}
+                </span>
+                                </div>
+
+                                <div class="flex items-center justify-between gap-3 sm:justify-end sm:shrink-0">
+                <span class="text-sm text-zinc-600 dark:text-zinc-300 whitespace-nowrap">
+                    .{{ file.extension }}, {{ fileSize }} KB
+                </span>
+
+                                    <details class="relative group inline-block">
+                                        <summary
+                                            class="{{ buttonSecondary() }} {{ focusPrimary() }} inline-flex cursor-pointer list-none items-center justify-center gap-2 whitespace-nowrap select-none [&::-webkit-details-marker]:hidden">
+                                            Akcje
+                                            <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.127l3.71-3.896a.75.75 0 111.08 1.04l-4.24 4.46a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </summary>
+
+                                        <ul class="absolute right-0 z-20 mt-2 w-44 rounded-xl border border-zinc-200 dark:border-zinc-600 bg-white dark:bg-zinc-800 shadow-lg ring-1 ring-black/5 p-1 space-y-1">
+                                            <li>
+                                                <a href="{{ path('admin_application_file_show', { fileId: file.id }) }}"
+                                                    class="flex items-center gap-2 w-full rounded-lg px-3 py-2 text-sm text-zinc-800 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-700 {{ focusPrimary() }}">
+                                                    {% trans %}Otwórz{% endtrans %}
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ path('admin_application_file_download', { fileId: file.id }) }}"
+                                                    class="flex items-center gap-2 w-full rounded-lg px-3 py-2 text-sm text-zinc-800 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-700 {{ focusPrimary() }}">
+                                                    {% trans %}Pobierz{% endtrans %}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </details>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-zinc-500 dark:text-zinc-400">{% trans %}Brak wgranych plików{% endtrans %}</p>
+                {% endif %}
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        (function () {
+            function byId(id) {
+                return document.getElementById(id);
+            }
+
+            function getEntryClass(wrapper) {
+                return wrapper?.dataset.entryClass || 'file-field';
+            }
+
+            function getFileFields(wrapper) {
+                if (!wrapper) {
+                    return [];
+                }
+
+                return Array.from(wrapper.querySelectorAll('.' + getEntryClass(wrapper)));
+            }
+
+            function updateCounter(wrapper) {
+                if (!wrapper) {
+                    return 0;
+                }
+
+                const existingCount = parseInt(wrapper.dataset.existingCount || '0', 10);
+                const newCount = getFileFields(wrapper).length;
+                const count = existingCount + newCount;
+
+                const counter = document.querySelector(
+                    '[data-counter-for="' + wrapper.id + '"]'
+                );
+
+                if (counter) {
+                    counter.textContent = String(count);
+                }
+
+                return count;
+            }
+
+            function findLiveRegion() {
+                return document.getElementById('files_live');
+            }
+
+            function announce(liveRegion, message) {
+                if (!liveRegion) {
+                    return;
+                }
+
+                liveRegion.textContent = '';
+
+                window.setTimeout(function () {
+                    liveRegion.textContent = message;
+                }, 50);
+            }
+
+            function setBtnState(wrapper, addBtn) {
+                if (!wrapper || !addBtn) {
+                    return;
+                }
+
+                const max = parseInt(wrapper.dataset.max || '1', 10);
+                const count = updateCounter(wrapper);
+                const disabled = count >= max;
+
+                addBtn.disabled = disabled;
+                addBtn.setAttribute('aria-disabled', String(disabled));
+
+                if (disabled) {
+                    addBtn.setAttribute(
+                        'aria-label',
+                        '{% trans %}Nie można dodać więcej plików. Osiągnięto limit{% endtrans %}: ' + max
+                    );
+                } else {
+                    addBtn.setAttribute(
+                        'aria-label',
+                        '{% trans %}Dodaj plik. Dodano{% endtrans %}: ' + count + ' {% trans %}z{% endtrans %} ' + max
+                    );
+                }
+            }
+
+            function focusBestTarget(wrapper, addBtn) {
+                const fields = getFileFields(wrapper);
+                const lastRemoveBtn = fields.length
+                    ? fields[fields.length - 1].querySelector('.remove-file-btn')
+                    : null;
+
+                if (lastRemoveBtn) {
+                    lastRemoveBtn.focus();
+                    return;
+                }
+
+                addBtn?.focus();
+            }
+
+            function removeFile(container, wrapper, addBtn, live) {
+                const fileName =
+                    container.querySelector('.file-name')?.textContent?.trim()
+                    || '{% trans %}plik{% endtrans %}';
+
+                container.remove();
+
+                const count = updateCounter(wrapper);
+                setBtnState(wrapper, addBtn);
+
+                announce(
+                    live,
+                    '{% trans %}Usunięto plik{% endtrans %}: ' + fileName + '. {% trans %}Liczba dodanych plików{% endtrans %}: ' + count + '.'
+                );
+
+                focusBestTarget(wrapper, addBtn);
+            }
+
+            function prepareFileFields(wrapper, addBtn, live) {
+                const containers = wrapper.querySelectorAll(
+                    '.file-field, .existing-file'
+                );
+
+                containers.forEach(function (container) {
+                    const removeBtn = container.querySelector('.remove-file-btn');
+
+                    if (!removeBtn) {
+                        return;
+                    }
+
+                    const fileName =
+                        container.querySelector('.file-name')
+                            ?.textContent
+                            ?.trim();
+
+                    if (fileName) {
+                        removeBtn.setAttribute(
+                            'aria-label',
+                            '{% trans %}Usuń plik{% endtrans %}: ' + fileName
+                        );
+                    }
+
+                    removeBtn.addEventListener('click', function () {
+                        removeFile(container, wrapper, addBtn, live);
+                    });
+                });
+            }
+
+            function createFileField(html, wrapper, addBtn, live) {
+
+                const container = document.createElement('div');
+
+                container.className = 'file-field rounded-xl bg-zinc-50 px-4 py-2 dark:bg-zinc-800 {{ borderPrimary() }}';
+
+                container.innerHTML =
+                    '<div class="sr-only">' + html + '</div>' +
+                    '<div class="flex items-center justify-between gap-3">' +
+                    '<span class="file-name truncate text-sm">Nie wybrano pliku</span>' +
+                    '<button type="button" class="remove-file-btn inline-flex items-center rounded-xl bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500" aria-label="Usuń niewybrany plik">' +
+                    '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">' +
+                    '<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />' +
+                    '</svg>' +
+                    '<span>Usuń</span>' +
+                    '</button>' +
+                    '</div>';
+
+                const fileInput = container.querySelector('input[type="file"]');
+                const fileName = container.querySelector('.file-name');
+                const removeBtn = container.querySelector('.remove-file-btn');
+
+                if (!fileInput || !removeBtn) {
+                    return;
+                }
+
+                fileInput.classList.add('file-input', 'sr-only');
+
+                fileInput.setAttribute('tabindex', '-1');
+                fileInput.setAttribute('aria-hidden', 'true');
+                fileInput.setAttribute('accept', '.pdf,.doc,.docx');
+
+                removeBtn.addEventListener('click', function () {
+                    removeFile(container, wrapper, addBtn, live);
+                });
+
+                wrapper.appendChild(container);
+
+                let fileChosen = false;
+
+                fileInput.addEventListener('change', function () {
+                    const file = fileInput.files?.[0];
+                    if (!file) {
+                        return;
+                    }
+
+                    const extension = file.name.split('.').pop().toLowerCase();
+
+                    if (!['pdf', 'doc', 'docx'].includes(extension)) {
+                        fileInput.value = '';
+                        container.remove();
+                        announce(
+                            live,
+                            '{% trans %}Dozwolone są wyłącznie pliki PDF, DOC oraz DOCX{% endtrans %}'
+                        );
+                        addBtn.focus();
+                        return;
+                    }
+
+                    if (fileInput.files && fileInput.files.length > 0) {
+                        fileChosen = true;
+
+                        const selectedFileName = fileInput.files[0].name;
+
+                        fileName.textContent = selectedFileName;
+
+                        removeBtn.setAttribute(
+                            'aria-label',
+                            '{% trans %}Usuń plik{% endtrans %}: ' + selectedFileName
+                        );
+
+                        const count = updateCounter(wrapper);
+                        setBtnState(wrapper, addBtn);
+
+                        announce(
+                            live,
+                            '{% trans %}Dodano plik{% endtrans %}: ' + selectedFileName + '. {% trans %}Liczba dodanych plików{% endtrans %}: ' + count + '.'
+                        );
+
+                        removeBtn.focus();
+                    }
+                });
+
+                window.addEventListener('focus', function handleWindowFocus() {
+                    window.setTimeout(function () {
+                        window.removeEventListener('focus', handleWindowFocus);
+
+                        if (!fileChosen && (!fileInput.files || fileInput.files.length === 0)) {
+                            container.remove();
+                            setBtnState(wrapper, addBtn);
+                            announce(live, '{% trans %}Anulowano wybór pliku{% endtrans %}.');
+                            addBtn.focus();
+                        }
+                    }, 300);
+                }, { once: true });
+
+                setBtnState(wrapper, addBtn);
+
+                fileInput.click();
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const wrapper = byId('file_wrapper');
+                const addBtn = byId('add_file_btn');
+                const live = findLiveRegion();
+
+                if (!wrapper || !addBtn) {
+                    return;
+                }
+
+                let index = parseInt(wrapper.dataset.index || '0', 10);
+
+                prepareFileFields(wrapper, addBtn, live);
+                setBtnState(wrapper, addBtn);
+
+                addBtn.addEventListener('click', function () {
+                    const max = parseInt(wrapper.dataset.max || '1', 10);
+                    const count = updateCounter(wrapper);
+
+                    if (count >= max) {
+                        announce(
+                            live,
+                            '{% trans %}Nie można dodać więcej plików. Osiągnięto limit{% endtrans %}: ' + max + '.'
+                        );
+                        return;
+                    }
+
+                    const prototype = wrapper.dataset.prototype;
+                    const html = prototype.replace(/__name__/g, index);
+
+                    index++;
+                    wrapper.dataset.index = String(index);
+
+                    createFileField(html, wrapper, addBtn, live);
+                });
+            });
+        })();
+    </script>
+
+    <script>
+        function filterCards(q = '') {
+            q = (q || '').trim().toLowerCase();
+
+            const daysContent = document.getElementById('days-content');
+            if (!daysContent) return;
+
+            const panels = Array.from(daysContent.querySelectorAll('[data-day-panel-wrap]'));
+            const tiles = Array.from(document.querySelectorAll('[data-day-tile]'));
+
+            panels.forEach(panel => {
+                const cards = Array.from(panel.querySelectorAll('[data-card]'));
+
+                cards.forEach(card => {
+                    const text = (card.innerText || '').toLowerCase();
+                    const match = text.includes(q);
+                    card.style.display = match ? '' : 'none';
+                });
+
+                const anyVisible = cards.some(c => c.style.display !== 'none');
+                panel.style.display = anyVisible ? '' : 'none';
+            });
+
+            tiles.forEach(tile => {
+                const day = tile.dataset.day;
+                const panel = daysContent.querySelector('[data-day-panel="' + day + '"]');
+                const visible = panel && panel.style.display !== 'none';
+
+                tile.style.display = visible ? '' : 'none';
+            });
+
+            const firstVisibleTile = tiles.find(t => t.style.display !== 'none');
+            if (firstVisibleTile && window.__setActiveDay) {
+                window.__setActiveDay(firstVisibleTile.dataset.day);
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,158 @@
+{% extends 'student/_layouts/after-login.html.twig' %}
+{% form_theme form 'student/_layouts/form-tailwind.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+{% block title %}{% trans %}Składanie wniosku - krok 2{% endtrans %} | Help VIZJA{% endblock %}
+{% block body %}
+    <section class="space-y-8">
+        <h1 id="page-title" class="wrap-break-word text-xl font-semibold md:text-2xl lg:text-3xl">
+            {% trans %}Złóż wniosek{% endtrans %}
+        </h1>
+
+        {% set visibleStep = adaptationRequired ? 3 : 2 %}
+
+        {% include 'student/application/_partials/stepper.html.twig' with {
+            currentStep: visibleStep,
+            adaptationRequired: adaptationRequired
+        } %}
+
+        {{ form_start(form, {'attr': { 'novalidate': 'novalidate' }}) }}
+
+        <div class="space-y-8">
+            <h2 class="flex items-center wrap-break-word font-medium text-md md:text-lg lg:text-xl">
+                {% trans %}Krok{% endtrans %} {{ visibleStep }}. {% trans %}Uzupełnij formularz{% endtrans %}
+            </h2>
+
+            {# Podsumowanie błędów #}
+            {% set hasFormErrors = (form_errors(form)|trim) is not empty %}
+            {% set childErrors = [] %}
+
+            {% for child in form %}
+                {% if child is defined and child.vars is defined and child.vars.errors|length > 0 %}
+                    {% set labelTxt = (child.vars.label is not empty) ? child.vars.label : (child.vars.name|capitalize) %}
+                    {% set childErrors = childErrors|merge([{
+                        id: child.vars.id,
+                        label: labelTxt,
+                        errors: child.vars.errors
+                    }]) %}
+                {% endif %}
+            {% endfor %}
+
+            {% if hasFormErrors or childErrors is not empty %}
+                {% include '_partials/form-errors.html.twig' with { form: form, childErrors: childErrors } %}
+            {% endif %}
+
+            <div class="max-w-2xl w-full space-y-4">
+                <div class="rounded-lg border bg-zinc-50 dark:bg-zinc-800 px-4 py-3">
+    <span class="block text-sm font-medium text-zinc-500 dark:text-white">
+        {% trans %}Numer albumu{% endtrans %}
+    </span>
+                    <span class="mt-1 block text-base font-semibold text-zinc-900 dark:text-white">
+         {% if app.user.albumNumber is not empty %}
+             {{ app.user.albumNumber }}
+         {% else %}
+             {% trans %}Nieuzupełniony{% endtrans %}
+         {% endif %}
+    </span>
+                </div>
+
+                <div class="rounded-lg border bg-zinc-50 dark:bg-zinc-800 px-4 py-3">
+    <span class="block text-sm font-medium text-zinc-500 dark:text-white">
+        {% trans %}Tryb studiów{% endtrans %}
+    </span>
+                    <span class="mt-1 block text-base font-semibold text-zinc-900 dark:text-white">
+        {% if app.user.trybZajecVerbis is not empty %}
+            {% if app.user.trybZajecVerbis is same as 'Z'  %}
+                {% trans %}Zaoczny{% endtrans %}
+            {% else %}
+                {% trans %}Stacjonarny{% endtrans %}
+            {% endif %}
+        {% else %}
+            {% trans %}Nieuzupełniony{% endtrans %}
+        {% endif %}
+
+    </span>
+                </div>
+                <div class="rounded-lg border bg-zinc-50 dark:bg-zinc-800 px-4 py-3">
+    <span class="block text-sm font-medium text-zinc-500 dark:text-white">
+        {% trans %}Rok studiów{% endtrans %}
+    </span>
+                    <span class="mt-1 block text-base font-semibold text-zinc-900 dark:text-white">
+            {% if app.user.rokStudiowVerbis is not empty %}
+                {{ app.user.rokStudiowVerbis }}
+            {% else %}
+                {% trans %}Nieuzupełniony{% endtrans %}
+            {% endif %}
+    </span>
+                </div>
+                <div class="rounded-lg border bg-zinc-50 dark:bg-zinc-800 px-4 py-3">
+    <span class="block text-sm font-medium text-zinc-500 dark:text-white">
+        {% trans %}Semestr studiów{% endtrans %}
+    </span>
+                    <span class="mt-1 block text-base font-semibold text-zinc-900 dark:text-white">
+         {% if app.user.semestrVerbis is not empty %}
+             {{ app.user.semestrVerbis }}
+         {% else %}
+             {% trans %}Nieuzupełniony{% endtrans %}
+         {% endif %}
+    </span>
+                </div>
+                <div class="rounded-lg border bg-zinc-50 dark:bg-zinc-800 px-4 py-3">
+    <span class="block text-sm font-medium text-zinc-500 dark:text-white">
+        {% trans %}Wydział{% endtrans %}
+    </span>
+                    <span class="mt-1 block text-base font-semibold text-zinc-900 dark:text-white">
+         {% if app.user.wydzialVerbis is not empty %}
+             {{ app.user.wydzialVerbis }}
+         {% else %}
+             {% trans %}Nieuzupełniony{% endtrans %}
+         {% endif %}
+    </span>
+                </div>
+                <div class="rounded-lg border bg-zinc-50 dark:bg-zinc-800 px-4 py-3">
+    <span class="block text-sm font-medium text-zinc-500 dark:text-white">
+        {% trans %}Kierunek studiów{% endtrans %}
+    </span>
+                    <span class="mt-1 block text-base font-semibold text-zinc-900 dark:text-white">
+         {% if app.user.kierunekVerbis is not empty %}
+             {{ app.user.kierunekVerbis }}
+         {% else %}
+             {% trans %}Nieuzupełniony{% endtrans %}
+         {% endif %}
+    </span>
+                </div>
+                {% include 'student/_partials/phone.html.twig' %}
+
+                <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_profile_update_data_verbis') }}">
+                    {% trans %}Zaktualizuj swoje dane (Verbis){% endtrans %}
+                </a>
+
+            <div class="min-w-0">
+                {% include 'student/application/_form/' ~ application.type.hiddenValue ~ '.html.twig' %}
+            </div>
+        </div>
+
+        <div class="mt-10 flex flex-wrap gap-2">
+            <a
+                class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}"
+                href="{{
+                adaptationRequired
+                ? path('student_choose_adaptation')
+                : path('student_choose_application_type')
+                }}"
+            >
+                {% trans %}Wróć do poprzedniego kroku{% endtrans %}
+            </a>
+            <button class="cursor-pointer {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+                {% trans %}Przejdź dalej{% endtrans %}
+            </button>
+        </div>
+        {{ form_end(form, { render_rest: false }) }}
+    </section>
+{% endblock %}

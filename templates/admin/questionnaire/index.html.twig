@@ -1,0 +1,314 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+{% form_theme form 'admin/_layouts/form-tailwind.html.twig' %}
+
+{% block stylesheets %}{{ encore_entry_link_tags('admin_default') }}{% endblock %}
+{% block javascripts %}{{ encore_entry_script_tags('admin_default') }}{% endblock %}
+{% block title %}{% trans %}Ankieta oceny aplikacji{% endtrans %} | Admin Help VIZJA{% endblock %}
+{% block body %}
+
+    <div class="mb-12">
+        {{ website_path([
+            { label: 'Ustawienia'|trans, route: 'admin_settings' },
+            { label: 'Ankieta oceny aplikacji'|trans },
+        ]) }}
+    </div>
+
+    <div class="mb-10">
+        <h1 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-3xl">
+            {% trans %}Ankieta oceny aplikacji{% endtrans %}
+        </h1>
+        <p class="mt-3">
+            {% trans %}Przesłane odpowiedzi{% endtrans %}: <strong>{{ count }}</strong>
+        </p>
+    </div>
+
+    <h2 class="mb-7 text-2xl font-bold">Pytania zamknięte</h2>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {% for field, avg in averages %}
+            {% set label = attribute(form, field).vars.label ?? field %}
+            {% set safeAvg = avg ?? 0 %}
+            {% set percent = (safeAvg / 5 * 100)|round %}
+
+            {% set ratingText %}
+                {% trans %}Średnia ocena{% endtrans %}: {{ safeAvg|number_format(2, '.', ' ') }} {% trans %}na 5{% endtrans %}.
+                {% trans %}Wynik procentowy{% endtrans %}: {{ percent }}%.
+            {% endset %}
+
+            <div class="rounded-2xl bg-white dark:bg-zinc-800 p-4 shadow-sm hover:shadow-md transition"
+                aria-label="{{ label }}. {{ ratingText|striptags|trim }}">
+                <div class="flex items-start justify-between gap-3">
+                    <div class="text-sm font-semibold text-black dark:text-white leading-snug">
+                        {{ label }}
+                    </div>
+
+                    <span aria-hidden="true"
+                        class="shrink-0 rounded-full bg-slate-100 px-2.5 py-1 text-sm font-semibold text-slate-900 tabular-nums">
+                        {{ safeAvg|number_format(2, '.', ' ') }} / 5
+                    </span>
+                </div>
+
+                <div class="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-100"
+                    role="progressbar"
+                    aria-label="{{ label }}"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="{{ percent }}">
+                    <div class="h-full rounded-full bg-blue-600 dark:bg-yellow-400"
+                        style="width: {{ percent }}%"></div>
+                </div>
+
+                <div class="mt-2 flex items-center justify-between text-xs text-black dark:text-white">
+                    <span aria-hidden="true" class="tabular-nums">{{ percent }}%</span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <h2 class="mt-7 text-2xl font-bold">Pytania otwarte</h2>
+
+    {# ====== PRZYCISKI ====== #}
+    <div class="mt-10 max-w-250 rounded-2xl p-4 shadow-sm">
+        <div class="grid grid-cols-1 gap-3">
+            <button type="button" data-modal-target="modal-q6" data-modal-toggle="modal-q6" class="bg-white dark:bg-zinc-800 rounded-lg px-4 py-3 hover:bg-zinc-200 dark:hover:bg-zinc-900">
+                {{ form.q6.vars.label }}
+            </button>
+            <button type="button" data-modal-target="modal-q8" data-modal-toggle="modal-q8"
+                class="bg-white dark:bg-zinc-800 rounded-lg px-4 py-3 hover:bg-zinc-200 dark:hover:bg-zinc-900">
+                {{ form.q8.vars.label }}
+            </button>
+            <button type="button" data-modal-target="modal-q12" data-modal-toggle="modal-q12" class="bg-white dark:bg-zinc-800 rounded-lg px-4 py-3 hover:bg-zinc-200 dark:hover:bg-zinc-900">
+                {{ form.q12.vars.label }}
+            </button>
+            <button type="button" data-modal-target="modal-q13" data-modal-toggle="modal-q13" class="bg-white dark:bg-zinc-800 rounded-lg px-4 py-3 hover:bg-zinc-200 dark:hover:bg-zinc-900">
+                {{ form.q13.vars.label }}
+            </button>
+            <button type="button" data-modal-target="modal-q14" data-modal-toggle="modal-q14" class="bg-white dark:bg-zinc-800 rounded-lg px-4 py-3 hover:bg-zinc-200 dark:hover:bg-zinc-900">
+                {{ form.q14.vars.label }}
+            </button>
+        </div>
+    </div>
+
+    {# ====== MODAL: Q6 ====== #}
+    <div id="modal-q6" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="modal-q6-title" aria-hidden="true"
+        class="hidden fixed inset-0 z-50 overflow-y-auto overflow-x-hidden items-center justify-center w-full">
+        <div class="relative p-4 w-full max-w-2xl max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-zinc-700">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b dark:border-zinc-600">
+                    <h3 id="modal-q6-title" tabindex="-1" class="text-xl font-semibold text-zinc-900 dark:text-white">{{ form.q6.vars.label }}</h3>
+                    <button type="button" data-modal-hide="modal-q6" aria-label="{% trans %}Zamknij okno{% endtrans %}"
+                        class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-zinc-900 hover:bg-zinc-200 dark:text-white dark:hover:bg-zinc-600 {{ focusPrimaryWithPadding() }}">
+                        <span aria-hidden="true">✕</span>
+                    </button>
+                </div>
+
+                <div class="p-4 md:p-5 space-y-3 max-h-[70vh] overflow-auto">
+                    {% set has = false %}
+                    {% for q in questionnaire %}
+                        {% set val = (q.q6 ?? '')|trim %}
+                        {% if val != '' %}
+                            {% set has = true %}
+                            <div class="rounded-lg border border-zinc-200 p-3 dark:border-zinc-600">
+                                <div class="text-xs text-zinc-500 dark:text-zinc-300 mb-1">Rekord #{{ loop.index }}</div>
+                                <div class="whitespace-pre-wrap text-zinc-800 dark:text-zinc-100">{{ val }}</div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% if not has %}<p class="text-zinc-500 dark:text-zinc-300">Brak odpowiedzi.</p>{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# ====== MODAL: Q8 ====== #}
+    <div id="modal-q8" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="modal-q8-title" aria-hidden="true"
+        class="hidden fixed inset-0 z-50 overflow-y-auto overflow-x-hidden items-center justify-center w-full">
+        <div class="relative p-4 w-full max-w-2xl max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-zinc-700">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b dark:border-zinc-600">
+                    <h3 id="modal-q8-title" tabindex="-1" class="text-xl font-semibold text-zinc-900 dark:text-white">{{ form.q8.vars.label }}</h3>
+                    <button type="button" data-modal-hide="modal-q8" aria-label="{% trans %}Zamknij okno{% endtrans %}"
+                        class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-zinc-900 hover:bg-zinc-200 dark:text-white dark:hover:bg-zinc-600 {{ focusPrimaryWithPadding() }}">
+                        <span aria-hidden="true">✕</span>
+                    </button>
+                </div>
+
+                <div class="p-4 md:p-5 space-y-3 max-h-[70vh] overflow-auto">
+                    {% set has = false %}
+                    {% for q in questionnaire %}
+                        {% set val = (q.q8 ?? '')|trim %}
+                        {% if val != '' %}
+                            {% set has = true %}
+                            <div class="rounded-lg border border-zinc-200 p-3 dark:border-zinc-600">
+                                <div class="text-xs text-zinc-500 dark:text-zinc-300 mb-1">Rekord #{{ loop.index }}</div>
+                                <div class="whitespace-pre-wrap text-zinc-800 dark:text-zinc-100">{{ val }}</div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% if not has %}<p class="text-zinc-500 dark:text-zinc-300">Brak odpowiedzi.</p>{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# ====== MODAL: Q12 ====== #}
+    <div id="modal-q12" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="modal-q12-title" aria-hidden="true"
+        class="hidden fixed inset-0 z-50 overflow-y-auto overflow-x-hidden items-center justify-center w-full">
+        <div class="relative p-4 w-full max-w-2xl max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-zinc-700">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b dark:border-zinc-600">
+                    <h3 id="modal-q12-title" tabindex="-1" class="text-xl font-semibold text-zinc-900 dark:text-white">{{ form.q12.vars.label }}</h3>
+                    <button type="button" data-modal-hide="modal-q12" aria-label="{% trans %}Zamknij okno{% endtrans %}"
+                        class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-zinc-900 hover:bg-zinc-200 dark:text-white dark:hover:bg-zinc-600 {{ focusPrimaryWithPadding() }}">
+                        <span aria-hidden="true">✕</span>
+                    </button>
+                </div>
+
+                <div class="p-4 md:p-5 space-y-3 max-h-[70vh] overflow-auto">
+                    {% set has = false %}
+                    {% for q in questionnaire %}
+                        {% set val = (q.q12 ?? '')|trim %}
+                        {% if val != '' %}
+                            {% set has = true %}
+                            <div class="rounded-lg border border-zinc-200 p-3 dark:border-zinc-600">
+                                <div class="text-xs text-zinc-500 dark:text-zinc-300 mb-1">Rekord #{{ loop.index }}</div>
+                                <div class="whitespace-pre-wrap text-zinc-800 dark:text-zinc-100">{{ val }}</div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% if not has %}<p class="text-zinc-500 dark:text-zinc-300">Brak odpowiedzi.</p>{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# ====== MODAL: Q13 ====== #}
+    <div id="modal-q13" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="modal-q13-title" aria-hidden="true"
+        class="hidden fixed inset-0 z-50 overflow-y-auto overflow-x-hidden items-center justify-center w-full">
+        <div class="relative p-4 w-full max-w-2xl max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-zinc-700">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b dark:border-zinc-600">
+                    <h3 id="modal-q13-title" tabindex="-1" class="text-xl font-semibold text-zinc-900 dark:text-white">{{ form.q13.vars.label }}</h3>
+                    <button type="button" data-modal-hide="modal-q13" aria-label="{% trans %}Zamknij okno{% endtrans %}"
+                        class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-zinc-900 hover:bg-zinc-200 dark:text-white dark:hover:bg-zinc-600 {{ focusPrimaryWithPadding() }}">
+                        <span aria-hidden="true">✕</span>
+                    </button>
+                </div>
+
+                <div class="p-4 md:p-5 space-y-3 max-h-[70vh] overflow-auto">
+                    {% set has = false %}
+                    {% for q in questionnaire %}
+                        {% set val = (q.q13 ?? '')|trim %}
+                        {% if val != '' %}
+                            {% set has = true %}
+                            <div class="rounded-lg border border-zinc-200 p-3 dark:border-zinc-600">
+                                <div class="text-xs text-zinc-500 dark:text-zinc-300 mb-1">Rekord #{{ loop.index }}</div>
+                                <div class="whitespace-pre-wrap text-zinc-800 dark:text-zinc-100">{{ val }}</div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% if not has %}<p class="text-zinc-500 dark:text-zinc-300">Brak odpowiedzi.</p>{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# ====== MODAL: Q14 ====== #}
+    <div id="modal-q14" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="modal-q14-title" aria-hidden="true"
+        class="hidden fixed inset-0 z-50 overflow-y-auto overflow-x-hidden items-center justify-center w-full">
+        <div class="relative p-4 w-full max-w-2xl max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-zinc-700">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b dark:border-zinc-600">
+                    <h3 id="modal-q14-title" tabindex="-1" class="text-xl font-semibold text-zinc-900 dark:text-white">{{ form.q14.vars.label }}</h3>
+                    <button type="button" data-modal-hide="modal-q14" aria-label="{% trans %}Zamknij okno{% endtrans %}"
+                        class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-zinc-900 hover:bg-zinc-200 dark:text-white dark:hover:bg-zinc-600 {{ focusPrimaryWithPadding() }}">
+                        <span aria-hidden="true">✕</span>
+                    </button>
+                </div>
+
+                <div class="p-4 md:p-5 space-y-3 max-h-[70vh] overflow-auto">
+                    {% set has = false %}
+                    {% for q in questionnaire %}
+                        {% set val = (q.q14 ?? '')|trim %}
+                        {% if val != '' %}
+                            {% set has = true %}
+                            <div class="rounded-lg border border-zinc-200 p-3 dark:border-zinc-600">
+                                <div class="text-xs text-zinc-500 dark:text-zinc-300 mb-1">Rekord #{{ loop.index }}</div>
+                                <div class="whitespace-pre-wrap text-zinc-800 dark:text-zinc-100">{{ val }}</div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% if not has %}<p class="text-zinc-500 dark:text-zinc-300">Brak odpowiedzi.</p>{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[role="dialog"]').forEach((modal) => {
+                let lastFocused = null;
+
+                const getFocusable = () =>
+                    modal.querySelectorAll(
+                        'a[href], button:not([disabled]), textarea, input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+                    );
+
+                const observer = new MutationObserver(() => {
+                    const visible = !modal.classList.contains('hidden');
+
+                    if (visible) {
+                        lastFocused = document.activeElement;
+
+                        const title = modal.querySelector('[id$="-title"]');
+
+                        if (title) {
+                            title.focus();
+                        } else {
+                            const focusable = getFocusable();
+
+                            if (focusable.length) {
+                                focusable[0].focus();
+                            }
+                        }
+                    } else if (lastFocused) {
+                        lastFocused.focus();
+                    }
+                });
+
+                observer.observe(modal, {
+                    attributes: true,
+                    attributeFilter: ['class']
+                });
+
+                modal.addEventListener('keydown', (e) => {
+                    if (e.key !== 'Tab') {
+                        return;
+                    }
+
+                    const focusable = [...getFocusable()].filter(el => el.offsetParent !== null);
+
+                    if (!focusable.length) {
+                        return;
+                    }
+
+                    const first = focusable[0];
+                    const last = focusable[focusable.length - 1];
+
+                    if (e.shiftKey) {
+                        if (document.activeElement === first) {
+                            e.preventDefault();
+                            last.focus();
+                        }
+                    } else {
+                        if (document.activeElement === last) {
+                            e.preventDefault();
+                            first.focus();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+{% endblock %}
+

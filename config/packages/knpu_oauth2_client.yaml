@@ -1,0 +1,29 @@
+knpu_oauth2_client:
+    clients:
+        azure_admin:
+            type: azure
+            client_id: '%env(AZURE_CLIENT_ID)%'
+            client_secret: '%env(AZURE_CLIENT_SECRET)%'
+            tenant: '%env(AZURE_TENANT)%'
+            redirect_route: admin_security_azure_check
+            default_end_point_version: '2.0'
+            scope:
+                - 'openid'
+                - 'profile'
+                - 'email'
+                - 'offline_access'
+                - 'api://%env(AZURE_APP_ID_URI)%/access_as_user'
+        azure_student:
+            type: azure
+            client_id: '%env(AZURE_CLIENT_ID)%'
+            client_secret: '%env(AZURE_CLIENT_SECRET)%'
+            tenant: '%env(AZURE_TENANT)%'
+            redirect_route: security_azure_check
+            default_end_point_version: '2.0'
+            scope:
+                - 'openid'
+                - 'profile'
+                - 'email'
+                - 'offline_access'
+                - 'api://%env(AZURE_APP_ID_URI)%/access_as_user'
+            redirect_params: { }

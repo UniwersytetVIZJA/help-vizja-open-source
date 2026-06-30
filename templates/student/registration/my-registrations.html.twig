@@ -1,0 +1,105 @@
+{% extends 'student/_layouts/after-login.html.twig' %}
+{% block title %}{% trans %}Moje zapisy na konsultacje{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block body %}
+
+    <section class="mx-auto max-w-7xl space-y-6 px-4 sm:px-6 lg:px-8">
+        <h1 id="page-title" class="wrap-break-word text-xl font-semibold md:text-2xl lg:text-3xl">
+            {% trans %}Moje zapisy na konsultacje{% endtrans %}
+        </h1>
+
+        <div class="flex flex-wrap gap-2">
+            <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_registration_menu') }}">
+                {% trans %}Wróć do Konsultacje{% endtrans %}
+            </a>
+            <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_my_registrations_archive') }}">
+                {% trans %}Archiwum{% endtrans %}
+            </a>
+        </div>
+        <div class="mx-auto max-w-7xl px-4 2xl:px-0 min-w-0">
+            <div class="gap-8 lg:flex min-w-0">
+                <!-- Right content -->
+                <div class="w-full min-w-0">
+
+                    {% if pagination is empty %}
+                        <p class="wrap-break-word text-zinc-700 dark:text-zinc-300">{% trans %}Brak zapisów.{% endtrans %}</p>
+                    {% else %}
+                        {% for reg in pagination %}
+                            <!-- Cards -->
+                            <div class="mb-4 rounded-lg bg-zinc-50 p-4 dark:bg-zinc-800 {{ borderPrimary() }}">
+                                <div class="flex flex-col gap-4 border-b border-zinc-100 pb-4 dark:border-zinc-700 sm:flex-row sm:items-start sm:justify-between">
+                                    <div class="min-w-0 space-y-3">
+
+                                        <div class="min-w-0">
+                                            <p class="wrap-break-word text-sm text-zinc-800 dark:text-zinc-400">
+                                                {% trans %}Rodzaj spotkania{% endtrans %}
+                                            </p>
+
+                                            <p class="wrap-break-word font-medium text-zinc-900 dark:text-white">
+                                                {{ reg.registration.title.value ?? '' }}
+                                            </p>
+                                        </div>
+
+                                        <div class="min-w-0">
+                                            <p class="wrap-break-word text-sm text-zinc-800 dark:text-zinc-400">
+                                                {% trans %}Specjalista{% endtrans %}
+                                            </p>
+
+                                            <div class="flex min-w-0 items-center gap-2">
+                                                <div
+                                                    class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-blue-600 text-sm font-semibold text-white dark:bg-yellow-400 dark:text-black">
+                                                    <span class="avatar-initials hidden">
+                                                        {{ reg.registration.specialist.initials }}
+                                                    </span>
+
+                                                    <img
+                                                        src="{{ path('student_ms_user_photo', { upn: reg.registration.specialist.email }) }}"
+                                                        alt="Zdjęcie specjalisty"
+                                                        class="h-10 w-10 rounded-full object-cover"
+                                                        onerror="
+                                        this.style.display='none';
+                                        this.parentElement.querySelector('.avatar-initials').classList.remove('hidden');
+                                    ">
+                                                </div>
+                                                <p class="min-w-0 wrap-break-word font-medium">
+                                                    {{ reg.registration.specialist.firstName ?? '' }} {{ reg.registration.specialist.lastName ?? '' }}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="shrink-0 self-start">
+                                        <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}"
+                                            href="{{ url('student_read_registration', { registrationId: reg.registration.id }) }}"
+                                            aria-label="Szczegóły zapisu {{ reg.registration.title.value }}, {{ reg.registration.specialist.firstName }} {{ reg.registration.specialist.lastName }}, w dniu {{ reg.registration.startsAt|date('d.m.Y') }} w godzinach {{ reg.registration.startsAt|date('H:i') }} - {{ reg.registration.endsAt|date('H:i') }}">
+                                            {% trans %}Szczegóły{% endtrans %}
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="mb-4 flex flex-col items-start sm:flex-row sm:flex-wrap">
+                                    <dl class="mt-4 flex max-w-full flex-wrap items-center text-zinc-800 dark:text-zinc-400 sm:me-8">
+                                        <dt class="me-2 wrap-break-word font-medium text-zinc-900 dark:text-white">{% trans %}Data{% endtrans %}:</dt>
+                                        <dd class="wrap-break-word">{{ reg.registration.startsAt|date('d.m.Y') }}</dd>
+                                    </dl>
+                                    <dl class="mt-4 flex max-w-full flex-wrap items-center text-zinc-800 dark:text-zinc-400 sm:me-8">
+                                        <dt class="me-2 wrap-break-word font-medium text-zinc-900 dark:text-white">{% trans %}Godzina{% endtrans %}:</dt>
+                                        <dd class="wrap-break-word">{{ reg.registration.startsAt|date('H:i') }} - {{ reg.registration.endsAt|date('H:i') }}</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

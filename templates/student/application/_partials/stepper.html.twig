@@ -1,0 +1,160 @@
+<div class="space-y-6 sm:space-y-8">
+    {% set adaptationRequired = adaptationRequired|default(false) %}
+
+    {% set formStepNumber = adaptationRequired ? 3 : 2 %}
+    {% set submitStepNumber = adaptationRequired ? 4 : 3 %}
+    {% set summaryStepNumber = adaptationRequired ? 5 : 4 %}
+
+    {% set defaultStepClasses = 'text-sm' %}
+    {% set currentStepClasses = 'text-blue-700 dark:text-blue-300 text-md' %}
+    {% set completedStepClasses = 'text-emerald-700 dark:text-emerald-300 text-sm' %}
+
+    <ol aria-label="{% trans %}Postęp składania wniosku{% endtrans %}"
+        class="bg-zinc-50 flex flex-col gap-4 mb-10 p-8 rounded-lg dark:bg-zinc-800 sm:justify-center lg:flex-row lg:gap-6 lg:space-x-8 md:items-center {{ borderPrimary() }}">
+
+        <li class="flex items-center gap-2 md:flex-1 md:flex-col md:gap-1.5 lg:flex-none"
+            {% if currentStep == 1 %}
+                aria-current="step"
+{#                aria-label="{% trans %}Obecny krok{% endtrans %}: 1. {% trans %}Wybierz rodzaj{% endtrans %}"#}
+{#            {% elseif currentStep > 1 %}#}
+{#                aria-label="{% trans %}Poprzedni krok{% endtrans %}: 1. {% trans %}Wybierz rodzaj{% endtrans %}"#}
+{#            {% else %}#}
+{#                aria-label="{% trans %}Następny krok{% endtrans %}: 1. {% trans %}Wybierz rodzaj{% endtrans %}"#}
+            {% endif %}
+        >
+            {% if currentStep > 1 %}
+                <svg class="h-5 w-5 {{ completedStepClasses }}" role="img" aria-label="{% trans %}Krok ukończony{% endtrans %}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd" />
+                </svg>
+            {% elseif currentStep == 1 %}
+                <svg class="h-7 w-7 {{ currentStepClasses }}" role="img" aria-label="{% trans %}Obecny krok{% endtrans %}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
+                    <circle cx="12" cy="12" r="4" fill="currentColor" />
+                </svg>
+            {% else %}
+                <svg class="h-5 w-5 {{ defaultStepClasses }}" role="img" aria-label="{% trans %}Następny krok{% endtrans %}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
+                </svg>
+            {% endif %}
+
+            <p class="font-medium {% if currentStep == 1 %}{{ currentStepClasses }}{% elseif currentStep > 1 %}{{ completedStepClasses }}{% else %}{{ defaultStepClasses }}{% endif %}">
+                1. {% trans %}Wybierz rodzaj{% endtrans %}
+            </p>
+        </li>
+
+        {% if adaptationRequired %}
+            <li class="flex items-center gap-2 md:flex-1 md:flex-col md:gap-1.5 lg:flex-none"
+                {% if currentStep == 2 %}
+                    aria-current="step"
+{#                    aria-label="{% trans %}Obecny krok{% endtrans %}: 2. {% trans %}Wybierz adaptację{% endtrans %}"#}
+{#                {% elseif currentStep > 2 %}#}
+{#                    aria-label="{% trans %}Poprzedni krok{% endtrans %}: 2. {% trans %}Wybierz adaptację{% endtrans %}"#}
+{#                {% else %}#}
+{#                    aria-label="{% trans %}Następny krok{% endtrans %}: 2. {% trans %}Wybierz adaptację{% endtrans %}"#}
+                {% endif %}
+            >
+                {% if currentStep > 2 %}
+                    <svg class="h-5 w-5 {{ completedStepClasses }}" role="img" aria-label="{% trans %}Krok ukończony{% endtrans %}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd" />
+                    </svg>
+                {% elseif currentStep == 2 %}
+                    <svg class="h-7 w-7 {{ currentStepClasses }}" role="img" aria-label="{% trans %}Obecny krok{% endtrans %}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
+                        <circle cx="12" cy="12" r="4" fill="currentColor" />
+                    </svg>
+                {% else %}
+                    <svg class="h-5 w-5 {{ defaultStepClasses }}" role="img" aria-label="{% trans %}Następny krok{% endtrans %}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                {% endif %}
+
+                <p class="font-medium {% if currentStep == 2 %}{{ currentStepClasses }}{% elseif currentStep > 2 %}{{ completedStepClasses }}{% else %}{{ defaultStepClasses }}{% endif %}">
+                    2. {% trans %}Podaj status{% endtrans %}
+                </p>
+            </li>
+        {% endif %}
+
+        <li class="flex items-center gap-2 md:flex-1 md:flex-col md:gap-1.5 lg:flex-none"
+            {% if currentStep == formStepNumber %}
+                aria-current="step"
+{#                aria-label="{% trans %}Obecny krok{% endtrans %}: {{ formStepNumber }}. {% trans %}Uzupełnij formularz{% endtrans %}"#}
+{#            {% elseif currentStep > formStepNumber %}#}
+{#                aria-label="{% trans %}Poprzedni krok{% endtrans %}: {{ formStepNumber }}. {% trans %}Uzupełnij formularz{% endtrans %}"#}
+{#            {% else %}#}
+{#                aria-label="{% trans %}Następny krok{% endtrans %}: {{ formStepNumber }}. {% trans %}Uzupełnij formularz{% endtrans %}"#}
+            {% endif %}
+        >
+            {% if currentStep > formStepNumber %}
+                <svg class="h-5 w-5 {{ completedStepClasses }}" role="img" aria-label="{% trans %}Krok ukończony{% endtrans %}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd" />
+                </svg>
+            {% elseif currentStep == formStepNumber %}
+                <svg class="h-7 w-7 {{ currentStepClasses }}" role="img" aria-label="{% trans %}Obecny krok{% endtrans %}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
+                    <circle cx="12" cy="12" r="4" fill="currentColor" />
+                </svg>
+            {% else %}
+                <svg class="h-5 w-5 {{ defaultStepClasses }}" role="img" aria-label="{% trans %}Następny krok{% endtrans %}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
+                </svg>
+            {% endif %}
+
+            <p class="font-medium {% if currentStep == formStepNumber %}{{ currentStepClasses }}{% elseif currentStep > formStepNumber %}{{ completedStepClasses }}{% else %}{{ defaultStepClasses }}{% endif %}">
+                {{ formStepNumber }}. {% trans %}Uzupełnij formularz{% endtrans %}
+            </p>
+        </li>
+
+        <li class="flex items-center gap-2 md:flex-1 md:flex-col md:gap-1.5 lg:flex-none"
+            {% if currentStep == submitStepNumber %}
+                aria-current="step"
+{#                aria-label="{% trans %}Obecny krok{% endtrans %}: {{ submitStepNumber }}. {% trans %}Złóż wniosek{% endtrans %}"#}
+{#            {% elseif currentStep > submitStepNumber %}#}
+{#                aria-label="{% trans %}Poprzedni krok{% endtrans %}: {{ submitStepNumber }}. {% trans %}Złóż wniosek{% endtrans %}"#}
+{#            {% else %}#}
+{#                aria-label="{% trans %}Następny krok{% endtrans %}: {{ submitStepNumber }}. {% trans %}Złóż wniosek{% endtrans %}"#}
+            {% endif %}
+        >
+            {% if currentStep > submitStepNumber %}
+                <svg class="h-5 w-5 {{ completedStepClasses }}" role="img" aria-label="{% trans %}Krok ukończony{% endtrans %}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd" />
+                </svg>
+            {% elseif currentStep == submitStepNumber %}
+                <svg class="h-7 w-7 {{ currentStepClasses }}" role="img" aria-label="{% trans %}Obecny krok{% endtrans %}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
+                    <circle cx="12" cy="12" r="4" fill="currentColor" />
+                </svg>
+            {% else %}
+                <svg class="h-5 w-5 {{ defaultStepClasses }}" role="img" aria-label="{% trans %}Następny krok{% endtrans %}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
+                </svg>
+            {% endif %}
+
+            <p class="font-medium {% if currentStep == submitStepNumber %}{{ currentStepClasses }}{% elseif currentStep > submitStepNumber %}{{ completedStepClasses }}{% else %}{{ defaultStepClasses }}{% endif %}">
+                {{ submitStepNumber }}. {% trans %}Złóż wniosek{% endtrans %}
+            </p>
+        </li>
+
+        <li class="flex items-center gap-2 md:flex-1 md:flex-col md:gap-1.5 lg:flex-none"
+            {% if currentStep >= summaryStepNumber %}
+                aria-current="step"
+{#                aria-label="{% trans %}Obecny krok{% endtrans %}: {{ summaryStepNumber }}. {% trans %}Podsumowanie{% endtrans %}"#}
+{#            {% else %}#}
+{#                aria-label="{% trans %}Następny krok{% endtrans %}: {{ summaryStepNumber }}. {% trans %}Podsumowanie{% endtrans %}"#}
+            {% endif %}
+        >
+            {% if currentStep >= summaryStepNumber %}
+                <svg class="h-5 w-5 {{ completedStepClasses }}" role="img" aria-label="{% trans %}Krok ukończony{% endtrans %}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd" />
+                </svg>
+            {% else %}
+                <svg class="h-5 w-5 {{ defaultStepClasses }}" role="img" aria-label="{% trans %}Następny krok{% endtrans %}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
+                </svg>
+            {% endif %}
+
+            <p class="font-medium {% if currentStep >= summaryStepNumber %}{{ completedStepClasses }}{% else %}{{ defaultStepClasses }}{% endif %}">
+                {{ summaryStepNumber }}. {% trans %}Podsumowanie{% endtrans %}
+            </p>
+        </li>
+    </ol>
+</div>

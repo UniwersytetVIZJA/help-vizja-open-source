@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="{{ app.request.locale|default('pl') }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% trans %}Strona główna{% endtrans %}{% endblock %}</title>
+
+    <link href="//cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet">
+    <script src="//cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    {% block stylesheets %}{% endblock %}
+</head>
+<body class="bg-white text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100">
+{% block body %}{% endblock %}
+{% block javascripts %}{% endblock %}
+</body>
+</html>
+

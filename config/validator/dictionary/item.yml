@@ -1,0 +1,7 @@
+App\Database\Entity\Dictionary\Item:
+    properties:
+        value:
+            -   NotBlank: ~
+            -   Length: { max: 255 }
+        valueKey:
+            -   Length: { max: 255 }

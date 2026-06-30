@@ -1,0 +1,205 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+{% block title %}{% trans %}Więcej o Help VIZJA i licencji{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+
+{% block body %}
+    <div class="max-w-4xl mx-auto space-y-8">
+
+        <h1 class="text-3xl font-bold text-zinc-900 dark:text-white">
+            {% trans %}O Help VIZJA{% endtrans %}
+        </h1>
+
+        <div class="space-y-4">
+            <p>
+                {% trans %}
+                    Program do zarządzania usługami Biura ds. Osób z Niepełnosprawnościami (BON)
+                    został opracowany przez Uniwersytet VIZJA na potrzeby realizacji projektu
+                    Vizja Home – Uczelnia dla wszystkich (numer projektu:
+                    FERS.03.01-IP.08-0200/24) realizowanego w ramach programu
+                    Fundusze Europejskie dla Rozwoju Społecznego 2021–2027
+                    współfinansowanego ze środków Europejskiego Funduszu Społecznego Plus.
+                {% endtrans %}
+            </p>
+
+            <p>
+                {% trans %}
+                    Program jest efektem pracy twórczej osób zatrudnionych w Uniwersytecie VIZJA
+                    zaangażowanych w realizację Projektu. Program jest utworem w rozumieniu
+                    ustawy z dnia 4 lutego 1994 r. o prawie autorskim i prawach pokrewnych
+                    objętym w całości licencją CC Uznanie autorstwa CC BY 4.0.
+                {% endtrans %}
+            </p>
+        </div>
+
+        <section aria-labelledby="technical-requirements">
+            <h2 id="technical-requirements"
+                class="text-2xl font-semibold text-zinc-900 dark:text-white">
+                {% trans %}Wymagania techniczne{% endtrans %}
+            </h2>
+
+            <p class="mt-4">
+                {% trans %}
+                    Do pełnego wykorzystania wszystkich funkcjonalności wymagane jest
+                    środowisko chmurowe Microsoft Azure. Wykorzystanie dedykowanych usług
+                    chmurowych pozwala na pełną integrację narzędzi zarządzania oraz
+                    gwarantuje najwyższy standard bezpieczeństwa.
+                {% endtrans %}
+            </p>
+        </section>
+
+        <section aria-labelledby="license">
+            <h2 id="license"
+                class="text-2xl font-semibold text-zinc-900 dark:text-white">
+                {% trans %}O licencji{% endtrans %}
+            </h2>
+
+            <div class="space-y-4 mt-4">
+                <p>
+                    {% trans %}
+                        Program objęty jest licencją CC Uznanie autorstwa CC BY 4.0.
+                        Wolno kopiować, rozprowadzać, przedstawiać i wykonywać utwór
+                        oraz opracowane na jego podstawie utwory zależne pod warunkiem
+                        wskazania autora utworu oryginalnego.
+                    {% endtrans %}
+                </p>
+
+                <p>
+                    {% trans %}Dodatkowe informacje o licencji dostępne są na{% endtrans %}
+                    <a class="{{ linkPrimary() }} {{ focusPrimary() }}" rel="noopener noreferrer" href="https://creativecommons.org/licenses/by/4.0/deed.pl">{% trans %}stronie Creative Commons{% endtrans %}.</a>
+                </p>
+
+                <p>
+                    {% trans %}Link do pełnej treści{% endtrans %}:
+                    <a
+                        href="https://creativecommons.org/licenses/by/4.0/legalcode.pl"
+                        rel="noopener noreferrer"
+                        class="{{ linkPrimary() }} {{ focusPrimary() }}"
+                    >
+                        {% trans %}licencja CC Uznanie autorstwa CC BY 4.0 w języku polskim{% endtrans %}
+                    </a>
+
+                </p>
+            </div>
+        </section>
+
+        <section aria-labelledby="authors">
+            <h2 id="authors"
+                class="text-2xl font-semibold text-zinc-900 dark:text-white">
+                {% trans %}Autorstwo{% endtrans %}
+            </h2>
+
+            <div class="space-y-2 mt-4">
+                <p><strong>{% trans %}Autorstwo:{% endtrans %}</strong> {% trans %}Uniwersytet VIZJA{% endtrans %}</p>
+                <p>{% trans %}Warszawa{% endtrans %}, 2026</p>
+
+                <p>
+                    {% trans %}
+                        Program objęty jest w całości licencją{% endtrans %}
+                        <a class="{{ linkPrimary() }} {{ focusPrimary() }}" rel="noopener noreferrer" href="https://creativecommons.org/licenses/by/4.0/">{% trans %}CC Uznanie <autorst></autorst>wa CC BY 4.0{% endtrans %}</a>
+                        {% trans %}i powstał w ramach realizacji projektu Vizja Home – Uczelnia dla wszystkich
+                        w ramach programu Fundusze Europejskie dla Rozwoju Społecznego 2021–2027
+                        współfinansowanego ze środków Europejskiego Funduszu Społecznego Plus.
+                    {% endtrans %}
+                </p>
+            </div>
+        </section>
+
+        <section aria-labelledby="project">
+            <h2 id="project"
+                class="text-2xl font-semibold text-zinc-900 dark:text-white">
+                {% trans %}O projekcie Vizja Home{% endtrans %}
+            </h2>
+
+            <div class="space-y-4 mt-4">
+                <p>
+                    {% trans %}
+                        Projekt jest realizowany przez Uniwersytet VIZJA w okresie
+                        od 01.01.2025 roku do 31.12.2028 roku zgodnie z zapisami
+                        wniosku o dofinansowanie Projektu.
+                    {% endtrans %}
+                </p>
+
+                <p>
+                    {% trans %}
+                        Jednostką realizującą projekt jest Biuro ds. Osób z Niepełnosprawnościami
+                        Uniwersytetu VIZJA.
+                    {% endtrans %}
+                </p>
+
+                <h3 class="text-xl font-semibold">
+                    {% trans %}Więcej informacji można uzyskać{% endtrans %}:
+                </h3>
+
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>
+                        {% trans %}na stronie internetowej projektu{% endtrans %}
+                        <a
+                            href="https://vizja.pl/projekty-europejskie/vizja-home-uczelnia-dla-wszystkich/"
+                            class="{{ linkPrimary() }} {{ focusPrimary() }}"
+                        >
+                            {% trans %}Vizja Home - Uczelnia dla wszystkich{% endtrans %}
+                        </a>
+                    </li>
+
+                    <li>
+                        {% trans %}
+                            w Biurze Projektu: Uniwersytet VIZJA, ul. Okopowa 59,
+                            Biuro ds. Osób z Niepełnosprawnościami, pokój 233;
+                        {% endtrans %}
+                    </li>
+
+                    <li>
+                        {% trans %}
+                            przez kontakt e-mail oraz telefoniczny.
+                        {% endtrans %}
+                    </li>
+                </ul>
+
+                <address class="border-2 not-italic rounded-lg bg-zinc-50 p-4 dark:bg-zinc-800">
+                    <p>
+                        E-mail:
+                        <a
+                            href="mailto:uczelniadostepna@vizja.pl"
+                            class="{{ linkPrimary() }} {{ focusPrimary() }}"
+                        >
+                            uczelniadostepna@vizja.pl
+                        </a>
+                    </p>
+
+                    <p>
+                        Telefon:
+                        <a
+                            href="tel:+48225365412"
+                            class="{{ linkPrimary() }} {{ focusPrimary() }}"
+                        >
+                            22 53 65 412
+                        </a>
+                    </p>
+
+                    <p>
+                        {% trans %}
+                            Kontakt bezpośredni od poniedziałku do piątku
+                            w godzinach 9:00–15:00.
+                        {% endtrans %}
+                    </p>
+                </address>
+
+                <p>
+                    {% trans %}
+                        Program Help VIZJA jest produktem wytworzonym w ramach projektu
+                        Vizja Home - Uczelnia dla wszystkich.
+                    {% endtrans %}
+                </p>
+            </div>
+        </section>
+
+    </div>
+{% endblock %}

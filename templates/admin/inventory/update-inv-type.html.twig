@@ -1,0 +1,47 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+
+{% block stylesheets %}{{ encore_entry_link_tags('admin_default') }}{% endblock %}
+{% block javascripts %}{{ encore_entry_script_tags('admin_default') }}{% endblock %}
+{% block title %}{% trans %}Edycja typu sprzętu{% endtrans %} | Admin Help VIZJA{% endblock %}
+{% block body %}
+    <h1 class="text-2xl md:text-3xl font-bold mb-4">{% trans %}Dodaj typ sprzętu{% endtrans %}</h1>
+
+    {% if item is defined %}
+        <div class="mb-4 text-sm text-zinc-600 dark:text-zinc-300">
+            {% trans %}Kategoria{% endtrans %}: <span
+                class="font-semibold text-zinc-900 dark:text-white">{{ item.value ?? item }}</span>
+        </div>
+    {% endif %}
+
+    {{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
+
+    {# Błędy ogólne #}
+    {{ form_errors(form) }}
+
+    <div class="space-y-4">
+        {# Numer seryjny #}
+        {# Typ #}
+        {% if form.type is defined %}
+            {{ form_row(form.type, {
+                row_attr: { class: 'flex flex-col' },
+                attr: { rows: 4, class: 'w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-white' }
+            }) }}
+        {% endif %}
+    </div>
+
+    <div class="mt-6 flex gap-2">
+
+        <a class="cursor-pointer {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+            {% trans %}Zapisz{% endtrans %}
+        </a>
+
+        {% if item is defined %}
+            <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}"
+                href="{{ url('admin_inventory_equipment', { item: item.id }) }}">
+                {% trans %}Anuluj{% endtrans %}
+            </a>
+        {% endif %}
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

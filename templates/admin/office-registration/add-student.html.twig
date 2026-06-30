@@ -1,0 +1,118 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+{% form_theme form 'student/_layouts/form-tailwind.html.twig' %}
+
+{% block stylesheets %}{{ encore_entry_link_tags('admin_default') }}{% endblock %}
+{% block javascripts %}{{ encore_entry_script_tags('admin_default') }}{% endblock %}
+{% block title %}{% trans %}Terminy wizyt{% endtrans %}{% endblock %}
+{% block body %}
+    <header class="mb-6 flex items-start justify-between gap-4">
+        {{ website_path([
+            { label: 'Wizyty w biurze'|trans, route: 'admin_office_registration_terms' },
+            { label: 'Szczegóły zapisu'|trans, route: 'admin_office_registration_active_reg', route_params: { id: officeRegistration.id } },
+            { label: 'Dodaj studenta'|trans },
+        ]) }}
+    </header>
+
+    {{ form_start(form, {
+        attr: {
+            class: 'space-y-8',
+            novalidate: 'novalidate',
+            role: 'form',
+            'aria-describedby': 'form_instructions'
+        }
+    }) }}
+    {# ===== Podsumowanie błędów ===== #}
+    {% set childErrors = [] %}
+    {% for child in form %}
+        {% if child.vars.errors|length %}
+            {% set childErrors = childErrors|merge([{
+                id: child.vars.id,
+                label: child.vars.label is not empty ? child.vars.label : child.vars.name|capitalize,
+                errors: child.vars.errors
+            }]) %}
+        {% endif %}
+    {% endfor %}
+    {% if form_errors(form) is not empty or childErrors is not empty %}
+        {% include '_partials/form-errors.html.twig' with { form: form, childErrors: childErrors } %}
+    {% endif %}
+    <div class="max-w-2xl space-y-4 w-full">
+
+        <div class="space-y-2">
+            <label for="student-search"
+                   class="block font-medium">
+                {% trans %}Wyszukaj studenta{% endtrans %}
+            </label>
+
+            <input
+                id="student-search"
+                type="text"
+                placeholder="{% trans %}Wpisz imię, nazwisko lub email{% endtrans %}"
+                class="w-full rounded-lg border-2 border-zinc-500 bg-white px-3 py-2
+               text-zinc-900
+               dark:border-zinc-200 dark:bg-zinc-800 dark:text-white dark:focus:border-yellow-400 {{ focusPrimaryWithPadding() }}"
+            >
+        </div>
+
+        <div id="students-field">
+            {{ form_row(form.registeredStudents) }}
+        </div>
+    </div>
+
+    <div class="gap-4 sm:flex sm:items-center">
+        <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('admin_office_registration_active_reg', { id: officeRegistration.id }) }}">
+            {% trans %}Wróć do terminu{% endtrans %}
+        </a>
+        <button class="cursor-pointer {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+            {% trans %}Zapisz{% endtrans %}
+        </button>
+    </div>
+    {{ form_end(form) }}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('student-search');
+            const field = document.getElementById('students-field');
+
+            if (!searchInput || !field) {
+                return;
+            }
+
+            const select = field.querySelector('select');
+
+            if (select) {
+                const originalOptions = Array.from(select.options).map((option) => option.cloneNode(true));
+
+                searchInput.addEventListener('input', () => {
+                    const query = searchInput.value.trim().toLowerCase();
+
+                    select.innerHTML = '';
+
+                    originalOptions.forEach((option) => {
+                        if (!query || option.text.toLowerCase().includes(query)) {
+                            select.appendChild(option.cloneNode(true));
+                        }
+                    });
+                });
+
+                return;
+            }
+
+            const items = Array.from(field.querySelectorAll('label')).map((label) => {
+                const wrapper = label.closest('div') || label.parentElement;
+
+                return {
+                    wrapper,
+                    text: label.textContent.trim().toLowerCase()
+                };
+            });
+
+            searchInput.addEventListener('input', () => {
+                const query = searchInput.value.trim().toLowerCase();
+
+                items.forEach((item) => {
+                    item.wrapper.style.display = !query || item.text.includes(query) ? '' : 'none';
+                });
+            });
+        });
+    </script>
+{% endblock %}

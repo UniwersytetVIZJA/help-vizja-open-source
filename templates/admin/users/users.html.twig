@@ -1,0 +1,155 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+{% block title %}{% trans %}Pracownicy{% endtrans %} | Admin Help VIZJA{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block body %}
+    {{ website_path([
+        { label: 'Ustawienia'|trans, route: 'admin_settings' },
+        { label: 'Pracownicy'|trans },
+    ]) }}
+
+    <div class="p-4">
+        <!-- Nagłówek -->
+        <div class="flex items-center gap-4 mb-4">
+            <h1 class="text-2xl font-bold text-zinc-800 dark:text-white">
+                {% trans %}Lista użytkowników{% endtrans %}
+            </h1>
+            <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                href="{{ url('admin_users_create') }}">
+                {% trans %}Dodaj użytkownika{% endtrans %}
+            </a>
+        </div>
+    </div>
+
+    <div class="mb-6 max-w-200">
+        <form
+            method="get"
+            action="{{ path('admin_users') }}"
+            class="space-y-2"
+        >
+            <label
+                for="user-search"
+                class="mb-2 block font-semibold text-zinc-900 dark:text-white"
+            >
+                {% trans %}Szukaj użytkownika{% endtrans %}
+            </label>
+
+            <div class="relative">
+                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <svg class="h-5 w-5 text-zinc-500 dark:text-zinc-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                    </svg>
+                </div>
+
+                <input
+                    id="user-search"
+                    name="user"
+                    type="search"
+                    value="{{ filter.user ?? '' }}"
+                    placeholder="{% trans %}Wpisz imię, nazwisko lub adres e-mail…{% endtrans %}"
+                    class="w-full rounded-xl
+                       border-2 border-zinc-500 dark:border-zinc-400
+                       bg-white dark:bg-zinc-900
+                       py-2.5 pl-10 pr-4
+                       text-sm text-zinc-900 dark:text-white
+                       placeholder-zinc-500 dark:placeholder-zinc-400
+                       {{ focusPrimaryWithPadding() }}"
+                >
+            </div>
+        </form>
+    </div>
+
+
+    {% for user in users %}
+        <ul class="max-w-2xl divide-y divide-default">
+            <li class="py-3 pb-0 sm:pt-4">
+                <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                    <div
+                        class="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-semibold overflow-hidden dark:bg-yellow-400 dark:text-black">
+                        <span class="avatar-initials hidden">
+                        {{ user.initials }}
+                        </span>
+                        <img
+                            src="{{ path('admin_ms_user_photo', { upn: user.email }) }}"
+                            alt="{% trans %}Zdjęcie profilowe{% endtrans %}"
+                            class="rounded-full w-12 h-12"
+                            onerror=
+                            "this.style.display='none';
+                            this.parentElement.querySelector('.avatar-initials').classList.remove('hidden');"
+                        >
+
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-heading truncate">
+                            {{ user.firstName }} {{ user.lastName }}
+                        </p>
+                        <p class="text-sm text-body truncate">
+                            {{ user.email }}
+                        </p>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-heading truncate">
+                            {% if user.isActive == false %}
+                                <span
+                                    class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-200">
+                                    KONTO ZABLOKOWANE
+                                </span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="inline-flex items-center text-base font-semibold text-heading">
+                        <div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-4">
+
+                            <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                                href="{{ url('admin_user_edit', {id: user.id}) }}">
+                                {% trans %}Edytuj{% endtrans %}
+                            </a>
+
+                            {% set formId  = 'delete-user-form-' ~ user.id %}
+                            {% set modalId = 'deleteAlertModal-' ~ user.id %}
+
+                            <form
+                                id="{{ formId }}"
+                                method="post"
+                                action="{{ path('admin_user_delete', {id: user.id}) }}"
+                                style="display:inline"
+                            >
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete_user_' ~ user.id) }}">
+
+                                <button
+                                    type="button"
+                                    data-modal-target="{{ modalId }}"
+                                    data-modal-toggle="{{ modalId }}"
+                                    class="{{ buttonDelete() }} {{ focusPrimaryWithPadding() }}"
+                                >
+                                    Usuń
+                                </button>
+
+                            </form>
+
+                            {% include 'admin/_components/confirm-modal.html.twig' with {
+                                modalId: modalId,
+                                formId: formId,
+                                title: 'Potwierdź usunięcie użytkownika'|trans,
+                                message: 'Na pewno chcesz usunąć użytkownika <br><strong>'|trans ~ user.firstName ~ ' ' ~ user.lastName ~ '</strong>?',
+                                warningText: 'Usunięcie użytkownika jest nieodwracalne.'|trans,
+                                confirmLabel: 'Usuń'|trans,
+                                cancelLabel: 'Anuluj'|trans
+                            } %}
+
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 border-t border-zinc-100 dark:border-zinc-800"></div>
+            </li>
+        </ul>
+    {% endfor %}
+    {% include '_paginator/paginator.html.twig' with { pagination: pagination } %}
+{% endblock %}

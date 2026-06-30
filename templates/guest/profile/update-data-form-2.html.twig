@@ -1,0 +1,61 @@
+{% extends 'guest/_layouts/after-login.html.twig' %}
+{% form_theme form 'student/_layouts/form-tailwind.html.twig' %}
+{% block title %}{% trans %}Aktualizacja danych{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+{% block body %}
+    <h1 id="page-title" class="font-semibold text-xl md:text-2xl lg:text-3xl mb-5">
+        {% trans %}Uzupełnianie danych{% endtrans %}
+    </h1>
+
+
+    {{ form_start(form, {'attr': { 'novalidate': 'novalidate' }}) }}
+
+
+    {# Podsumowanie błędów #}
+    {% set hasFormErrors = (form_errors(form)|trim) is not empty %}
+    {% set childErrors = [] %}
+
+    {% for child in form %}
+        {% if child is defined and child.vars is defined and child.vars.errors|length > 0 %}
+            {% set labelTxt = (child.vars.label is not empty) ? child.vars.label : (child.vars.name|capitalize) %}
+            {% set childErrors = childErrors|merge([{
+                id: child.vars.id,
+                label: labelTxt,
+                errors: child.vars.errors
+            }]) %}
+        {% endif %}
+    {% endfor %}
+
+    {% if hasFormErrors or childErrors is not empty %}
+        {% include '_partials/form-errors.html.twig' with { form: form, childErrors: childErrors } %}
+    {% endif %}
+
+    <div class="max-w-2xl space-y-4 w-full">
+        <div>
+            <div class="mb-6">
+                {% include 'student/_partials/phone.html.twig' %}
+            </div>
+
+        </div>
+
+        {{ form_rest(form) }}
+
+        <div class="md:col-span-5 flex items-center justify-start gap-2 pt-1">
+            <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_profile_index') }}">
+                {% trans %}Wróć do Profilu{% endtrans %}
+            </a>
+            <button type="submit" class="cursor-pointer {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}">
+                {% trans %}Zapisz{% endtrans %}
+            </button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'student/_layouts/after-login.html.twig' %}
+{% block title %}{% trans %}Archiwalne wizyty w BON{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+
+{% block body %}
+
+    <section class="bg-white py-8 antialiased dark:bg-zinc-900 md:py-16">
+        <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+            <h1 class="mb-4 text-xl font-semibold text-zinc-900 dark:text-white sm:text-2xl md:mb-8">{% trans %}Archiwalne wizyty w BON{% endtrans %}</h1>
+            <div class="gap-8 lg:flex">
+                <!-- Right content -->
+                <div class="w-full">
+
+                    <div class="py-4">
+                        <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                            href="{{ path('student_registration_center_my_registrations') }}">
+                            {% trans %}Aktywne wizyty{% endtrans %}
+                        </a>
+                    </div>
+                    {% for registration in registrations %}
+                        <!-- Cards -->
+                        <div class="mb-4 rounded-lg bg-zinc-50 p-4 dark:bg-zinc-800 {{ borderPrimary() }}">
+{#                            <div class="items-start justify-between border-b border-zinc-100 pb-4 dark:border-zinc-700 sm:flex">#}
+{#                                <div class="mb-4 sm:mb-0">#}
+{#                                    <h3 class="dark:text-gry-400 mb-2 text-zinc-800">#}
+{#                                        {% trans %}Rodzaj spotkania{% endtrans %}:#}
+{#                                        <a href="#" class="font-medium text-zinc-900 hover:underline dark:text-white">Wizyta w biurze BON</a>#}
+{#                                    </h3>#}
+{#                                </div>#}
+{#                            </div>#}
+                            <div class="mb-4 items-center sm:flex sm:flex-wrap xl:flex">
+                                <dl class="mt-4 flex items-center text-zinc-800 dark:text-zinc-400 sm:me-8">
+                                    <dt class="me-2 font-medium text-zinc-900 dark:text-white">{% trans %}Data{% endtrans %}:</dt>
+                                    <dd>{{ registration.startAt|date('d.m.Y') }}</dd>
+                                </dl>
+                                <dl class="mt-4 flex items-center text-zinc-800 dark:text-zinc-400 sm:me-8">
+                                    <dt class="me-2 font-medium text-zinc-900 dark:text-white">{% trans %}Godzina{% endtrans %}:</dt>
+                                    <dd>{{ registration.startAt|date('H:i') }} - {{ registration.endAt|date('H:i') }}</dd>
+                                </dl>
+
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

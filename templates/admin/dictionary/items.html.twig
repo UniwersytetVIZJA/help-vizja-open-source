@@ -1,0 +1,146 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+{% block title %}{% trans %}Wartości słownikowe{% endtrans %}{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block body %}
+    {{ website_path([
+        { label: 'Ustawienia'|trans, route: 'admin_settings' },
+        { label: 'Słownik'|trans, route: 'admin_dictionaries' },
+        { label: 'Wartości'|trans },
+    ]) }}
+    <div class="bg-white overflow-hidden relative dark:bg-zinc-800 sm:rounded-lg">
+        <div class="flex flex-col justify-between p-4 space-y-3 md:flex-row md:space-x-4 md:space-y-0">
+            <div class="lg:w-1/2 md:w-full flex items-center justify-items-center mb-4">
+                <div>
+                    <h1 class="font-bold me-4 text-2xl">{% trans %}Wartości{% endtrans %}: {{ dictionary.name.value }}</h1>
+                </div>
+                <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('admin_create_dictionary_item', { dictionaryId: dictionaryId }) }}">
+                    {% trans %}Dodaj{% endtrans %}
+                </a>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto border">
+            <table
+                class="w-full text-left text-sm text-zinc-700 dark:text-zinc-200"
+                aria-describedby="dictionary-items-table-description"
+            >
+                <caption class="sr-only">
+                    {% trans %}Tabela wartości słownikowych{% endtrans %}: {{ dictionary.name.value }}
+                </caption>
+
+                <p id="dictionary-items-table-description" class="sr-only">
+                    {% trans %}Tabela zawiera listę wartości słownikowych, ich tłumaczenia, wartości dodatkowe, kolejność wyświetlania oraz informację, czy dana wartość jest aktywna.{% endtrans %}
+                </p>
+
+                <thead class="bg-zinc-100 text-sm text-zinc-900 dark:bg-zinc-700 dark:text-white">
+                    <tr>
+                        <th scope="col" class="px-4 py-3">
+                            {% trans %}Lp.{% endtrans %}
+                        </th>
+                        <th scope="col" class="px-4 py-3">
+                            {% trans %}Wartość{% endtrans %}
+                        </th>
+                        <th scope="col" class="px-4 py-3">
+                            {% trans %}Wartość angielska{% endtrans %}
+                        </th>
+                        <th scope="col" class="px-4 py-3">
+                            {% trans %}Wartość dodatkowa{% endtrans %}
+                        </th>
+                        <th scope="col" class="px-4 py-3">
+                            {% trans %}Wartość dodatkowa - angielska{% endtrans %}
+                        </th>
+                        <th scope="col" class="px-4 py-3">
+                            {% trans %}Wartość dodatkowa 2{% endtrans %}
+                        </th>
+                        <th scope="col" class="px-4 py-3">
+                            {% trans %}Wartość dodatkowa 2 - angielska{% endtrans %}
+                        </th>
+                        <th scope="col" class="px-4 py-3">
+                            {% trans %}Kolejność{% endtrans %}
+                        </th>
+                        <th scope="col" class="px-4 py-3">
+                            {% trans %}Status{% endtrans %}
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for item in pagination %}
+                        {% set rowNumber = pagination.getPaginationData.firstItemNumber + loop.index - 1 %}
+
+                        <tr class="border-b hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-700">
+                            <td class="w-[75px] px-4 py-3">
+                                {{ rowNumber }}.
+                            </td>
+
+                            <th scope="row" class="min-w-40 px-4 py-3 font-medium text-zinc-900 dark:text-white">
+                                <a
+                                    class="block rounded-lg underline underline-offset-4 hover:no-underline {{ focusPrimaryWithPadding() }}"
+                                    href="{{ url('admin_update_dictionary_item', { dictionaryItemId: item.id }) }}"
+                                >
+                                    {{ item.value|default('—') }}
+                                    <span class="sr-only">
+                                - {% trans %}edytuj wartość słownikową{% endtrans %}: {{ item.value|default('') }}
+                            </span>
+                                </a>
+                            </th>
+
+                            <td class="px-4 py-3" lang="en">
+                                {{ item.valueEnglish|default('—') }}
+                            </td>
+
+                            <td class="px-4 py-3">
+                                {{ item.valueKey|default('—') }}
+                            </td>
+
+                            <td class="px-4 py-3" lang="en">
+                                {{ item.valueKeyEng|default('—') }}
+                            </td>
+
+                            <td class="px-4 py-3">
+                                {{ item.valueKey2|default('—') }}
+                            </td>
+
+                            <td class="px-4 py-3" lang="en">
+                                {{ item.valueKey2Eng|default('—') }}
+                            </td>
+
+                            <td class="px-4 py-3">
+                                {{ item.displayOrder|default('—') }}
+                            </td>
+
+                            <td class="px-4 py-3">
+                                {% if item.isActive == 1 %}
+                                    <span
+                                        class="inline-flex items-center rounded-full border border-emerald-700 bg-emerald-100 px-2.5 py-1 text-sm font-semibold text-emerald-900 dark:border-emerald-300 dark:bg-emerald-900 dark:text-emerald-100">
+                                {% trans %}Aktywna{% endtrans %}
+                            </span>
+                                {% else %}
+                                    <span
+                                        class="inline-flex items-center rounded-full border border-red-700 bg-red-100 px-2.5 py-1 text-sm font-semibold text-red-900 dark:border-red-300 dark:bg-red-900 dark:text-red-100">
+                                {% trans %}Nieaktywna{% endtrans %}
+                            </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="9" class="px-4 py-6 text-center text-zinc-700 dark:text-zinc-200">
+                                {% trans %}Brak wartości słownikowych do wyświetlenia.{% endtrans %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% include '_paginator/paginator.html.twig' with { pagination: pagination } %}
+    </div>
+{% endblock %}

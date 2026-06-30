@@ -1,0 +1,88 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+{% form_theme form 'student/_layouts/form-tailwind.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block title %}{% trans %}Edycja ogłoszenia{% endtrans %}{% endblock %}
+
+{% block body %}
+    <div class="rounded-2xl p-6">
+        <div class="flex items-start justify-between mb-4">
+            <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">
+                {% trans %}Edycja ogłoszenia{% endtrans %}
+            </h1>
+        </div>
+
+        {{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
+
+        {# Sekcja danych rejestracji #}
+        <div class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-800 mb-6">
+            <h2 class="text-xl font-semibold text-zinc-900 dark:text-white mb-4">{% trans %}Dane zapisu{% endtrans %}</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            </div>
+
+            {% if form.comment is defined %}
+                <div class="mt-4">
+                    {{ form_row(form.comment, {
+                        label: 'Komentarz wewnętrzny',
+                        attr: { placeholder: 'Uwagi lub informacje administracyjne' }
+                    }) }}
+                </div>
+            {% endif %}
+
+            <div class="max-w-2xl space-y-4 w-full">
+
+                {{ form_row(form.title) }}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {{ form_row(form.startsAt) }}
+                    {{ form_row(form.expiresAt) }}
+                </div>
+                {{ form_row(form.published) }}
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-amber-300 bg-amber-50 p-6 shadow-sm dark:border-amber-600 dark:bg-amber-900/20 mb-6">
+            {{ form_row(form.description, {
+                attr: {
+                    placeholder: 'https://teams.microsoft.com/l/meetup-join/...',
+                    class: 'text-sm'
+                },
+            }) }}
+        </div>
+
+        <div class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-800 mb-6">
+            <h2 class="text-xl font-semibold text-zinc-900 dark:text-white mb-4">{% trans %}Metadane{% endtrans %}</h2>
+            <dl class="text-sm text-zinc-600 dark:text-zinc-300 space-y-2">
+                <div><span class="font-medium">{% trans %}ID ogłoszenia:{% endtrans %}</span> {{ announcement.id }}</div>
+                {% if registration.createdAt is defined %}
+                    <div><span class="font-medium">{% trans %}Utworzono:{% endtrans %}</span> {{ announcement.createdAt|date('d.m.Y H:i') }}</div>
+                {% endif %}
+                {% if registration.updatedAt is defined %}
+                    <div><span class="font-medium">{% trans %}Ostatnia edycja:{% endtrans %}</span> {{ announcement.updatedAt|date('d.m.Y H:i') }}</div>
+                {% endif %}
+            </dl>
+        </div>
+
+        {# Akcje #}
+        <div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-4">
+            <button class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+                {% trans %}Zapisz{% endtrans %}
+            </button>
+
+            <a
+                class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}"
+                href="{{path('admin_announcement') }}"
+            >
+                {% trans %}Anuluj{% endtrans %}
+            </a>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

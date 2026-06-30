@@ -1,0 +1,53 @@
+{% extends 'student/_layouts/after-login.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+{% block title %}{% trans %}Składanie wniosku - krok 4{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block body %}
+    <section class="space-y-8">
+        <h1 id="page-title" class="wrap-break-word text-xl font-semibold md:text-2xl lg:text-3xl">
+            {% trans %}Złóż wniosek{% endtrans %}
+        </h1>
+
+        {% set visibleStep = adaptationRequired ? 5 : 4 %}
+
+        {% include 'student/application/_partials/stepper.html.twig' with {
+            currentStep: visibleStep,
+            adaptationRequired: adaptationRequired
+        } %}
+
+        <div class="space-y-8">
+            <h2 class="flex items-center wrap-break-word font-medium text-md md:text-lg lg:text-xl">
+                {% trans %}Krok{% endtrans %} {{ visibleStep }}. {% trans %}Wniosek złożony.{% endtrans %}
+            </h2>
+
+            <p class="wrap-break-word">
+                {% trans %}Dziękujemy za złożenie wniosku. Wkrótce zostanie on rozpatrzony przez pracownika. Proszę śledzić status wniosku.{% endtrans %}
+            </p>
+
+            <article class="w-full max-w-full rounded-lg bg-zinc-50 p-4 space-y-4 dark:bg-zinc-800 {{ borderPrimary() }}">
+                <h3 class="wrap-break-word text-md lg:text-xl">
+                    {% trans %}Ankieta{% endtrans %}
+                </h3>
+                <p class="wrap-break-word">
+                    {% trans %}Wypełnij szybką i anonimową ankietę. Chcemy się dowiedzieć, czy złożenie wniosku było dla Ciebie łatwe{% endtrans %}.
+                </p>
+                <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_questionnaire') }}">
+                    {% trans %}Wypełnij ankietę{% endtrans %}
+                </a>
+            </article>
+
+            <div class="mt-10 flex flex-wrap gap-2">
+                <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_application_index') }}">
+                    {% trans %}Wróć do Wniosków{% endtrans %}
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

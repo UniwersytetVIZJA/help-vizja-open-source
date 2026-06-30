@@ -1,0 +1,39 @@
+# Full configuration reference available at:
+# https://damienharper.github.io/auditor-docs/docs/auditor-bundle/configuration/reference.html
+dh_auditor:
+    enabled: true
+    timezone: 'Europe/Warsaw'
+
+    providers:
+        doctrine:
+            table_prefix: 'changelog_'
+            table_suffix: '_audit'
+
+            # WYŁĄCZ globalnie zbędne kolumny
+            #            ignored_columns: [ 'createdAt', 'updatedAt', 'password', 'plainPassword' ]
+
+            # Encje, które mają być audytowane
+            entities:
+                App\Database\Entity\Announcements: ~
+                App\Database\Entity\Application: ~
+                App\Database\Entity\Application\EducationalProcess: ~
+                App\Database\Entity\Application\LanguageInterpreter: ~
+                App\Database\Entity\Application\SpecialisedEquipment: ~
+                App\Database\Entity\Application\TeachingAssistant: ~
+                App\Database\Entity\Faq: ~
+                App\Database\Entity\File: ~
+                App\Database\Entity\Inventory: ~
+                App\Database\Entity\InventoryType: ~
+                App\Database\Entity\OfficeRegistration: ~
+                App\Database\Entity\OfficeRegistrationRegisteredStudent: ~
+                App\Database\Entity\RegisteredStudent: ~
+                App\Database\Entity\Registration: ~
+                App\Database\Entity\Student: ~
+                App\Database\Entity\User: ~
+
+
+
+            
+            # włącz przeglądarkę historii pod /audit
+            viewer: true
+

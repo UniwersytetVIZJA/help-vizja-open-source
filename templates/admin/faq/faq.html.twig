@@ -1,0 +1,170 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+{% block stylesheets %}{{ encore_entry_link_tags('admin_default') }}{% endblock %}
+{% block javascripts %}{{ encore_entry_script_tags('admin_default') }}{% endblock %}
+{% block title %}{% trans %}FAQ{% endtrans %}| Help VIZJA{% endblock %}
+
+{% block body %}
+    {{ website_path([
+        { label: 'Ustawienia'|trans, route: 'admin_settings' },
+        { label: 'FAQ'|trans, },
+    ]) }}
+
+    <section class="space-y-6 max-w-7xl mx-5">
+
+        <h1 id="page-title" class="font-semibold text-xl md:text-2xl lg:text-3xl">
+            {% trans %}Lista pytań i odpowiedzi{% endtrans %}
+        </h1>
+
+        <div class="mt-2 flex flex-col sm:flex-row sm:items-start gap-4">
+            {% if faq is not empty %}
+                <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('admin_faq_create') }}">
+                    {% trans %}Utwórz nowe pytanie{% endtrans %}
+                </a>
+            {% endif %}
+        </div>
+
+        {% if faq is empty %}
+            {{ empty_state(
+                'Brak pytań i odpowiedzi'|trans,
+                'Utwórz nowe pytania i odpowiedzi na nie, aby się tutaj pojawiły'|trans,
+                {
+                    action_route: 'admin_faq_create',
+                    action_route_params: {},
+                    action_label: 'Utwórz nowe pytanie'|trans
+                }
+            ) }}
+        {% else %}
+
+            {# FILTRY #}
+            <form method="get"
+                action="{{ path('admin_faq') }}"
+                class="grid grid-cols-1 md:grid-cols-5 gap-3 p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+
+                {# Pytanie #}
+                <div class="md:col-span-3">
+                    <label
+                        for="f-question"
+                        class="mb-2 block text-sm font-medium text-zinc-900 dark:text-white"
+                    >
+                        {% trans %}Pytanie{% endtrans %}
+                    </label>
+
+                    <input
+                        id="f-question"
+                        name="question"
+                        type="text"
+                        value="{{ filters.question ?? '' }}"
+                        class="w-full rounded-lg border-2 border-zinc-500 bg-white px-3 py-2 text-zinc-900
+               dark:border-zinc-500 dark:bg-zinc-800 dark:text-white
+               {{ focusPrimaryWithPadding() }}"
+                    />
+                </div>
+
+                {# Język pytania #}
+                <div class="md:col-span-2">
+                    <label
+                        for="f-language"
+                        class="mb-2 block text-sm font-medium text-zinc-900 dark:text-white"
+                    >
+                        {% trans %}Język pytania{% endtrans %}
+                    </label>
+
+                    <select
+                        id="f-language"
+                        name="language"
+                        class="w-full rounded-lg border-2 border-zinc-500 bg-white px-3 py-2 text-zinc-900
+               dark:border-zinc-500 dark:bg-zinc-800 dark:text-white
+               {{ focusPrimaryWithPadding() }}"
+                    >
+                        <option value="">— {% trans %}dowolny{% endtrans %} —</option>
+
+                        {% for lang in faqEnum %}
+                            <option
+                                value="{{ lang.value }}"
+                                {{ (filters.language ?? '') == lang.value ? 'selected="selected"' : '' }}
+                            >
+                                {{ lang.value == 'pl' ? 'Polski' : (lang.value == 'en' ? 'English' : lang.value) }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {# AKCJE #}
+                <div class="md:col-span-5 flex items-center justify-end gap-2 pt-1">
+                    <button class="cursor-pointer {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+                        {% trans %}Szukaj{% endtrans %}
+                    </button>
+                    <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('admin_faq') }}">
+                        {% trans %}Wyczyść{% endtrans %}
+                    </a>
+                </div>
+            </form>
+
+            {# LISTA #}
+            <div class="space-y-4">
+                {% for f in faq %}
+                    <div class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6">
+                        <div class="flex items-center mb-4">
+                            <h2 class="text-lg font-semibold text-zinc-900 dark:text-white">
+                                {{ f.question }}
+                            </h2>
+                        </div>
+
+                        <ul class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                            <li class="flex justify-between py-3 gap-6">
+                                <span class="text-zinc-600 dark:text-zinc-400">{% trans %}Odpowiedź{% endtrans %}</span>
+                                <span class="font-medium text-zinc-900 dark:text-white text-right">
+                                    {{ f.answer }}
+                                </span>
+                            </li>
+
+                            <li class="flex justify-between py-3 gap-6">
+                                <span class="text-zinc-600 dark:text-zinc-400">{% trans %}Język pytania{% endtrans %}</span>
+                                <span class="font-medium text-zinc-900 dark:text-white">
+                                    {{ f.language.value }}
+                                </span>
+                            </li>
+                        </ul>
+
+                        <div class="mt-4 flex flex-wrap items-center gap-2">
+                            <a class="{{ buttonPrimary() }} dark:border {{ focusPrimaryWithPadding() }}"
+                                href="{{ url('admin_faq_update', { id: f.id }) }}">
+                                {% trans %}Edytuj{% endtrans %}
+                            </a>
+
+                            {% set formId  = 'delete-faq-form-' ~ f.id %}
+                            {% set modalId = 'deleteFaqModal-' ~ f.id %}
+
+                            <form id="{{ formId }}"
+                                method="post"
+                                action="{{ path('admin_faq_delete', { id: f.id }) }}"
+                                class="inline">
+                                <button type="button"
+                                    data-modal-target="{{ modalId }}"
+                                    data-modal-toggle="{{ modalId }}"
+                                    class="{{ buttonDelete() }}">
+                                    {% trans %}Usuń{% endtrans %}
+                                </button>
+                            </form>
+
+                            {% include 'admin/_components/confirm-modal.html.twig' with {
+                                modalId: modalId,
+                                formId: formId,
+                                title: 'Usunąć pytanie?'|trans,
+                                message: 'Na pewno chcesz usunąć te pytanie?'|trans,
+                                warningText: 'Usunięcie pytania jest nieodwracalne'|trans,
+                                confirmLabel: 'Usuń'|trans,
+                                cancelLabel: 'Anuluj'|trans
+                            } %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+
+        {% endif %}
+    </section>
+
+    {% include '_paginator/paginator.html.twig' with { pagination: pagination } %}
+
+{% endblock %}

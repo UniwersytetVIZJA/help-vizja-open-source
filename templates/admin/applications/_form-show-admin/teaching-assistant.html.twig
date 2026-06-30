@@ -1,0 +1,15 @@
+<ul class="divide-y">
+    <li class="flex justify-between py-3">
+        <span class="text-gray-600 dark:text-gray-400">{% trans %}Imię i nazwisko asystenta{% endtrans %}</span>
+        <span class="font-medium text-gray-900 dark:text-white">{{ application.assistant }}</span>
+    </li>
+
+    <li class="flex justify-between py-3">
+        <span class="text-gray-600 dark:text-gray-400">{% trans %}Zadania{% endtrans %}</span>
+        <span class="font-medium text-gray-900 dark:text-white">{{ application.assistantTask }}</span>
+    </li>
+    <li class="flex justify-between py-3">
+        <span class="text-gray-600 dark:text-gray-400">{% trans %}Liczba godzin{% endtrans %}</span>
+        <span class="font-medium text-gray-900 dark:text-white">{{ application.assistantHours }}</span>
+    </li>
+</ul>

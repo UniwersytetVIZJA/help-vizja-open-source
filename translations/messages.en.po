@@ -1,0 +1,3710 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+
+msgid "vich_uploader.form_label.delete_confirm"
+msgstr "delete"
+
+msgid "vich_uploader.link.download"
+msgstr "download"
+
+msgid "Szukaj modułu"
+msgstr "Search module"
+
+msgid "Nie znaleziono obiektu"
+msgstr "Object not found"
+
+msgid "Wartość"
+msgstr "Value"
+
+msgid "Wartość dodatkowa"
+msgstr "Added value"
+
+msgid "Lista wszystkich wniosków"
+msgstr "List of all applications"
+
+msgid "Pulpit"
+msgstr "Dashboard"
+
+msgid "Wpisz nazwę..."
+msgstr "Enter the name..."
+
+msgid "Wpisz szukaną frazę..."
+msgstr "Enter the phrase you are searching for..."
+
+msgid "Lp."
+msgstr "No."
+
+msgid "Nazwa"
+msgstr "Name"
+
+msgid "Liczba wartości"
+msgstr "Number of values"
+
+msgid "Wartości"
+msgstr "Values"
+
+msgid "Dodaj"
+msgstr "Add"
+
+msgid "Zapisz"
+msgstr "Save"
+
+msgid "Anuluj i wróć do listy"
+msgstr "Cancel and return to the list"
+
+msgid "Utwórz"
+msgstr "Create"
+
+msgid "Wróc do listy"
+msgstr "Back to list"
+
+msgid "Lista zapisów"
+msgstr "List of registrations"
+
+msgid "Zaloguj się"
+msgstr "Log in"
+
+msgid "Logo Uniwersytetu Vizja"
+msgstr "VIZJA University's logo"
+
+msgid "Zaloguj się przez Microsoft Teams"
+msgstr "Log in via Microsoft Teams"
+
+msgid "Błąd"
+msgstr "Error"
+
+msgid "Użytkownicy"
+msgstr "Users"
+
+msgid "Mój profil"
+msgstr "My profile"
+
+msgid "Wyloguj"
+msgstr "Log out"
+
+msgid "Otwórz nawigację"
+msgstr "Open navigation"
+
+msgid "Administracja &mdash; Centrum Wsparcia i Rozwoju"
+msgstr "Administration &mdash; Support and Development Centre"
+
+msgid "Nawigacja"
+msgstr "Navigation"
+
+msgid "Mój kalendarz"
+msgstr "My calendar"
+
+msgid "Zapisy"
+msgstr "Registrations"
+
+msgid "Wnioski"
+msgstr "Applications"
+
+msgid "Ustawienia"
+msgstr "Settings"
+
+msgid "Wyniki"
+msgstr "Results"
+
+msgid "z"
+msgstr "from"
+
+msgid "Poprzednia"
+msgstr "Previous"
+
+msgid "Następna"
+msgstr "Next"
+
+msgid "Krok"
+msgstr "Step"
+
+msgid "Wybierz rodzaj"
+msgstr "Select type"
+
+msgid "Przejdź do następnego kroku"
+msgstr "Proceed to the next step"
+
+msgid "Wróć do listy"
+msgstr "Back to list"
+
+msgid "Uzupełnij formularz"
+msgstr "Fill in the form"
+
+msgid "Wróć do kroku"
+msgstr "Return to step"
+
+msgid "Lista moich wniosków"
+msgstr "List of my applications"
+
+msgid "Sprawdź dane i wyślij wniosek"
+msgstr "Check the details and submit your application"
+
+msgid "Wyślij wniosek"
+msgstr "Submit your application"
+
+msgid "Krok 4: Podsumowanie"
+msgstr "Step 4: Summary"
+
+msgid "Status wniosku"
+msgstr "Application status"
+
+msgid "Nowy"
+msgstr "New"
+
+msgid "Dziękujemy za złożenie wniosku. Wkrótce zostanie on rozpatrzony przez pracownika BON. Proszę śledzić status wniosku."
+msgstr "Thank you for submitting your application. It will be reviewed by a BON employee shortly. Please track the status of your application."
+
+msgid "Możesz wrócić do listy wniosków lub przejść do szczegółów później."
+msgstr "You can return to the list of applications or go to the details later."
+
+msgid "Złóż wniosek"
+msgstr "Submit your application"
+
+msgid "Podsumowanie"
+msgstr "Summary"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Hasło"
+msgstr "Password"
+
+msgid "Zapamiętaj mnie"
+msgstr "Remember me"
+
+msgid "Uniwersytet VIZJA &mdash; Centrum Wsparcia i Rozwoju"
+msgstr "VIZJA University &mdash; Support and Development Centre"
+
+msgid "Ogłoszenia"
+msgstr "Announcements"
+
+msgid "Najnowsze ogłoszenia"
+msgstr "Latest announcements"
+
+msgid "Utwórz nowe ogłoszenie"
+msgstr "Create a new announcement"
+
+msgid "Brak ważnych ogłoszeń"
+msgstr "No current announcements"
+
+msgid "Data"
+msgstr "Date"
+
+msgid "Godzina"
+msgstr "Hour"
+
+msgid "Ważne do"
+msgstr "Valid until"
+
+msgid "Autor"
+msgstr "Author"
+
+msgid "Czytaj więcej"
+msgstr "Read more"
+
+msgid "Szczegóły wniosku"
+msgstr "Application details"
+
+msgid "Lista wniosków"
+msgstr "List of applications"
+
+msgid "Numer wniosku"
+msgstr "Application number"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Zmień status"
+msgstr "Change status"
+
+msgid "Anuluj"
+msgstr "Cancel"
+
+msgid "Uwagi pracownika"
+msgstr "Employee comments"
+
+msgid "Brak uwag"
+msgstr "No comments"
+
+msgid "Podstawowe informacje"
+msgstr "Basic information"
+
+msgid "Data złożenia"
+msgstr "Date of submission"
+
+msgid "Numer albumu"
+msgstr "Album number"
+
+msgid "Imię i nazwisko"
+msgstr "First name and surname"
+
+msgid "Adres e-mail"
+msgstr "Email address"
+
+msgid "Telefon"
+msgstr "Phone number"
+
+msgid "Studia"
+msgstr "Studies"
+
+msgid "Tryb"
+msgstr "Mode"
+
+msgid "Kierunek"
+msgstr "Field of study"
+
+msgid "Wydział"
+msgstr "Faculty"
+
+msgid "Dziekan"
+msgstr "Dean"
+
+msgid "Wniosek"
+msgstr "Application"
+
+msgid "Wgrane pliki"
+msgstr "Uploaded files"
+
+msgid "Otwórz"
+msgstr "Open"
+
+msgid "Pobierz"
+msgstr "Download"
+
+msgid "Brak wgranych plików"
+msgstr "No files uploaded"
+
+msgid "Typ wniosku"
+msgstr "Type of application"
+
+msgid "wszystkie"
+msgstr "all"
+
+msgid "Proces edukacyjny"
+msgstr "Educational process"
+
+msgid "Tłumacz języka"
+msgstr "Language translator"
+
+msgid "Sprzęt specjalistyczny"
+msgstr "Specialist equipment"
+
+msgid "Student"
+msgstr "Student"
+
+msgid "dowolny"
+msgstr "optional"
+
+msgid "W trakcie"
+msgstr "During"
+
+msgid "Zamknięty"
+msgstr "Closed"
+
+msgid "Data od"
+msgstr "Date from"
+
+msgid "Data do"
+msgstr "Date to"
+
+msgid "Wyczyść"
+msgstr "Clear"
+
+msgid "Szukaj"
+msgstr "Search"
+
+msgid "Data utworzenia"
+msgstr "Creation date"
+
+msgid "Rodzaj wniosku"
+msgstr "Type of application"
+
+msgid "Akcje"
+msgstr "Actions"
+
+msgid "Podgląd"
+msgstr "Preview"
+
+msgid "Rodzaje adaptacji"
+msgstr "Types of adaptations"
+
+msgid "Uzasadnienie"
+msgstr "Types of adaptations"
+
+msgid "Na kiedy"
+msgstr "For when"
+
+msgid "Wypożyczany sprzęt"
+msgstr "Loaned equipment"
+
+msgid "Data wypożyczenia sprzętu"
+msgstr "Equipment loan date"
+
+msgid "Imię i nazwisko asystenta"
+msgstr "Assistant’s full name"
+
+msgid "Zadania"
+msgstr "Tasks"
+
+msgid "Liczba godzin"
+msgstr "Number of hours"
+
+msgid "Kalendarz"
+msgstr "Calendar"
+
+msgid "Dziś"
+msgstr "Today"
+
+msgid "Miesiąc"
+msgstr "Month"
+
+msgid "Tydzień"
+msgstr "Week"
+
+msgid "Dzień"
+msgstr "Day"
+
+msgid "Lista"
+msgstr "List"
+
+msgid "Dodaj wartość"
+msgstr "Add value"
+
+msgid "Edytuj wartość"
+msgstr "Edit value"
+
+msgid "Zamknij powiadomienie"
+msgstr "Close notification"
+
+msgid "Formularz zgłoszeniowy. Pola wymagane oznaczono gwiazdką. Na początku znajduje się podsumowanie błędów"
+msgstr "Application form. Required fields are marked with an asterisk. An error summary is displayed at the top"
+
+msgid "Proszę poprawić poniższe błędy"
+msgstr "Please correct the errors below"
+
+msgid "Wróc do aktywnych zapisów"
+msgstr "Return to active registrations"
+
+msgid "Brak dostępnych terminów zapisów"
+msgstr "No registration dates available"
+
+msgid "Zapisanych"
+msgstr "Registered"
+
+msgid "Utwórz nowy zapis"
+msgstr "Create new registration"
+
+msgid "Archiwum"
+msgstr "Archive"
+
+msgid "Specjalista"
+msgstr "Specialist"
+
+msgid "Godziny"
+msgstr "Hours"
+
+msgid "Zapełnienie zapisów"
+msgstr "Registration occupancy"
+
+msgid "Ustawienia strony"
+msgstr "Page settings"
+
+msgid "Zarządzaj modułami i konfiguracją systemu"
+msgstr "Manage modules and system configuration"
+
+msgid "Szukaj ustawień"
+msgstr "Search settings"
+
+msgid "Szukaj modułu…"
+msgstr "Search module…"
+
+msgid "Pracownicy"
+msgstr "Employees"
+
+msgid "Wszyscy pracownicy i ich uprawnienia"
+msgstr "All staff and their permissions"
+
+msgid "Studenci"
+msgstr "Students"
+
+msgid "Lista wszystkich studentów z możliwością blokady konta"
+msgstr "List of all students with the option to block an account"
+
+msgid "Słownik"
+msgstr "Dictionary"
+
+msgid "Nazwy kierunków, wydziałów, typy dokumentów…"
+msgstr "Names of degree programmes, faculties, document types…"
+
+msgid "Publikacja ogłoszeń"
+msgstr "Publication of announcements"
+
+msgid "Lista użytkowników"
+msgstr "List of users"
+
+msgid "Dodaj użytkownika"
+msgstr "Add user"
+
+msgid "Imię"
+msgstr "First name"
+
+msgid "Nazwisko"
+msgstr "Surname"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Czy pracuje"
+msgstr "Currently employed"
+
+msgid "Edytuj"
+msgstr "Edit"
+
+msgid "Usuń"
+msgstr "Delete"
+
+msgid "Brak użytkowników"
+msgstr "No users available"
+
+msgid "Nowy użytkownik"
+msgstr "New user"
+
+msgid "Zamknij"
+msgstr "Close"
+
+msgid "Role"
+msgstr "Roles"
+
+msgid "Administrator"
+msgstr "Administrator"
+
+msgid "Pracownik"
+msgstr "Employee"
+
+msgid "Edytuj użytkownika"
+msgstr "Edit user"
+
+msgid "Stare hasło"
+msgstr "Old password"
+
+msgid "Ustaw nowe hasło"
+msgstr "Set new password"
+
+msgid "Powrót"
+msgstr "Return"
+
+msgid "Strona główna"
+msgstr "Home page"
+
+msgid "Lista ogłoszeń"
+msgstr "List of announcements"
+
+msgid "Data publikacji"
+msgstr "Publication date"
+
+msgid "Tablica ogłoszeń"
+msgstr "Announcements board"
+
+msgid "Snippet"
+msgstr "Snippet"
+
+msgid "Nowy wniosek"
+msgstr "New application"
+
+msgid "Tutaj możesz dodać opis dla"
+msgstr "Here you can add a description for"
+
+msgid "Formularz zgłoszeniowy. Pola wymagane oznaczono gwiazdką. Użyj klawisza Tab, aby przechodzić między polami"
+msgstr "Application form. Required fields are marked with an asterisk. Use the Tab key to move between fields"
+
+msgid "Załączniki"
+msgstr "Attachments"
+
+msgid "Możesz dodać do 3 plików. Dołącz wymagane oświadczenia."
+msgstr "You can add up to 3 files. Attach the required declarations."
+
+msgid "Liczba dodanych plików"
+msgstr "Number of uploaded files"
+
+msgid "Usunięto plik. Łącznie"
+msgstr "File deleted. Total"
+
+msgid "Usuń plik"
+msgstr "Delete file"
+
+msgid "Podaj numer w formacie"
+msgstr "Enter the number in the format"
+
+msgid "Możesz dodać do 3 plików. Dołącz wymagane oświadczenia"
+msgstr "You can add up to 3 files. Attach the required declarations"
+
+msgid "Dodaj plik"
+msgstr "Add file"
+
+msgid "Dodano plik. Łącznie"
+msgstr "File added. Total"
+
+msgid "Online"
+msgstr "Online"
+
+msgid "Stacjonarnie"
+msgstr "On-site"
+
+msgid "Wszystkie wnioski"
+msgstr "All applications"
+
+msgid "Wszystkie ogłoszenia"
+msgstr "All announcements"
+
+msgid "Twój najnowszy wniosek"
+msgstr "Your latest application"
+
+msgid "Brak wniosków"
+msgstr "No applications"
+
+msgid "Nie masz jeszcze żadnych wniosków. Utwórz nowy, aby rozpocząć proces"
+msgstr "You don’t have any applications yet. Create a new one to start the process"
+
+msgid "Utwórz nowy wniosek"
+msgstr "Create a new application"
+
+msgid "Brak nowych ogłoszeń"
+msgstr "No new announcements"
+
+msgid "Liczba zapisów"
+msgstr "Number of registrations"
+
+msgid "Spotkanie na MS Teams"
+msgstr "Meeting on MS Teams"
+
+msgid "Otwórz link do spotkania w nowej karcie"
+msgstr "Open the meeting link in a new tab"
+
+msgid "Dołącz w Microsoft Teams"
+msgstr "Join in Microsoft Teams"
+
+msgid "Skopiuj link do spotkania"
+msgstr "Copy meeting link"
+
+msgid "Kopiuj link"
+msgstr "Copy link"
+
+msgid "Brak linku"
+msgstr "Link not available"
+
+msgid "Data założenia"
+msgstr "Creation date"
+
+msgid "Tytuł"
+msgstr "Title"
+
+msgid "Dzień spotkania"
+msgstr "Meeting day"
+
+msgid "Godziny spotkania"
+msgstr "Meeting hours"
+
+msgid "Czas do spotkania"
+msgstr "Time to meeting"
+
+msgid "Spotkanie rozpocznie się za"
+msgstr "The meeting will start in"
+
+msgid "Spotkanie trwa - do końca pozostało"
+msgstr "Meeting in progress – time remaining"
+
+msgid "Spotkanie już się zakończyło"
+msgstr "The meeting has already ended"
+
+msgid "Skopiowano"
+msgstr "Copied"
+
+msgid "Zapisy zamknięte"
+msgstr "Registration closed"
+
+msgid "Zapisy otwarte"
+msgstr "Registration open"
+
+msgid "Szczegóły zapisu"
+msgstr "Registration details"
+
+msgid "Popraw poniższe błędy"
+msgstr "Correct the errors below"
+
+msgid "Zapisz się"
+msgstr "Sign up"
+
+msgid "albo"
+msgstr "or"
+
+msgid "Zapisane osoby"
+msgstr "Registered students"
+
+msgid "Szczegóły"
+msgstr "Details"
+
+msgid "Rodzaj spotkania"
+msgstr "Type of meeting"
+
+msgid "Czy posiada niepełnosprawność"
+msgstr "Does have a disability"
+
+msgid "Niepełnosprawność"
+msgstr "Disability"
+
+msgid "Specjalne potrzeby"
+msgstr "Special needs"
+
+msgid "Brak zapisanych osób"
+msgstr "No students registered"
+
+msgid "Aktywny"
+msgstr "Active"
+
+msgid "Tak"
+msgstr "Yes"
+
+msgid "Nie"
+msgstr "No"
+
+msgid "Tytuł spotkania"
+msgstr "Meeting title"
+
+msgid "Data i godzina rozpoczęcia"
+msgstr "Start date and time"
+
+msgid "Data i godzina zakończenia"
+msgstr "End date and time"
+
+msgid "Maksymalna ilość zapisów"
+msgstr "Maximum number of registrations"
+
+msgid "Lokalizacja spotkania"
+msgstr "Meeting location"
+
+msgid "Opis"
+msgstr "Description"
+
+msgid "Wybierz specialistę"
+msgstr "Select a specialist"
+
+msgid "Tytuł ogłoszenia"
+msgstr "Announcement title"
+
+msgid "Data i godzina publikacji"
+msgstr "Publication date and time"
+
+msgid "Data i godzina zakończenia publikacji"
+msgstr "Publication end date and time"
+
+msgid "Treść ogłoszenia"
+msgstr "Announcement content"
+
+msgid "Nie mam adaptacji"
+msgstr "I don’t have any adaptations"
+
+msgid "Mam adaptację"
+msgstr "I have an adaptation"
+
+msgid "Musisz wybrać typ"
+msgstr "You must choose a type"
+
+msgid "hidden peer"
+msgstr "hidden peer"
+
+msgid "Zaakceptowany"
+msgstr "Accepted"
+
+msgid "Odrzucony"
+msgstr "Rejected"
+
+msgid "Obsługiwany format pliku to PDF"
+msgstr "The supported file format is PDF"
+
+msgid "Wyrażam zgodę na:"
+msgstr "I agree to:"
+
+msgid "Poinformowanie właściwego dziekana o specyfice trudności zdrowotnych mających wpływ na proces kształcenia oraz analizę dokumentów załączonych do wniosku, niezbędnych do podjęcia decyzji dotyczących przyznania adaptacji"
+msgstr "Informing the relevant dean about the specific health difficulties affecting the education process and analysing the documents attached to the application, necessary to make a decision on granting adaptation"
+
+msgid "Poinformowanie wykładowców i pracowników zaangażowanych w obsługę studentów o fakcie wydania mi karty adaptacji"
+msgstr "Informing lecturers and staff involved in student services about the fact that I have been issued with an adaptation card"
+
+msgid "Musisz zaznaczyć wszystkie zgody"
+msgstr "You must select all consents"
+
+msgid "Inny rodzaj adaptacji (jeżeli nie ma na liście)"
+msgstr "Other type of adaptation (if not listed)"
+
+msgid "Rodzaj adaptacji"
+msgstr "Type of adaptation"
+
+msgid "Wybierz conajmniej jeden rodzaj adaptacji lub wybierz \"inne\", jeżeli nie ma twojego na liście"
+msgstr "Select at least one type of adaptation or select ‘other’ if yours is not listed"
+
+msgid "Wpisz numer albumu"
+msgstr "Enter the album number"
+
+msgid "Wybierz wydział"
+msgstr "Select a faculty"
+
+msgid "Wybierz wydział, na którym studiujesz"
+msgstr "Select the faculty where you study"
+
+msgid "Proszę opisać jak Pani/Pana niepełnosprawności/lub szczególne potrzeby wpływają na proces kształcenia i dlaczego zaznaczyła/zaznaczył Pani/Pan wybrane adaptacji"
+msgstr "Please describe how your disability/special needs affect the learning process and why you have selected the chosen adaptations"
+
+msgid "Musisz opisać swoją niepełnosprawność lub szczególne optrzeby i dlaczego zaznaczyłeś wybrane adaptacje"
+msgstr "You must describe your disability or special needs and why you have selected the chosen adaptations"
+
+msgid "Kierunek studiów"
+msgstr "Field of study"
+
+msgid "Wybierz kierunek"
+msgstr "Select field of study"
+
+msgid "Wybierz swój kierunek studiów"
+msgstr "Select your field of study"
+
+msgid "Wgraj wymagane pliki"
+msgstr "Upload the required files"
+
+msgid "Numer telefonu"
+msgstr "Phone number"
+
+msgid "Wpisz numer telefonu"
+msgstr "Enter your phone number"
+
+msgid "Potwierdzam, że:"
+msgstr "I confirm that:"
+
+msgid "Zapoznałem się z Regulaminem w sprawie dostosowania procesu kształcenia do potrzeb osób ze szczególnymi potrzebami, w tym osób z niepełnosprawnościami wprowadzonym na podstawie Zarządzenia Rektora Uniwersytetu VIZJA"
+msgstr "I have read the Regulations on adapting the education process to the needs of persons with special needs, including persons with disabilities, introduced on the basis of the Order of the Rector of the University VIZJA"
+
+msgid "Tryb studiów"
+msgstr "Mode of study"
+
+msgid "Wybierz tryb studiów"
+msgstr "Select mode of study"
+
+msgid "Rok studiów"
+msgstr "Year of study"
+
+msgid "Wybierz rok studiów"
+msgstr "Select year of study"
+
+msgid "Sprzęt do wypożyczenia"
+msgstr "Equipment for hire"
+
+msgid "Zadania, które miałby wykonywać asystent"
+msgstr "The tasks that the assistant would perform"
+
+msgid "Imię i nazwisko proponowanego asystenta"
+msgstr "First name and surname of the proposed assistant"
+
+msgid "Proponowana liczba godzin w miesiącu"
+msgstr "Proposed number of hours per month"
+
+msgid "Wypisz specjalne potrzeby"
+msgstr "List any special requirements"
+
+msgid "Wybierz typ spotkania"
+msgstr "Select the type of meeting"
+
+msgid "Spotkanie online (MS Teams)"
+msgstr "Online meeting (MS Teams)"
+
+msgid "Spotkanie w siedzibie biura (ul. Okopowa 59, Warszawa)"
+msgstr "Meeting at the office headquarters (Okopowa street 59, Warsaw)"
+
+msgid "Czy posiadasz orzeczenie o niepełnosprawności?"
+msgstr "Do you have a disability certificate?"
+
+msgid "Zaznaczy czy posiadasz orzeczenie"
+msgstr "Please indicate whether you have a certificate"
+
+msgid "Rodzaj niepełnosprawności"
+msgstr "Type of disability"
+
+msgid "Wybierz niepełnosprawność"
+msgstr "Select disability"
+
+msgid "Wybierz rodzaj niepełnosprawności"
+msgstr "Select the type of disability"
+
+msgid "Zapoznałam/em się z klauzulą informacyjna i wyrażam zgodę na przetwarzanie moich danych osobowych w zakresie realizacji zadań Biura ds. Osób z Niepełnosprawnościami Uniwersytetu VIZJA i w celu niezbędnym do uzyskania oczekiwanych przeze mnie świadczeń"
+msgstr "I have read the information clause and consent to the processing of my personal data for the purposes of the tasks performed by the Office for Persons with Disabilities at VIZJA University and for the purposes necessary to obtain the benefits I expect"
+
+msgid "Link do spotkania na MS Teams"
+msgstr "Link to the meeting on MS Teams"
+
+msgid "Edycja ogłoszenia"
+msgstr "Edit announcement"
+
+msgid "Dane zapisu"
+msgstr "Registration details"
+
+msgid "Metadane"
+msgstr "Metadata"
+
+msgid "ID ogłoszenia:"
+msgstr "Announcement ID:"
+
+msgid "Utworzono:"
+msgstr "Created at:"
+
+msgid "Ostatnia edycja:"
+msgstr "Updated at:"
+
+msgid "Zapisz zmiany"
+msgstr "Save changes"
+
+msgid "Edycja zapisu"
+msgstr "Registration edit"
+
+msgid "Awaryjny link do spotkania Teams"
+msgstr "Emergency link to Teams meeting"
+
+msgid "Tutaj możesz wprowadzić tymczasowy link do spotkania Teams tylko dla tego zapisu.\n                    Nie wpłynie to na pozostałe rekordy."
+msgstr "Here you can enter a temporary link to the Teams meeting for this recording only.\n                    This will not affect other records."
+
+msgid "ID zapisu:"
+msgstr "Registration ID:"
+
+msgid "Nieaktywny"
+msgstr "Inactive"
+
+msgid "Czy aktywna"
+msgstr "Is active"
+
+msgid "Dodaj podsprzęt"
+msgstr "Add sub-equipment"
+
+msgid "Kategoria"
+msgstr "Category"
+
+msgid "Inwentaryzacja sprzętu"
+msgstr "Equipment inventory"
+
+msgid "Zarządzaj dostępnym sprzętem"
+msgstr "Manage available equipment"
+
+msgid "Szukaj sprzętu"
+msgstr "Search for equipment"
+
+msgid "Szukaj sprzętu…"
+msgstr "Search for equipment..."
+
+msgid "Lista sprzętu"
+msgstr "Equipment list"
+
+msgid "Brak pozycji w inwentarzu"
+msgstr "No items in inventory"
+
+msgid "Pokaż rodzaj"
+msgstr "Show type"
+
+msgid "Lista podsprzętu"
+msgstr "List of accessories"
+
+msgid "Dodaj sprzęt"
+msgstr "Add equipment"
+
+msgid "Eksport EXCEL"
+msgstr "EXCEL export"
+
+msgid "Na pewno chcesz usunąć pozycję?"
+msgstr "Are you sure you want to delete this item?"
+
+msgid "Zarządzaj typami sprzętu zdefiniowanymi w słowniku"
+msgstr "Manage equipment types defined in the dictionary"
+
+msgid "Szukaj typu…"
+msgstr "Search for type..."
+
+msgid "Dodaj typ"
+msgstr "Add type"
+
+msgid "Lista typów sprzętu"
+msgstr "List of equipment types"
+
+msgid "Brak zdefiniowanych typów sprzętu"
+msgstr "No defined equipment types"
+
+msgid "Ilość"
+msgstr "Quantity"
+
+msgid "Pokaż podsprzęty"
+msgstr "Show sub-eqipment"
+
+msgid "Inwentaryzacja"
+msgstr "Inventory"
+
+msgid "Spis dostępnego sprzętu do wypożyczenia"
+msgstr "List of available equipment for hire"
+
+msgid "Typ"
+msgstr "Type"
+
+msgid "Ładowanie..."
+msgstr "Loading..."
+
+msgid "Brak zdefiniowanych typów."
+msgstr "No defined types."
+
+msgid "dostępnych"
+msgstr "available"
+
+msgid "Nie udało się załadować typów."
+msgstr "Unable to load types."
+
+msgid "typ"
+msgstr "type"
+
+msgid "Lista sprzętu dla"
+msgstr "List of equipment for"
+
+msgid "Pokaż typ"
+msgstr "Show type"
+
+msgid "Dodaj typ sprzętu"
+msgstr "Add equipment type"
+
+msgid "Lista typów"
+msgstr "List of types"
+
+msgid "Dodaj zwrot"
+msgstr "Add return"
+
+msgid "Formularz zgłoszeniowy. Pola wymagane oznaczono gwiazdką. Na początku znajduje się podsumowanie błędów, jeśli wystąpią"
+msgstr "Application form. Required fields are marked with an asterisk. At the beginning, there is a summary of errors, if any."
+
+msgid "Możesz dodać do 3 plików dla każdego typu"
+msgstr "You may add up to 3 files for each type."
+
+msgid "Maksymalna liczba zapisów"
+msgstr "Maximum number of registrations"
+
+msgid "Anuluj dodawanie"
+msgstr "Cancel adding"
+
+msgid "Adaptacja procesu kształcenia"
+msgstr "Adaptation of the education process"
+
+msgid "Organizacja wsparcia asystenta dydaktycznego"
+msgstr "Organization of teaching assistant support"
+
+msgid "Przyznanie tłumacza języka migowego"
+msgstr "Assignment of a sign language interpreter"
+
+msgid "Wypożyczenie sprzętu specjalistycznego"
+msgstr "Rental of specialized equipment"
+
+msgid "Wróć do aktywnych zapisów"
+msgstr "Return to active registrations"
+
+msgid "Audyt"
+msgstr "Audit"
+
+msgid "Logi"
+msgstr "Logs"
+
+msgid "Uczelnia nie dodała nowych ogłoszeń"
+msgstr "The university has not added any new announcements"
+
+msgid "Nie masz jeszcze żadnych wniosków. Utwórz nowy, aby rozpocząć proces."
+msgstr "You do not have any applications yet. Create a new one to begin the process."
+
+msgid "Złóż nowy wniosek"
+msgstr "Submit a new application"
+
+msgid "Zobacz szczegóły"
+msgstr "See details"
+
+msgid "Wróć do poprzedniego kroku"
+msgstr "Return to the previous step"
+
+msgid "Możesz wrócić do listy wniosków."
+msgstr "You may return to the list of applications."
+
+msgid "Wróć do listy wniosków"
+msgstr "Return to the list of applications"
+
+msgid "Liczba dostępnych sztuk:"
+msgstr "Number of items available:"
+
+msgid "Brak dostępnych terminów"
+msgstr "No terms available"
+
+msgid "Jeżeli specjaliści będą mieli wolne terminy - pojawią się tutaj"
+msgstr "If specialists have available appointments, they will appear here"
+
+msgid "Utwórz nowe ogłsozenie"
+msgstr "Create a new advertisement"
+
+msgid "Nie masz żadnych aktywnych ogłoszeń"
+msgstr "You do not have any active advertisements"
+
+msgid "Brak archiwalnych zapisów"
+msgstr "No archival records"
+
+msgid "Pojawią się tu tylko zakończone spotkania"
+msgstr "Only completed meetings will appear here"
+
+msgid "Utwórz nowy zapis, aby się tutaj pojawił"
+msgstr "Create a new entry to appear here"
+
+msgid "Jak oceniasz swoje ogólne doświadczenie korzystania z aplikacji?"
+msgstr "How would you rate your overall experience using the application?"
+
+msgid "Na ile aplikacja spełnia Twoje oczekiwania?"
+msgstr "To what extent does the application meet your expectations?"
+
+msgid "Czy łatwo było znaleźć informacje lub funkcje, których szukałeś/-aś?"
+msgstr "Was it easy to find the information or features you were looking for?"
+
+msgid "Czy układ elementów na stronie jest intuicyjny?"
+msgstr "Is the layout of the elements on the page intuitive?"
+
+msgid "Czy aplikacja działa zgodnie z Twoimi oczekiwaniami?"
+msgstr "Does the application work as expected?"
+
+msgid "Czy są funkcje, których Ci brakuje? Jeśli tak, jakie?"
+msgstr "Are there any features you find lacking? If so, which ones?"
+
+msgid "Jak oceniasz szybkość działania poszczególnych funkcji?"
+msgstr "How would you rate the speed of individual functions?"
+
+msgid "Czy wystąpiły jakieś problemy techniczne? Jeśli tak — jakie?"
+msgstr "Were there any technical problems? If so, what were they?"
+
+msgid "Jak oceniasz czas ładowania stron?"
+msgstr "How would you rate the page loading time?"
+
+msgid "Jak oceniasz wygląd i estetykę aplikacji?"
+msgstr "How would you rate the appearance and aesthetics of the application?"
+
+msgid "Czy czytelność tekstów i elementów graficznych jest wystarczająca?"
+msgstr "Is the legibility of the text and graphic elements sufficient?"
+
+msgid "Co najbardziej podoba Ci się w aplikacji?"
+msgstr "What do you like most about the application?"
+
+msgid "Co chciał(a)byś poprawić w aplikacji?"
+msgstr "What would you like to improve in the application?"
+
+msgid "Czy masz sugestie dotyczące nowych funkcjonalności lub usprawnień?"
+msgstr "Do you have any suggestions for new features or improvements?"
+
+msgid "Administracja"
+msgstr "Administration"
+
+msgid "Wgraj orzeczenie lub inny dokument potwierdzający specjalne potrzeby. Możesz dodać do 3 plików."
+msgstr "Upload a certificate or other document confirming your special needs. You may add up to 3 files."
+
+msgid "Pobierz regulamin"
+msgstr "Download the terms and conditions"
+
+msgid "Orzeczenie o niepełnosprawności lub inny dokument potwierdzający trudności"
+msgstr "Disability certificate or other document confirming difficulties"
+
+msgid "Harmonogram zajęć z zaznaczeniem, na których zajęciach asystent jest niezbędny"
+msgstr "Class schedule indicating which classes require an assistant"
+
+msgid "Moje konto"
+msgstr "My account"
+
+msgid "Profil konta"
+msgstr "Account profile"
+
+msgid "Wyloguj się"
+msgstr "Logout"
+
+msgid "Złożone wnioski"
+msgstr "Applications submitted"
+
+msgid "Dostępne konsultacje"
+msgstr "Available registrations"
+
+msgid "Informacje o\n                                koncie"
+msgstr "Information about\n                                the account"
+
+msgid "Konto kandydata"
+msgstr "Candidate account"
+
+msgid "Konto studenta"
+msgstr "Student account"
+
+msgid "Nie uzupełniony"
+msgstr "Not completed"
+
+msgid "Tutaj możesz podejrzeć swoje najnowsze wnioski"
+msgstr "Here you can view your latest applications."
+
+msgid "Obecnie nie ma żadnych wniosków. Gdy pojawią się nowe, zostaną wyświetlone w tym miejscu."
+msgstr "There are currently no applications. When new ones become available, they will be displayed here."
+
+msgid "Pokaż wszystkie wnioski"
+msgstr "Show all applications"
+
+msgid "Szczegóły konsultacji"
+msgstr "Details of the consultation"
+
+msgid "Aktualnie nie jesteś zapisany/-a na żadne konsultacje"
+msgstr "You are currently not registered for any consultations."
+
+msgid "Podziel się swoją opinią"
+msgstr "Share your opinion"
+
+msgid "Złóż ankietę"
+msgstr "Submit the survey"
+
+msgid "Uniwersytet VIZJA"
+msgstr "VIZJA University"
+
+msgid "Bardzo źle"
+msgstr "Very bad"
+
+msgid "Źle"
+msgstr "Bad"
+
+msgid "Przeciętnie"
+msgstr "Average"
+
+msgid "Dobrze"
+msgstr "Well"
+
+msgid "Bardzo dobrze"
+msgstr "Very well"
+
+msgid "Musisz zaznaczyć jedną z opcji"
+msgstr "You must select one of the options"
+
+msgid "1"
+msgstr "1"
+
+msgid "2"
+msgstr "2"
+
+msgid "3"
+msgstr "3"
+
+msgid "4"
+msgstr "4"
+
+msgid "5"
+msgstr "5"
+
+msgid "Wyślij ankietę"
+msgstr "Send the survey"
+
+msgid "Czy złożenie wniosku było dla Ciebie proste? Podziel się swoją opinią w anonimowej ankiecie."
+msgstr "Was it easy for you to submit your application? Share your opinion in an anonymous survey."
+
+msgid "Wypełnij ankietę"
+msgstr "Fill out the survey"
+
+msgid "Czy korzystanie z aplikacji jest dla Ciebie proste? Podziel się swoją opinią w anonimowej ankiecie."
+msgstr "Is the application easy for you to use? Share your opinion in an anonymous survey."
+
+msgid "Wejdź na stronę, jako gość"
+msgstr "Enter the website as a guest"
+
+msgid "Czy aktywny"
+msgstr "Is active"
+
+msgid "Zablokuj konto"
+msgstr "Block account"
+
+msgid "Aktywuj konto"
+msgstr "Activate your account"
+
+msgid "Szczegóły ogłoszenia"
+msgstr "Advertisement details"
+
+msgid "Wróć do Ogłoszeń"
+msgstr "Return to Announcements"
+
+msgid "Wróć do Pulpitu"
+msgstr "Return to Desktop"
+
+msgid "Twoje zapisy"
+msgstr "Your registrations"
+
+msgid "Nieuzupełniony"
+msgstr "Not completed"
+
+msgid "Archiwum ogłoszeń"
+msgstr "Announcements archive"
+
+msgid "Wróć do aktywnych ogłoszeń"
+msgstr "Return to active announcements"
+
+msgid "Nie udostępniono żadnych ogłoszeń."
+msgstr "No announcements have been made available."
+
+msgid "Moje wnioski"
+msgstr "My applications"
+
+msgid "Nie posiadasz jeszcze żadnego wniosku."
+msgstr "You do not have any applications yet."
+
+msgid "Przejdź dalej"
+msgstr "Continue"
+
+msgid "Wróć do Wniosków"
+msgstr "Return to announcements"
+
+msgid "Sprawdź dane i złóż wniosek"
+msgstr "Check your details and submit your application"
+
+msgid "Brak wgranych plików."
+msgstr "No files uploaded."
+
+msgid "Wniosek złożony."
+msgstr "Application submitted."
+
+msgid "Dziękujemy za złożenie wniosku. Wkrótce zostanie on rozpatrzony przez pracownika. Proszę śledzić status wniosku."
+msgstr "Thank you for submitting your application. It will be reviewed by a member of staff shortly. Please keep an eye on the status of your application."
+
+msgid "Formularz zgłoszeniowy. Pola wymagane oznaczono gwiazdką. Użyj klawisza Tab, aby przechodzić między polami."
+msgstr "Application form. Required fields are marked with an asterisk. Use the Tab key to move between fields."
+
+msgid "Wgraj orzeczenie lub inny dokument potwierdzający specjalne potrzeby."
+msgstr "Upload a certificate or other document confirming special needs."
+
+msgid "Możesz dodać do 3 plików."
+msgstr "You may add up to 3 files."
+
+msgid "Edytuj swoje dane"
+msgstr "Edit your details"
+
+msgid "Brak dostępnych terminów."
+msgstr "No dates available."
+
+msgid "Termin"
+msgstr "Term"
+
+msgid "Wróć do Zapisów"
+msgstr "Return to registrations"
+
+msgid "od"
+msgstr "from"
+
+msgid "do"
+msgstr "to"
+
+msgid "Wybierz termin"
+msgstr "Select a date"
+
+msgid "Brak możliwości zapisu"
+msgstr "Unable to register"
+
+msgid "Zapisano na termin"
+msgstr "Registered"
+
+msgid "Szczegóły terminu"
+msgstr "Details of the registration"
+
+msgid "Zmień kontrast"
+msgstr "Change contrast"
+
+msgid "Biuro Rekrutacji"
+msgstr "Addmission Office"
+
+msgid "Kontakt"
+msgstr "Contact"
+
+msgid "Social Media"
+msgstr "Social Media"
+
+msgid "Polityka prywatności"
+msgstr "Privacy policy"
+
+msgid "Usuwanie pozycji"
+msgstr "Removing items"
+
+msgid "Na pewno chcesz usunąć sprzęt o nr seryjnym: <br><strong>"
+msgstr "You definitely want to remove the equipment with serial number: <br><strong>"
+
+msgid "Operacja jest nieodwracalna."
+msgstr "The operation is irreversible."
+
+msgid "Usuwanie sprzętu"
+msgstr "Removal of equipment"
+
+msgid "Na pewno chcesz usunąć pozycję: <br><strong>"
+msgstr "Are you sure you want to delete this item? <br><strong>"
+
+msgid "Operacja jest nieodwracalna"
+msgstr "The operation is irreversible."
+
+msgid "Usunąć zapis?"
+msgstr "Delete registration?"
+
+msgid "Na pewno chcesz usunąć ten zapis?"
+msgstr "Are you sure you want to delete this registration?"
+
+msgid "Usunięcie zapisu jest nieodwracalne"
+msgstr "Deleting the registration is irreversible"
+
+msgid "Aktywować konto użytkownika?"
+msgstr "Activate user account?"
+
+msgid "Na pewno chcesz aktywować konto użytkownika <br><strong>"
+msgstr "You definitely want to activate your user account <br><strong>"
+
+msgid "Po aktywacji użytkownik odzyska dostęp do systemu."
+msgstr "After activation, the user will regain access to the system."
+
+msgid "Aktywuj"
+msgstr "Activate"
+
+msgid "Dodawanie użytkownika"
+msgstr "Adding a user"
+
+msgid "Edycja użytkownika"
+msgstr "User editing"
+
+msgid "Znajdź użytkownika po imieniu, nazwisku lub mailu..."
+msgstr "Find a user by first name, last name or email address..."
+
+msgid "Potwierdź usunięcie użytkownika"
+msgstr "Confirm user deletion"
+
+msgid "Na pewno chcesz usunąć użytkownika <br><strong>"
+msgstr "Are you sure you want to remove this user <br><strong>"
+
+msgid "Usunięcie użytkownika jest nieodwracalne."
+msgstr "Deleting a user is irreversible."
+
+msgid "Wgraj orzeczenie lub inny dokument potwierdzający specjalne potrzeby"
+msgstr "Upload a certificate or other document confirming special needs."
+
+msgid "Najbardziej przydatne odnośniki"
+msgstr "Most useful links"
+
+msgid "W tej sekcji znajdziesz ważne i często używane elementy strony"
+msgstr "In this section, you will find important and frequently used page elements"
+
+msgid "Uzupełnij swój profil"
+msgstr "Complete your profile"
+
+msgid "Uzupełnij profil, aby łatwiej korzystać z platformy"
+msgstr "Complete your profile to make it easier to use the platform"
+
+msgid "Przejdź do uzupełnienia profilu"
+msgstr "Proceed to complete your profile"
+
+msgid "Złóż nowy wniosek szybko i bez stresu"
+msgstr "Submit a new application quickly and without stress"
+
+msgid "Przejdź do złożenia wniosku"
+msgstr "Proceed to submit your application"
+
+msgid "Sprawdź sekcję Faq"
+msgstr "Check out the Faq section"
+
+msgid "Sekcja najczęstrzych pytań i odpowiedzi"
+msgstr "Frequently asked questions and answers section"
+
+msgid "Przejdź do sekcji Faq"
+msgstr "Proceed to the Faq section"
+
+msgid "Poznaj Biuro ds. Osób z Niepełnosprawnościami"
+msgstr "Meet Office for Students with Disabilities"
+
+msgid "Biuro ds. Osób z Niepełnosprawnościami wspiera studentów, pracowników i gości, którzy potrzebują dodatkowej pomocy.\n                            Oferuje informacje, doradztwo oraz wsparcie w rozwiązywaniu codziennych trudności."
+msgstr "The Office for Persons with Disabilities supports students, staff, and visitors who require additional assistance.\n                            It offers information, advice and support in solving everyday difficulties."
+
+msgid "Przejdź do głównej strony BON"
+msgstr "Proceed to the OSD main page"
+
+msgid "Kontakt z BON"
+msgstr "Contact OSD"
+
+msgid "Aktualności"
+msgstr "News"
+
+msgid "Aktywny Samorząd"
+msgstr "Active Student Council"
+
+msgid "Ankieta oceny aplikacji"
+msgstr "Application evaluation survey"
+
+msgid "Data konsultacji"
+msgstr "Date of registration"
+
+msgid "ul. Okopowa 59"
+msgstr "Okopowa 59 Street"
+
+msgid "Warszawa"
+msgstr "Warsaw"
+
+msgid "Rodzaj konsultacji"
+msgstr "Type of consultation"
+
+msgid "Jak oceniasz łatwość znalezienia informacji lub funkcji, które szukałeś/-aś?"
+msgstr "How would you rate the ease of finding the information or function you were looking for?"
+
+msgid "Jak oceniasz intuicyjność układu elementów na stronie?"
+msgstr "How would you rate the intuitiveness of the layout of elements on the page?"
+
+msgid "Jak oceniasz działanie aplikacji według Twoich oczekiwań?"
+msgstr "How would you rate the application's performance in relation to your expectations?"
+
+msgid "Jak oceniasz czytelność tekstów i elementów graficznych?"
+msgstr "How would you rate the readability of the text and graphic elements?"
+
+msgid "Opisz, dlaczego potrzebujesz wypożyczyć sprzęt"
+msgstr "Describe why you need to rent equipment"
+
+msgid "Okres trwania adaptacji"
+msgstr "Duration of adaptation"
+
+msgid "Wybierz okres trwania"
+msgstr "Select duration"
+
+msgid "Wybierz okres trwania adaptacji"
+msgstr "Select the duration of the adaptation"
+
+msgid "Moje zapisy"
+msgstr "My consultations"
+
+msgid "Brak zapisów."
+msgstr "No consultations."
+
+msgid "Wróć do wyboru"
+msgstr "Back to selection"
+
+msgid "Poprzednie dni"
+msgstr "Previous days"
+
+msgid "wizyta"
+msgstr "appointment"
+
+msgid "wizyt"
+msgstr "appointments"
+
+msgid "Brak wizyt"
+msgstr "No visits"
+
+msgid "Następne dni"
+msgstr "Next days"
+
+msgid "Brak miejsc"
+msgstr "Not available"
+
+msgid "Formularz zapisu"
+msgstr "Registration form"
+
+msgid "Język spotkania"
+msgstr "Language of the consultation"
+
+msgid "Wybierz kryteria wyszukiwania"
+msgstr "Select search criteria"
+
+msgid "Wszyscy"
+msgstr "Everyone"
+
+msgid "Język konsultacji"
+msgstr "Language of consultation"
+
+msgid "Wszystkie"
+msgstr "All"
+
+msgid "Logo Uniwersytetu VIZJA"
+msgstr "VIZJA University logo"
+
+msgid "VIZJA University logo"
+msgstr "VIZJA University logo"
+
+msgid "VIZJA University"
+msgstr "VIZJA University"
+
+msgid "Social media"
+msgstr "Social media"
+
+msgid "Wróć do Profilu"
+msgstr "Return to Profile"
+
+msgid "Zmień dane profilu"
+msgstr "Change profile information"
+
+msgid "Zmiany danych kontaktowych i osobowych należy aktualizować w profilu"
+msgstr "Changes to contact and personal details should be updated in your profile"
+
+msgid "Przejdź do aktualizacji profilu"
+msgstr "Go to profile update"
+
+msgid "Poznaj Biuro ds. Osób z&nbsp;Niepełnosprawnościami"
+msgstr "Get to know the Office for Persons with&nbsp;Disabilities"
+
+msgid "Biuro ds. Osób z&nbsp;Niepełnosprawnościami wspiera studentów, pracowników i gości, którzy potrzebują dodatkowej pomocy.\n                            Oferuje informacje, doradztwo oraz wsparcie w rozwiązywaniu codziennych trudności."
+msgstr "The Office for Persons with&nbsp;Disabilities supports students, employees and guests who need additional assistance.\n                            It provides information, guidance and support in solving everyday difficulties."
+
+msgid "Przejdź do strony Biura ds. Osób z&nbsp;Niepełnosprawnościami"
+msgstr "Go to the Office for Persons with&nbsp;Disabilities website"
+
+msgid "Kontakt z Biurem ds. Osób z&nbsp;Niepełnosprawnościami"
+msgstr "Contact the Office for Persons with&nbsp;Disabilities"
+
+msgid "Data zapisu"
+msgstr "Date of entry"
+
+msgid "Aktualizacja danych"
+msgstr "Data update"
+
+msgid "Uzupełnianie danych"
+msgstr "Completing data"
+
+msgid "Składanie wniosku - krok 2"
+msgstr "Submitting an application - step 2"
+
+msgid "Okres wypożyczenia określają daty rozpoczęcia i zakończenia.\n            Maksymalny czas wypożyczenia sprzętu wynosi <strong>6 miesięcy</strong>"
+msgstr "The rental period is defined by the start and end dates.\n            The maximum rental period for equipment is <strong>6 months</strong>"
+
+msgid "Składanie wniosku - krok 4"
+msgstr "Submitting an application – step 4"
+
+msgid "Karta adaptacji"
+msgstr "Adaptation card"
+
+msgid "Poniżej znajdują się pliki dołączone przez pracownika w ramach karty adaptacji.\n                                Dokumenty te określają zakres oraz obowiązywanie przyznanych dostosowań."
+msgstr "Below are the files attached by the employee as part of the adaptation card.\n                                These documents specify the scope and validity of the adjustments granted."
+
+msgid "Okres trwania karty adaptacji"
+msgstr "Duration of the adaptation card"
+
+msgid "Składanie wniosku - krok 3"
+msgstr "Submitting an application – step 3"
+
+msgid "Masz nowy komentarz z dnia"
+msgstr "You have a new comment from"
+
+msgid "Składanie wniosku - krok 1"
+msgstr "Submitting an application – step 1"
+
+msgid "Ankieta wypełniona przez studentów"
+msgstr "Survey completed by students"
+
+msgid "Szukaj spotkania"
+msgstr "Search for a meeting"
+
+msgid "Szukaj zapisu…"
+msgstr "Search for a record..."
+
+msgid "Usunąć osobę?"
+msgstr "Remove a person?"
+
+msgid "</strong> z zapisu?"
+msgstr "</strong> from the record?"
+
+msgid "Usunięcie osoby jest nieodwracalne"
+msgstr "Removing a person is irreversible"
+
+msgid "Wróć do zapisów"
+msgstr "Return to records"
+
+msgid "Dodawanie zapisu"
+msgstr "Adding a record"
+
+msgid "Tworzenie ogłoszenia"
+msgstr "Creating an advertisement"
+
+msgid "Edycja wartości"
+msgstr "Editing values"
+
+msgid "Dodawanie wartości"
+msgstr "Adding value"
+
+msgid "Lista studentów"
+msgstr "List of students"
+
+msgid "Brak logowań"
+msgstr "No logins"
+
+msgid "Wartości słownikowe"
+msgstr "Dictionary values"
+
+msgid "Znajdź szukaną frazę"
+msgstr "Find the phrase you are looking for"
+
+msgid "Edycja sprzętu"
+msgstr "Hardware editing"
+
+msgid "Edycja typu"
+msgstr "Type editing"
+
+msgid "Sprzęt"
+msgstr "Equipment"
+
+msgid "Eksport Excel"
+msgstr "Excel export"
+
+msgid "Typy sprzętu"
+msgstr "Types of equipment"
+
+msgid "Dodawanie typu"
+msgstr "Adding a type"
+
+msgid "Dodawanie sprzętu"
+msgstr "Adding equipment"
+
+msgid "Edytuj wniosek"
+msgstr "Edit application"
+
+msgid "Wybierz wzór z listy i dołącz pliki"
+msgstr "Select a template from the list and attach files"
+
+msgid "Karta adaptacji - Word"
+msgstr "Adaptation card - Word"
+
+msgid "Karta adaptacji - PDF"
+msgstr "Adaptation card - PDF"
+
+msgid "Wybierz okres trwania karty adaptacji"
+msgstr "Select the duration of the adaptation card"
+
+msgid "Możesz dodać maksymalnie 1 plik"
+msgstr "Select the duration of the adaptation card. You can add a maximum of 1 file."
+
+msgid "Zamień plik"
+msgstr "Replace file"
+
+msgid "Okres obowiązywania adaptacji"
+msgstr "Period of validity of the adaptation"
+
+msgid "Edycja wniosku"
+msgstr "Editing the application"
+
+msgid "Edycja wniosku o numerze"
+msgstr "Editing application number"
+
+msgid "Wróć"
+msgstr "Return"
+
+msgid "Język"
+msgstr "Language"
+
+msgid "Jak się wypisać?"
+msgstr "How do I unsubscribe?"
+
+msgid "Jeżeli musisz odwołać lub przełożyć konsultację, poinformuj nas poprzez SMS lub kontakt telefoniczny na numer 533-118-733"
+msgstr "If you need to cancel or reschedule your consultation, please inform us by text message or telephone on 533-118-733."
+
+msgid "Zaloguj się kontem Office 365"
+msgstr "Log in with your Office 365 account"
+
+msgid "Przejdź do listy konsultacji, na które się zapisałeś/-aś"
+msgstr "Go to the list of consultations you have signed up for."
+
+msgid "Przedź do moich zapisów"
+msgstr "Go to my records"
+
+msgid "Moje wszystkie konsultacje"
+msgstr "All my consultations"
+
+msgid "Przejdź do sekcji FAQ"
+msgstr "Proceed to the FAQ section"
+
+msgid "Sprawdź sekcję FAQ"
+msgstr "Check out the FAQ section"
+
+msgid "Pytanie"
+msgstr "Question"
+
+msgid "Odpowiedź"
+msgstr "Answer"
+
+msgid "Język pytania"
+msgstr "Language of the question"
+
+msgid "Wartość PL"
+msgstr "Polish value"
+
+msgid "Wartość ENG"
+msgstr "English value"
+
+msgid "Konsultacji"
+msgstr "Consultation"
+
+msgid "FAQ"
+msgstr "FAQ"
+
+msgid "Najczęściej zadawane pytania i odpowiedzi"
+msgstr "Frequently asked questions and answers"
+
+msgid "Faq"
+msgstr "Faq"
+
+msgid "Szybkie pytania i odpowiedzi dla studentów"
+msgstr "Quick questions and answers for students"
+
+msgid "Lista pytań i odpowiedzi"
+msgstr "List of questions and answers"
+
+msgid "Utwórz nowe pytanie"
+msgstr "Create a new question"
+
+msgid "Brak pytań i odpowiedzi"
+msgstr "No questions and answers"
+
+msgid "Utwórz nowe pytania i odpowiedzi na nie, aby się tutaj pojawiły"
+msgstr "Create new questions and answers to them so that they appear here."
+
+msgid "Usunąć pytanie?"
+msgstr "Remove question?"
+
+msgid "Na pewno chcesz usunąć te pytanie?"
+msgstr "Are you sure you want to delete this question?"
+
+msgid "Usunięcie pytania jest nieodwracalne"
+msgstr "Deleting a question is irreversible."
+
+msgid "Wartość angielska"
+msgstr "English value"
+
+msgid "Wybierz"
+msgstr "Select"
+
+msgid "Stopień niepełnosprawności"
+msgstr "Degree of disability"
+
+msgid "Data ważności orzeczenia"
+msgstr "Date of expiry of the decision"
+
+msgid "Semestr studiów"
+msgstr "Semester of study"
+
+msgid "Wybierz semestr studiów"
+msgstr "Select the semester of study"
+
+msgid "Okreś ważności karty adaptacji"
+msgstr "Specify the validity of the adaptation card"
+
+msgid "Data i godzina"
+msgstr "Date and time"
+
+msgid "Od"
+msgstr "From"
+
+msgid "Do"
+msgstr "To"
+
+msgid "Załóż konto"
+msgstr "Create an account"
+
+msgid "Wizyta w BON"
+msgstr "Appointment at the BON office"
+
+msgid "Sprawdź szczegóły rezerwacji. W razie potrzeby możesz ją anulować."
+msgstr "Check your booking details. You can cancel it if necessary."
+
+msgid "Podsumowanie rejestracji wizyty"
+msgstr "Summary of appointment registration"
+
+msgid "Twoja rezerwacja"
+msgstr "Your booking"
+
+msgid "Poniżej znajdują się szczegóły wybranego terminu."
+msgstr "Below are the details of the selected date."
+
+msgid "Dzień wizyty"
+msgstr "Day of visit"
+
+msgid "Godzina wizyty"
+msgstr "Time of visit"
+
+msgid "Rezerwacja potwierdzona"
+msgstr "Reservation confirmed"
+
+msgid "Jeśli zmienisz zdanie, możesz anulować termin w zakładce <strong>\"Moje wizyty\"</strong>, maksymalnie <strong>24\n                                    godziny</strong> przed rozpoczęciem wizyty"
+msgstr "If you change your mind, you can cancel the appointment in the tab <strong>\"My visits\"</strong>, at most <strong>24\n                                    hours</strong> before the visit begins"
+
+msgid "Uwaga:"
+msgstr "Note:"
+
+msgid "Anulowanie jest natychmiastowe i nie wymaga dodatkowego potwierdzenia mailowego."
+msgstr "Cancellation is immediate and does not require additional confirmation by email."
+
+msgid "Moje wizyty"
+msgstr "My visits"
+
+msgid "Moje wizyty w BON"
+msgstr "My BON appointments"
+
+msgid "Archiwalne wizyty"
+msgstr "Archive visits"
+
+msgid "Na pewno chcesz anulować wizytę?"
+msgstr "Are you sure you want to cancel your appointment?"
+
+msgid "Anuluj wizytę"
+msgstr "Cancel appointment"
+
+msgid "Wybierz termin wizyty"
+msgstr "Select the date of your visit"
+
+msgid "Archiwalne wizyty w BON"
+msgstr "Archived BON appointments"
+
+msgid "Aktywne wizyty"
+msgstr "Active visits"
+
+msgid "Centrum zapisów"
+msgstr "Registration centre"
+
+msgid "Informacje o koncie"
+msgstr "Account information"
+
+msgid "Zapisz się na wizytę w BON"
+msgstr "Book an appointment at the BON office"
+
+msgid "Zapisy na konsultacje"
+msgstr "Appointments for consultations"
+
+msgid "Moje zapisy na konsultacje"
+msgstr "My appointments for consultations"
+
+msgid "Najczęściej zadawane pytania"
+msgstr "Frequently asked questions"
+
+msgid "Wizyty w biurze BON"
+msgstr "Appointments at the BON office"
+
+msgid "Centrum wizyt"
+msgstr "Visitor centre"
+
+msgid "Wizyty"
+msgstr "Visits"
+
+msgid "Najbliższe wizyty"
+msgstr "Upcoming visits"
+
+msgid "Sprawdź najbliższe aktywne zapisy"
+msgstr "Check the nearest active enrolments"
+
+msgid "Sprawdź archiwalne wizyty"
+msgstr "Check archived visits"
+
+msgid "Najbliższne aktywne wizyty"
+msgstr "Upcoming active visits"
+
+msgid "Terminy"
+msgstr "Dates"
+
+msgid "Sprawdź wszysktie terminy lub dodaj nowy"
+msgstr "Check all dates or add a new one"
+
+msgid "Sprawdź wszystkie aktywne wizyty i archiwalne"
+msgstr "Check all active and archived appointments"
+
+msgid "Terminy wizyt"
+msgstr "Appointment dates"
+
+msgid "Wróć do kalendarza"
+msgstr "Return to calendar"
+
+msgid "Usuń termin"
+msgstr "Delete term"
+
+msgid "Dodaj nowy termin"
+msgstr "Add a new term"
+
+msgid "Wizyty w biurze"
+msgstr "Office visits"
+
+msgid "Aktualizacja karty adaptacji"
+msgstr "Adaptation card update"
+
+msgid "Wróć do profilu"
+msgstr "Return to profile"
+
+msgid "Aktualizacja danych kontaktowych"
+msgstr "Updating contact details"
+
+msgid "Aktualizacja danych o studiach"
+msgstr "Updating study data"
+
+msgid "Aktualizacja specjalnych potrzeb"
+msgstr "Update on special needs"
+
+msgid "Aktualizacja orzeczenia o niepełnosprawności"
+msgstr "Updating a disability certificate"
+
+msgid "Profil studenta"
+msgstr "Student profile"
+
+msgid "Dane kontaktowe"
+msgstr "Contact details"
+
+msgid "Edytuj dane kontaktowe"
+msgstr "Edit contact details"
+
+msgid "Dane o studiach"
+msgstr "Data on studies"
+
+msgid "Edytuj dane o studiach"
+msgstr "Edit your study details"
+
+msgid "Rok"
+msgstr "Year"
+
+msgid "Semestr"
+msgstr "Semester"
+
+msgid "Edytuj kartę adaptacji"
+msgstr "Edit the adaptation card"
+
+msgid "Okres ważności"
+msgstr "Period of validity"
+
+msgid "Orzeczenie o niepełnosprawności"
+msgstr "Disability ruling"
+
+msgid "Edytuj orzeczenie"
+msgstr "Edit the decision"
+
+msgid "Rodzaj"
+msgstr "Type"
+
+msgid "Stopień"
+msgstr "Degree"
+
+msgid "Data ważności"
+msgstr "Expiration date"
+
+msgid "Szczególne potrzeby"
+msgstr "Special needs"
+
+msgid "Edytuj szczególne potrzeby"
+msgstr "Edit special needs"
+
+msgid "Historia wniosków"
+msgstr "History of applications"
+
+msgid "Profil"
+msgstr "Profile"
+
+msgid "Potwierdzenie rezerwacji wizyty"
+msgstr "Confirmation of appointment booking"
+
+msgid "Potwierdź termin wizyty"
+msgstr "Confirm your appointment date"
+
+msgid "Masz już konto?"
+msgstr "Do you already have an account?"
+
+msgid "Wróć do centrum zapisów"
+msgstr "Return to the registration centre"
+
+msgid "Zarejestruj się"
+msgstr "Register"
+
+msgid "Wybierz sesmestr studiów"
+msgstr "Select the semester of study"
+
+msgid "Nie pamiętam hasła"
+msgstr "I don’t remember my password"
+
+msgid "Twoje zapisy na konsultacje"
+msgstr "Your appointments for consultations"
+
+msgid "Brak nazwy pliku"
+msgstr "No file name"
+
+msgid "Dodane pliki"
+msgstr "Added files"
+
+msgid "Brak plików"
+msgstr "No files"
+
+msgid "Resetuj hasło"
+msgstr "Reset password"
+
+msgid "Resetuj"
+msgstr "Reset"
+
+msgid "Wróć do logowania"
+msgstr "Return to login"
+
+msgid "Jeśli chcesz wskazać kandydatkę/kandydata na asystentkę/asystenta podaj jej/jego imię i nazwisko (opcjonalne)"
+msgstr "If you wish to nominate a candidate for the position of assistant, please provide their first and last name (optional)."
+
+msgid "Twoje niepełnosprawności lub szczególne potrzeby wpływają na proces kształcenia  i dlaczego zaznaczyłaś/zaznaczyłeś wybrane adaptacje? (Opis musi mieć przynajmniej 150 znaków)"
+msgstr "How do your disabilities or special needs affect the learning process, and why did you select the chosen adaptations? (The description must be at least 150 characters long.)"
+
+msgid "Opisz, dlaczego potrzebujesz wypożyczyć sprzęt (Opis musi mieć przynajmniej 150 znaków) "
+msgstr "Describe why you need to hire the equipment (the description must be at least 150 characters long). "
+
+msgid "Nie mam karty adaptacji"
+msgstr "I do not have an adaptation card."
+
+msgid "Mam kartę adaptacji"
+msgstr "I have an adaptation card."
+
+msgid "Wróć do Centrum zapisów"
+msgstr "Return to the Registration Centre"
+
+msgid "Wróć do nadchodzących zapisów"
+msgstr "Return to upcoming entries"
+
+msgid "Zmień kryteria"
+msgstr "Change criteria"
+
+msgid "Brak wolnych terminów."
+msgstr "No available dates."
+
+msgid "Unijne logotypy"
+msgstr "EU logos"
+
+msgid "Zarezerwuj wizytę w BON"
+msgstr "Book an appointment at the BON office"
+
+msgid "Sprawdź dostępne terminy wizyt w Biurze ds. Osób z Niepełnosprawnością"
+msgstr "Check available appointment dates at the Office for Persons with Disabilities"
+
+msgid "Przedź do rezerwacji wizyty"
+msgstr "Proceed to appointment booking"
+
+msgid "Zapisz się na konsultację"
+msgstr "Sign up for a consultation"
+
+msgid "Zarezerwuj dogodny termin konsultacji i uzyskaj profesjonalne wsparcie dopasowane do Twoich potrzeb"
+msgstr "Book a convenient consultation date and receive professional support tailored to your needs."
+
+msgid "Przejdź do zapisu na konsutację"
+msgstr "Go to consultation registration"
+
+msgid "Jeśli jesteś studentem lub pracownikem"
+msgstr "If you are a student or employee"
+
+msgid "Nie mam konta"
+msgstr "I do not have an account"
+
+msgid "Wejdź jako gość"
+msgstr "Continue as guest"
+
+msgid "Rezerwacja czeka na potwierdzenie przez pracownika BON"
+msgstr "The booking is awaiting confirmation by a BON employee"
+
+msgid "Jeśli zmienisz zdanie, możesz samodzielnie anulować termin w zakładce <strong>\"Moje wizyty\"</strong>, maksymalnie <strong>24 godziny</strong> przed rozpoczęciem wizyty"
+msgstr "If you change your mind, you can cancel the appointment yourself in the <strong>\"My appointments\"</strong> tab up to <strong>24 hours</strong> before the appointment starts"
+
+msgid "Status wizyty"
+msgstr "Appointment status"
+
+msgid "Oczekuje na potwierdzenie pracownika BON"
+msgstr "Awaiting confirmation by a BON employee"
+
+msgid "Wizyta potwierdzona, zapraszamy!"
+msgstr "Appointment confirmed, we look forward to seeing you!"
+
+msgid "Legenda"
+msgstr "Legend"
+
+msgid "Dostępne terminy"
+msgstr "Available dates"
+
+msgid "Wybrany dzień"
+msgstr "Selected day"
+
+msgid "Dzisiaj"
+msgstr "Today"
+
+msgid "Brak terminów"
+msgstr "No available dates"
+
+msgid "Nowe ogłoszenia"
+msgstr "New announcements"
+
+msgid "Zmień język strony"
+msgstr "Change page language"
+
+msgid "Potwierdź wizytę"
+msgstr "Confirm appointment"
+
+msgid "Zmień motyw strony na ciemny"
+msgstr "Switch page theme to dark"
+
+msgid "Zmień motyw strony na jasny"
+msgstr "Switch page theme to light"
+
+msgid "Zmień motyw strony"
+msgstr "Change page theme"
+
+msgid "Wymagania hasła"
+msgstr "Password requirements"
+
+msgid "Hasło musi zawierać:"
+msgstr "The password must contain:"
+
+msgid "Minimum 12 znaków"
+msgstr "Minimum 12 characters"
+
+msgid "Małą literę"
+msgstr "A lowercase letter"
+
+msgid "Wielką literę"
+msgstr "An uppercase letter"
+
+msgid "Cyfrę"
+msgstr "A digit"
+
+msgid "Znak specjalny (np. !@#$%^&*)"
+msgstr "A special character (e.g. !@#$%^&*)"
+
+msgid "Wizyta w biurze BON"
+msgstr "Appointment at the BON office"
+
+msgid "Godzina rozpoczęcia"
+msgstr "Start time"
+
+msgid "Godzina zakończenia"
+msgstr "End time"
+
+msgid "Opisz, dlaczego potrzebujesz usług tłumacza (opis musi mieć przynajmniej 150 znaków)"
+msgstr "Describe why you need interpreter services (the description must contain at least 150 characters)"
+
+msgid "Musisz opisać dlaczego potrzebujesz usług tłumacza"
+msgstr "You must describe why you need interpreter services"
+
+msgid "Zapoznałem/am się z Regulaminem współpracy z tłumaczem języka migowego."
+msgstr "I have read the regulations regarding cooperation with a sign language interpreter."
+
+msgid "Musisz potwierdzić regulamin, aby przejść dalej"
+msgstr "You must accept the regulations to continue"
+
+msgid "Brak wolnych miejsc na ten termin."
+msgstr "No available places for this date."
+
+msgid "Jesteś już zapisany/a na te konsultacje."
+msgstr "You are already signed up for this consultation."
+
+msgid "Ankieta została przesłana prawidłowo"
+msgstr "The survey has been submitted successfully"
+
+msgid "Ten termin nie jest dostępny. Wybierz inny."
+msgstr "This date is not available. Choose another one."
+
+msgid "Termin na anulowanie wizyty już minął"
+msgstr "The deadline for cancelling the appointment has passed"
+
+msgid "Rezerwacja anulowana"
+msgstr "Booking cancelled"
+
+msgid "Użytkownik nie istnieje"
+msgstr "User does not exist"
+
+msgid "Użytkownik został usunięty"
+msgstr "User has been deleted"
+
+msgid "Użytkownik zaktualizowany"
+msgstr "User updated"
+
+msgid "Użytkownik został utworzony"
+msgstr "User has been created"
+
+msgid "Dodano nowy element"
+msgstr "New item added"
+
+msgid "Zmieniono element"
+msgstr "Item changed"
+
+msgid "Konto studenta zostało zablokowane"
+msgstr "The student account has been blocked"
+
+msgid "Konto studenta zostało aktywowane"
+msgstr "The student account has been activated"
+
+msgid "Dodano element"
+msgstr "Item added"
+
+msgid "Edytowano element"
+msgstr "Item edited"
+
+msgid "Wniosek został zaktualizowany"
+msgstr "The application has been updated"
+
+msgid "Nie udało się utworzyć zapisu: data rozpoczęcia i zakończenia muszą być takie same"
+msgstr "Failed to create entry: the start and end dates must be the same"
+
+msgid "Nie udało się utworzyć zapisu: data zakończenia nie może być mniejsza niż data rozpoczęcia"
+msgstr "Failed to create entry: the end date cannot be earlier than the start date"
+
+msgid "Utworzono spotkanie z linkiem na Teams"
+msgstr "A meeting with a Teams link has been created"
+
+msgid "Spotkanie utworzone, ale brak linku do dołączenia."
+msgstr "The meeting was created, but there is no joining link."
+
+msgid "Nie udało się utworzyć spotkania: "
+msgstr "Failed to create the meeting: "
+
+msgid "Ogłoszenie zostało pomyślnie dodane"
+msgstr "The announcement has been added successfully"
+
+msgid "Formularz zawiera błędy. Proszę poprawić oznaczone pola"
+msgstr "The form contains errors. Please correct the marked fields"
+
+msgid "Wizyta anulowana"
+msgstr "Appointment cancelled"
+
+msgid "Wizyta potwierdzona"
+msgstr "Appointment confirmed"
+
+msgid "Konto zostało pomyślnie utworzone"
+msgstr "The account has been created successfully"
+
+msgid "Konto zostało pomyślne utworzone"
+msgstr "The account has been created successfully"
+
+msgid "Pn"
+msgstr "Mon"
+
+msgid "Wt"
+msgstr "Tue"
+
+msgid "Śr"
+msgstr "Wed"
+
+msgid "Cz"
+msgstr "Thu"
+
+msgid "Pt"
+msgstr "Fri"
+
+msgid "So"
+msgstr "Sat"
+
+msgid "Nd"
+msgstr "Sun"
+
+msgid "Kliknij dzień, aby zobaczyć dostępne godziny."
+msgstr "Click a day to see available hours."
+
+msgid "Harmonogram zajęć z zaznaczeniem, na których zajęciach tłumacz jest niezbędny"
+msgstr "Class schedule indicating which classes require an interpreter"
+
+msgid "Wybierz dzień, aby zobaczyć dostępne godziny."
+msgstr "Select a day to see available hours."
+
+msgid "Umów się na wizytę w Biurze ds. Osób z Niepełnosprawnościami online lub stacjonarnie"
+msgstr "Schedule an appointment at the Office for Persons with Disabilities online or in person"
+
+msgid "Przejdź do listy wizyt, na które się zapisałeś/-aś"
+msgstr "Go to the list of appointments you signed up for"
+
+msgid "Podaj szczególne potrzeby dotyczące organizacji spotkania, jeśli takie posiadasz"
+msgstr "Provide any special needs regarding the organization of the meeting, if applicable"
+
+msgid "Wybierz język spotkania"
+msgstr "Select meeting language"
+
+msgid "Polski"
+msgstr "Polish"
+
+msgid "Angielski"
+msgstr "English"
+
+msgid "Podaj imię"
+msgstr "Enter first name"
+
+msgid "Podaj nazwisko"
+msgstr "Enter last name"
+
+msgid "Podaj adres e-mail"
+msgstr "Enter email address"
+
+msgid "Podaj poprawny adres e-mail"
+msgstr "Enter a valid email address"
+
+msgid "Nie możesz użyć adresu w domenie vizja.pl lub students.vizja.pl"
+msgstr "You cannot use an address in the vizja.pl or students.vizja.pl domain"
+
+msgid "Opisz sprawę, z którą zgłaszasz się do BON"
+msgstr "Describe the matter you are contacting the BON office about"
+
+msgid "Wybierz tryb spotkania"
+msgstr "Select meeting mode"
+
+msgid "Wartość dodatkowa - Angielska"
+msgstr "Additional value - English"
+
+msgid "Wartość dodatkowa 2"
+msgstr "Additional value 2"
+
+msgid "Wartość dodatkowa 2 - Angielska"
+msgstr "Additional value 2 - English"
+
+msgid "Kolejność"
+msgstr "Order"
+
+msgid "Opisz, dlaczego asystent dydaktyczny jest Ci potrzeby oraz jakie zadania/usługi miałby wykonywać"
+msgstr "Describe why you need a teaching assistant and what tasks/services they would perform"
+
+msgid "Jeśli chcesz, abyśmy sami zaproponowali Ci asystenta dydaktycznego, możesz podzielić się swoimi preferencjami zaznaczając wybrane opcje:"
+msgstr "If you would like us to suggest a teaching assistant for you, you can share your preferences by selecting the chosen options:"
+
+msgid "Szacowana liczba godzin w miesiącu"
+msgstr "Estimated number of hours per month"
+
+msgid "Wgraj orzeczenie o niepełnosprawności lub inny dokument potwierdzający trudności"
+msgstr "Upload a disability certificate or another document confirming difficulties"
+
+msgid "Wgraj harmonogram zajęć z zaznaczeniem, na których zajęciach asystent jest niezbędny"
+msgstr "Upload a class schedule indicating which classes require an assistant"
+
+msgid "Opisz, jak Twoje niepełnosprawności lub szczególne potrzeby wpływają na proces kształcenia  i dlaczego zaznaczyłaś/zaznaczyłeś wybrane adaptacje? (Opis musi mieć przynajmniej 150 znaków)"
+msgstr "Describe how your disabilities or special needs affect the educational process and why you selected the chosen accommodations. (The description must contain at least 150 characters)"
+
+msgid "Data zakończenia nie może być później niż 6 miesięcy po dacie rozpoczęcia."
+msgstr "The end date cannot be later than 6 months after the start date."
+
+msgid "Preferuję tłumacza posługującego się:"
+msgstr "I prefer an interpreter using:"
+
+msgid "Inne preferencje spoza listy"
+msgstr "Other preferences not listed"
+
+msgid "Maksymalna liczba znaków to {{ limit }}"
+msgstr "The maximum number of characters is {{ limit }}"
+
+msgid "Wgraj harmonogram zajęć z zaznaczeniem, na których zajęciach tłumacz jest niezbędny"
+msgstr "Upload a class schedule indicating which classes require an interpreter"
+
+msgid "Kiedy chcesz skorzystać z usług tłumacza?"
+msgstr "When would you like to use interpreter services?"
+
+msgid "Wybierz, kiedy chcesz skorzystać z usług tłumacza"
+msgstr "Select when you would like to use interpreter services"
+
+msgid "Termin zapisu na konsultację już minął"
+msgstr "The consultation registration deadline has passed"
+
+msgid "Zapisano na konsultacje. Szczegółowe informacje znajdują się poniżej."
+msgstr "You have been registered for the consultation. Detailed information is provided below."
+
+msgid "Ten termin nie istnieje. Wybierz inny."
+msgstr "This date does not exist. Choose another one."
+
+msgid "Potwierdzono wizytę z linkiem do spotkania na MS Teams"
+msgstr "Appointment confirmed with an MS Teams meeting link"
+
+msgid "Wizyta potwierdzona bez spotkania na MS Teams"
+msgstr "Appointment confirmed without an MS Teams meeting"
+
+msgid "Moje archiwalne zapisy na konusltacje"
+msgstr "My archived consultation registrations"
+
+msgid "Formularz zapisu na konsultację"
+msgstr "Consultation registration form"
+
+msgid "Szczegóły zapisu na konsultację"
+msgstr "Consultation registration details"
+
+msgid "Wróć do pulpitu"
+msgstr "Back to dashboard"
+
+msgid "Umów kolejną konsultację"
+msgstr "Book another consultation"
+
+msgid "Wybrany język konsultacji"
+msgstr "Selected consultation language"
+
+msgid "Kryteria wyszukiwania konsultacji"
+msgstr "Consultation search criteria"
+
+msgid "Nawigacja górna"
+msgstr "Top navigation"
+
+msgid "Wygodnie umawiaj spotkania z Help Vizja"
+msgstr "Conveniently schedule meetings with Help Vizja"
+
+msgid "Studenci i pracownicy"
+msgstr "Students and employees"
+
+msgid "Goście"
+msgstr "Guests"
+
+msgid "Jeśli nie masz konta"
+msgstr "If you do not have an account"
+
+msgid "Najczęście zadawane pytania i odpowiedzi"
+msgstr "Frequently asked questions and answers"
+
+msgid "Zapis na wizytę w BON - krok 2"
+msgstr "BON appointment registration - step 2"
+
+msgid "Brak wizyt w BON."
+msgstr "No BON appointments."
+
+msgid "Rodzaj wizyty"
+msgstr "Appointment type"
+
+msgid "Powód wizyty"
+msgstr "Reason for appointment"
+
+msgid "Tryb wizyty"
+msgstr "Appointment mode"
+
+msgid "Brak możliwości anulowania – prosimy o kontakt pod nr 533-118-733"
+msgstr "Cancellation unavailable – please contact us at 533-118-733"
+
+msgid "Zapis na wizytę w BON - krok 3"
+msgstr "BON appointment registration - step 3"
+
+msgid "Otrzymaliśmy Twoją prośbę o spotkanie. <strong>Teraz Twoja wizyta czeka na potwierdzenie przez pracownika BON.</strong> Informację otrzymasz mailem oraz możesz sprawdzić status swojej rezerwacji w Centrum zapisów."
+msgstr "We have received your meeting request. <strong>Your appointment is now awaiting confirmation by a BON employee.</strong> You will receive information by email and can also check the status of your booking in the Registration Center."
+
+msgid "Zapis na wizytę w BON - krok 1"
+msgstr "BON appointment registration - step 1"
+
+msgid "Dni z dostępnymi terminami"
+msgstr "Days with available dates"
+
+msgid "Przejdź do pulpitu – logo Uniwersytetu Vizja"
+msgstr "Go to dashboard – VIZJA University logo"
+
+msgid "Nawigacja główna"
+msgstr "Main navigation"
+
+msgid "Logo Funduszy Europejskich"
+msgstr "European Funds logo"
+
+msgid "Deklaracja dostępności"
+msgstr "Accessibility statement"
+
+msgid "piętro"
+msgstr "floor"
+
+msgid "pokój"
+msgstr "room"
+
+msgid "Program do zarządzania usługami Biura ds. Osób z Niepełnosprawnościami (BON) został opracowany przez Uniwersytet VIZJA w ramach realizacji projektu"
+msgstr "The management system for the Office for Persons with Disabilities (BON) services was developed by VIZJA University as part of the project"
+
+msgid "Vizja Home – Uczelnia dla wszystkich"
+msgstr "Vizja Home – A university for everyone"
+
+msgid "w ramach programu Fundusze Europejskie dla Rozwoju Społecznego 2021-2027 współfinansowanego ze środków Europejskiego Funduszu Społecznego Plus i objęty jest w całości licencją"
+msgstr "under the European Funds for Social Development 2021–2027 programme co-financed by the European Social Fund Plus and is fully covered by the licence"
+
+msgid "Creative Commons Uznanie autorstwa CC BY 4.0"
+msgstr "Creative Commons Attribution CC BY 4.0"
+
+msgid "Więcej o licencji"
+msgstr "More about the licence"
+
+msgid "Logo licencji Creative Commons – Uznanie autorstwa"
+msgstr "Creative Commons Attribution licence logo"
+
+msgid "Ikony"
+msgstr "Icons"
+
+msgid "Język strony:"
+msgstr "Page language:"
+
+msgid "polski"
+msgstr "Polish"
+
+msgid "angielski"
+msgstr "English"
+
+msgid "Wróć do złożonych wniosków"
+msgstr "Back to submitted applications"
+
+msgid "Aby złożyć wniosek o przyznanie wsparcia tłumacza najpierw musisz otrzymać <strong>Kartę adaptacji</strong>. Czy chcesz teraz złożyć wniosek o wydanie Karty adaptacji?"
+msgstr "To apply for interpreter support, you must first obtain an <strong>Adaptation Card</strong>. Would you like to apply for an Adaptation Card now?"
+
+msgid "Wnioskuję o Kartę adaptacji"
+msgstr "Apply for an Adaptation Card"
+
+msgid "Składanie wniosku - wybór adaptacji"
+msgstr "Application submission - adaptation selection"
+
+msgid "Preferencje tłumacza języka migowego"
+msgstr "Sign language interpreter preferences"
+
+msgid "Preferencje asystenta dydaktycznego"
+msgstr "Teaching assistant preferences"
+
+msgid "Dzień konsultacji"
+msgstr "Consultation day"
+
+msgid "Godziny konsultacji"
+msgstr "Consultation hours"
+
+msgid "Opis sprawy"
+msgstr "Case description"
+
+msgid "Forma spotkania"
+msgstr "Meeting format"
+
+msgid "Wybierz sprzęt do wypożyczenia"
+msgstr "Select equipment to borrow"
+
+msgid "Typ sprzętu"
+msgstr "Equipment type"
+
+msgid "Wybierz typ sprzętu"
+msgstr "Select equipment type"
+
+msgid "Wybierz datę zakończenia"
+msgstr "Select end date"
+
+msgid "Wybierz datę rozpoczęcia"
+msgstr "Select start date"
+
+msgid "Wgraj orzeczenie lub inny dokument potwierdzający trudności"
+msgstr "Upload a certificate or another document confirming difficulties"
+
+msgid "Wybierz rodzaj wniosku"
+msgstr "Select application type"
+
+msgid "Mapa strony"
+msgstr "Site map"
+
+msgid "Poniżej znajduje się lista najważniejszych sekcji i podstron serwisu Help VIZJA."
+msgstr "Below is a list of the most important sections and subpages of the Help VIZJA service."
+
+msgid "Nawigacja mapy strony"
+msgstr "Site map navigation"
+
+msgid "Główne sekcje"
+msgstr "Main sections"
+
+msgid "Profil użytkownika"
+msgstr "User profile"
+
+msgid "Pomoc i informacje"
+msgstr "Help and information"
+
+msgid "Konto"
+msgstr "Account"
+
+msgid "logotyp Biura do spraw osób z niepełnosprawnościami"
+msgstr "Logo of the Office for Persons with Disabilities"
+
+msgid "Wygodnie umawiaj spotkania i składaj wnioski z Help VIZJA"
+msgstr "Conveniently schedule meetings and submit applications with Help VIZJA"
+
+msgid "Wejdź jako gość bez logowania"
+msgstr "Continue as guest without logging in"
+
+msgid "Wybierz dzień, aby zobaczyć dostępne godziny"
+msgstr "Select a day to see available hours"
+
+msgid "Przejdź do treści"
+msgstr "Skip to content"
+
+msgid "Przejdź do stopki"
+msgstr "Skip to footer"
+
+msgid "Wybierz termin spotkania z pracownikiem BON"
+msgstr "Select a meeting date with a BON employee"
+
+msgid "Zapisz się na konsultację ze specjalistą"
+msgstr "Sign up for a consultation with a specialist"
+
+msgid "Sprawdź status umówionych wizyt"
+msgstr "Check the status of scheduled appointments"
+
+msgid "Sprawdź szczegóły umówionych konsultacji"
+msgstr "Check the details of scheduled consultations"
+
+msgid "Nie wybrano pliku"
+msgstr "No file selected"
+
+msgid "niewybrany plik"
+msgstr "unselected file"
+
+msgid "Dodaj załącznik"
+msgstr "Add attachment"
+
+msgid "Nie można dodać więcej plików. Osiągnięto limit"
+msgstr "Cannot add more files. The limit has been reached"
+
+msgid "Dodaj plik. Dodano"
+msgstr "Add file. Added"
+
+msgid "plik"
+msgstr "file"
+
+msgid "Nie udało się usunąć pliku"
+msgstr "Failed to remove file"
+
+msgid "Usunięto plik"
+msgstr "File removed"
+
+msgid "Łącznie"
+msgstr "Total"
+
+msgid "Usuń niewybrany plik"
+msgstr "Remove unselected file"
+
+msgid "Dodano plik"
+msgstr "File added"
+
+msgid "Anulowano wybór pliku"
+msgstr "File selection cancelled"
+
+msgid "Okres wypożyczenia"
+msgstr "Loan period"
+
+msgid "Wgraj orzeczenie lub inny dokument potwierdzający trudności. Możesz wgrać do 3 plików"
+msgstr "Upload a certificate or another document confirming difficulties. You may upload up to 3 files"
+
+msgid "Wybierz preferencje dotyczące realizacji wsparcia"
+msgstr "Select preferences regarding support implementation"
+
+msgid "Preferencje"
+msgstr "Preferences"
+
+msgid "otwiera się w nowym oknie"
+msgstr "opens in a new window"
+
+msgid "Nazwy kierunków, wydziałów, typy dokumentów"
+msgstr "Names of study programmes, faculties, document types"
+
+msgid "Audyt wykonywnaych akcji w serwisie"
+msgstr "Audit of actions performed in the system"
+
+msgid "Panel pracowniczy"
+msgstr "Employee panel"
+
+msgid "Zarejestrowani pracownicy uczelni"
+msgstr "Registered university employees"
+
+msgid "Udostępnione terminy"
+msgstr "Shared dates"
+
+msgid "Przeglądaj i zarządzaj wizytami"
+msgstr "Browse and manage appointments"
+
+msgid "Wybierz datę, aby zobaczyć godziny"
+msgstr "Select a date to see hours"
+
+msgid "Panel administracyjny"
+msgstr "Administration panel"
+
+msgid "Panel pracowniczy Help VIZJA"
+msgstr "Help VIZJA employee panel"
+
+msgid "Zarządzaj terminami wizyt, wnioskami, wizytami oraz obsługą studentów z jednego miejsca."
+msgstr "Manage appointment dates, applications, appointments and student support from one place."
+
+msgid "Szybkie akcje"
+msgstr "Quick actions"
+
+msgid "Przeglądaj i edytuj terminy wizyt"
+msgstr "Browse and edit appointment dates"
+
+msgid "Wizyty w BON"
+msgstr "BON appointments"
+
+msgid "Przeglądaj i zarządzaj wizytami w biurze"
+msgstr "Browse and manage office appointments"
+
+msgid "Przeglądaj wnioski przesłane przez studentów"
+msgstr "Browse applications submitted by students"
+
+msgid "Zarządzaj ogłoszeniami udostępnionymi dla studentów"
+msgstr "Manage announcements available to students"
+
+msgid "Cykliczność"
+msgstr "Recurrence"
+
+msgid "Brak"
+msgstr "None"
+
+msgid "Dodatkowe informacje (np. numer sali)"
+msgstr "Additional information (e.g. room number)"
+
+msgid "Wybierz specjalistę"
+msgstr "Select specialist"
+
+msgid "Wybierz studenta"
+msgstr "Select student"
+
+msgid "Musisz opisać sprawę, z którą chcesz się zgłosić"
+msgstr "You must describe the matter you want to report"
+
+msgid "Brakuje załącznika. Wgraj harmonogram zajęć z zaznaczeniem, na których zajęciach asystent jest niezbędny"
+msgstr "Attachment missing. Upload a class schedule indicating which classes require an assistant"
+
+msgid "Zapoznałem się z Regulaminem w sprawie dostosowania procesu kształcenia do potrzeb osób ze szczególnymi potrzebami, w tym osób z niepełnosprawnościami wprowadzonym na podstawie Zarządzenia Rektora Uniwersytu VIZJA"
+msgstr "I have read the Regulations regarding adaptation of the educational process to the needs of persons with special needs, including persons with disabilities, introduced under the Rector’s Ordinance of VIZJA University"
+
+msgid "Prośba o rezerwację wizyty została wysłana i oczekuje na potwierdzenie przez pracownika BON"
+msgstr "The appointment booking request has been sent and is awaiting confirmation by a BON employee"
+
+msgid "Data zakończenia musi być późniejsza niż data rozpoczęcia."
+msgstr "The end date must be later than the start date."
+
+msgid "W jednym cyklu można utworzyć maksymalnie 10 spotkań Teams (maksymalnie 10 dni w cyklu)"
+msgstr "A maximum of 10 Teams meetings can be created in one cycle (maximum 10 days in a cycle)"
+
+msgid "Utworzono terminy: "
+msgstr "Created dates: "
+
+msgid "Konsultacje"
+msgstr "Consultations"
+
+msgid "Sprawdź swoje zapisy na konsutalcje ze specjalistami"
+msgstr "Check your registrations for specialist consultations"
+
+msgid "Brak dostępnych terminów dla wybranych kryteriów wyszukiwania."
+msgstr "No available dates for the selected search criteria."
+
+msgid "Brak wolnych terminów dla wybranych kryteriów wyszukiwania."
+msgstr "No free dates for the selected search criteria."
+
+msgid "Data - szukaj od"
+msgstr "Date - search from"
+
+msgid "Data - szukaj do"
+msgstr "Date - search to"
+
+msgid "Uniwersytet Vizja"
+msgstr "VIZJA University"
+
+msgid "Logo Biura do spraw osób z niepełnosprawnościami"
+msgstr "Logo of the Office for Persons with Disabilities"
+
+msgid "Wizyty w Biurze ds. Osób z Niepełnosprawnościami"
+msgstr "Appointments at the Office for Persons with Disabilities"
+
+msgid "Zapisz się na wizytę z pracownikiem BON"
+msgstr "Book an appointment with a BON employee"
+
+msgid "Sprawdź swoje wizyty w biurze"
+msgstr "Check your office appointments"
+
+msgid "Rezerwowany termin"
+msgstr "Booked appointment slot"
+
+msgid "Poproś o rezerwację"
+msgstr "Request booking"
+
+msgid "Wróć do moich zapisów"
+msgstr "Back to my registrations"
+
+msgid "Spotkanie online (MS Teams) - brak utworzonego spotkania"
+msgstr "Online meeting (MS Teams) - no meeting has been created"
+
+msgid "Spotkanie stacjonarne w siedzibie BON, pokój 233, piętro 2 (ul. Okopowa 59, Warszawa)"
+msgstr "In-person meeting at the BON office, room 233, 2nd floor (59 Okopowa Street, Warsaw)"
+
+msgid "Postęp składania wniosku"
+msgstr "Application progress"
+
+msgid "Obecny krok"
+msgstr "Current step"
+
+msgid "Poprzedni krok"
+msgstr "Previous step"
+
+msgid "Następny krok"
+msgstr "Next step"
+
+msgid "Krok ukończony"
+msgstr "Step completed"
+
+msgid "Przejdź do pulpitu - logo Uniwersytetu Vizja"
+msgstr "Go to dashboard - VIZJA University logo"
+
+msgid "Zarezerwuj konsultację z doradcą zawodowym, psychologiem lub psychiatrą i uzyskaj wsparcie dopasowane do Twoich potrzeb"
+msgstr "Book a consultation with a career advisor, psychologist or psychiatrist and receive support tailored to your needs"
+
+msgid "Pytania i odpowiedzi"
+msgstr "Questions and answers"
+
+msgid "Sekcja najczęstszych pytań i odpowiedzi"
+msgstr "Frequently asked questions and answers section"
+
+msgid "Zaktualizuj swoje dane (Verbis)"
+msgstr "Update your data (Verbis)"
+
+msgid "Sprawdź termin"
+msgstr "Check appointment"
+
+msgid "Podaj status"
+msgstr "Provide status"
+
+msgid "Wybór rodzaju wniosku"
+msgstr "Application type selection"
+
+msgid "Wybierz jeden rodzaj wsparcia, o który chcesz złożyć wniosek."
+msgstr "Select one type of support you would like to apply for."
+
+msgid "Użyj klawiszy strzałek, aby zmienić wybór."
+msgstr "Use the arrow keys to change the selection."
+
+msgid "Wróć do szczegółów konsultacji"
+msgstr "Back to consultation details"
+
+msgid "Wyszukaj studenta"
+msgstr "Search for a student"
+
+msgid "Wpisz imię, nazwisko lub email"
+msgstr "Enter first name, last name or email"
+
+msgid "Dodatkowe informacje"
+msgstr "Additional information"
+
+msgid "Tryb spotkania"
+msgstr "Meeting mode"
+
+msgid "Dodaj studenta"
+msgstr "Add student"
+
+msgid "Zamknij okno szczegółów"
+msgstr "Close details window"
+
+msgid "FAQ - edycja"
+msgstr "FAQ - edit"
+
+msgid "Wróć do terminu"
+msgstr "Back to appointment"
+
+msgid "Edytuj termin"
+msgstr "Edit appointment"
+
+msgid "Oczekuje na potwierdzenie"
+msgstr "Awaiting confirmation"
+
+msgid "Kalendarz wizyt w BON"
+msgstr "BON appointment calendar"
+
+msgid "Wizyty oczekujące na potwierdzenie"
+msgstr "Appointments awaiting confirmation"
+
+msgid "Potwierdzone wizyty"
+msgstr "Confirmed appointments"
+
+msgid "Część wizyt potwierdzona, część oczekuje na potwierdzenie"
+msgstr "Some appointments are confirmed, some are awaiting confirmation"
+
+msgid "Terminy wizyt:"
+msgstr "Appointment dates:"
+
+msgid "Informacja z systemu"
+msgstr "System information"
+
+msgid "spełniono"
+msgstr "fulfilled"
+
+msgid "nie spełniono"
+msgstr "not fulfilled"
+
+msgid "Zapoznałam/em się z klauzulą informacyjną i wyrażam zgodę na przetwarzanie moich danych osobowych w zakresie realizacji zadań Biura ds. Osób z Niepełnosprawnościami Uniwersytetu VIZJA i w celu niezbędnym do uzyskania oczekiwanych przeze mnie świadczeń"
+msgstr "I have read the information clause and consent to the processing of my personal data for the purposes of carrying out the tasks of the Office for Persons with Disabilities at VIZJA University and to the extent necessary to obtain the services I expect"
+
+msgid "Musisz zaznaczyć tę zgodę"
+msgstr "You must accept this consent"
+
+msgid "Pola Hasło i pole Powtórz hasło muszą być identyczne"
+msgstr "The Password and Repeat password fields must match"
+
+msgid "Wpisz hasło"
+msgstr "Enter a password"
+
+msgid "Hasło musi mieć co najmniej {{ limit }} znaków"
+msgstr "The password must contain at least {{ limit }} characters"
+
+msgid "To hasło było ujawnione w wyciekach – wybierz inne"
+msgstr "This password has appeared in data leaks – choose another one"
+
+msgid "Hasło musi zawierać małą i wielką literę, cyfrę i znak specjalny"
+msgstr "The password must contain a lowercase letter, uppercase letter, digit and special character"
+
+msgid "Opisz, dlaczego asystent dydaktyczny jest Ci potrzebny oraz jakie zadania/usługi miałby wykonywać"
+msgstr "Describe why you need a teaching assistant and what tasks/services they would perform"
+
+msgid "Uzupełnij opis"
+msgstr "Complete the description"
+
+msgid "Podaj szacowaną liczbę godzin w miesiącu"
+msgstr "Provide the estimated number of hours per month"
+
+msgid "Brakuje załącznika. Wgraj orzeczenie o niepełnosprawności lub inny dokument potwierdzający trudności"
+msgstr "Attachment missing. Upload a disability certificate or another document confirming your difficulties"
+
+msgid "Wybierz co najmniej jeden rodzaj adaptacji lub wybierz \"inne\", jeżeli nie ma twojego na liście"
+msgstr "Select at least one type of adaptation or choose \"other\" if yours is not on the list"
+
+msgid "Opisz, jak Twoje niepełnosprawności lub szczególne potrzeby wpływają na proces kształcenia i dlaczego zaznaczyłaś/zaznaczyłeś wybrane adaptacje?*"
+msgstr "Describe how your disabilities or special needs affect the educational process and why you selected the chosen adaptations?*"
+
+msgid "Opis musi mieć przynajmniej 150 znaków"
+msgstr "The description must contain at least 150 characters"
+
+msgid "Data zakończenia nie może być później niż 12 miesięcy po dacie rozpoczęcia."
+msgstr "The end date cannot be later than 12 months after the start date."
+
+msgid "Data zakończenia nie może być mniejsza niż data rozpoczęcia."
+msgstr "The end date cannot be earlier than the start date."
+
+msgid "Data rozpoczęcia nie może być wcześniejsza niż dzień dzisiejszy."
+msgstr "The start date cannot be earlier than today."
+
+msgid "Brakuje załącznika. Wgraj harmonogram zajęć z zaznaczeniem, na których zajęciach tłumacz jest niezbędny"
+msgstr "Attachment missing. Upload a class schedule indicating which classes require an interpreter"
+
+msgid "Aby skorzystać z tej usługi musisz posiadać przyznaną kartę adaptacji. Poprosimy Cię o złożenie wniosku o jej przyznanie."
+msgstr "To use this service, you must have an approved Adaptation Card. We will ask you to submit an application for one."
+
+msgid "Karta adaptacji jest niezbędna do przyznania tłumacza języka migowego lub wsparcia asystenta dydaktycznego."
+msgstr "An Adaptation Card is required to receive a sign language interpreter or teaching assistant support."
+
+msgid "Wybierz godzinę wizyty."
+msgstr "Select the appointment time."
+
+msgid "Termin na rezerwację godziny już minął"
+msgstr "The time limit for booking this appointment has expired"
+
+msgid "Termin jest już zajęty"
+msgstr "This appointment slot is already taken"
+
+msgid "Poprzednia strona"
+msgstr "Previous page"
+
+msgid "Następna strona"
+msgstr "Next page"
+
+msgid "Zapisy na konsultacje - dostępne terminy"
+msgstr "Consultation registrations - available appointment dates"
+
+msgid "Wybierz dzień"
+msgstr "Select a day"
+
+msgid "Wybierz godzinę"
+msgstr "Select a time"
+
+msgid "Potwierdzam, że"
+msgstr "I confirm that"
+
+msgid "Zapisy na konsultacje - wybierz kryteria wyszukiwania"
+msgstr "Consultation registrations - select search criteria"
+
+msgid "Otrzymaliśmy Twoją prośbę o spotkanie. <strong>Teraz Twoja wizyta czeka na potwierdzenie przez pracownika BON.</strong> Informację otrzymasz mailem oraz\n                                możesz sprawdzić\n                                status swojej rezerwacji w Centrum zapisów.\n                            </p>\n                            <p class=\"mt-3 text-left text-sm text-zinc-600 dark:text-zinc-300\">\n                                Jeśli zmienisz zdanie, możesz samodzielnie anulować termin w zakładce\n                                <strong>\"Moje wizyty\"</strong>, maksymalnie <strong>24\n                                    godziny</strong> przed rozpoczęciem wizyty"
+msgstr "We have received your meeting request. <strong>Your appointment is now awaiting confirmation by a BON employee.</strong> You will receive information by email and\n                                you can also check\n                                the status of your reservation in the Registration Centre.\n                            </p>\n                            <p class=\"mt-3 text-left text-sm text-zinc-600 dark:text-zinc-300\">\n                                If you change your mind, you can cancel the appointment yourself in the\n                                <strong>\"My appointments\"</strong> tab up to <strong>24\n                                    hours</strong> before the appointment starts"
+
+msgid "Dostępne godziny,"
+msgstr "Available hours,"
+
+msgid "Adres mailowy"
+msgstr "Email address"
+
+msgid "Wyrażam zgodę na"
+msgstr "I consent to"
+
+msgid "Okres wypożyczenia określają daty rozpoczęcia i zakończenia. Maksymalny czas wypożyczenia sprzętu wynosi <strong>12 miesięcy</strong>"
+msgstr "The loan period is determined by the start and end dates. The maximum equipment loan period is <strong>12 months</strong>"
+
+msgid "Preferuję tłumacza posługującego się"
+msgstr "I prefer an interpreter using"
+
+msgid "Kiedy chcesz skorzystać z usług tłumacza (wymagane)"
+msgstr "When would you like to use interpreter services? (required)"
+
+msgid "Ankieta"
+msgstr "Survey"
+
+msgid "Wypełnij szybką i anonimową ankietę. Chcemy się dowiedzieć, czy złożenie wniosku było dla Ciebie łatwe"
+msgstr "Complete a quick and anonymous survey. We would like to know whether submitting the application was easy for you"
+
+msgid "Aby złożyć wniosek"
+msgstr "To submit an application"
+
+msgid "najpierw musisz otrzymać\n                        <strong>Kartę adaptacji</strong>. Czy chcesz teraz złożyć wniosek o wydanie Karty adaptacji?"
+msgstr "you must first obtain\n                        an <strong>Adaptation Card</strong>. Would you like to apply for an Adaptation Card now?"
+
+msgid "Potwierdzić wizytę?"
+msgstr "Confirm the appointment?"
+
+msgid "Czy na pewno chcesz potwierdzić wizytę? Osoba zostanie powiadomiona o tym drogą mailową."
+msgstr "Are you sure you want to confirm the appointment? The person will be notified by email."
+
+msgid "Wizytę będzie można usunąć przez jej całkowite anulowanie. Osoba zostanie usunięta z zapisu, a godzina wróci do puli aktywnych."
+msgstr "The appointment can be removed by cancelling it completely. The person will be removed from the registration and the time slot will return to the pool of active slots."
+
+msgid "Potwierdź"
+msgstr "Confirm"
+
+msgid "Anulować wizytę?"
+msgstr "Cancel the appointment?"
+
+msgid "Czy na pewno chcesz anulować wizytę? Osoba zostanie powiadomiona o tym drogą mailową."
+msgstr "Are you sure you want to cancel the appointment? The person will be notified by email."
+
+msgid "Nie będzie można przywrócić anulowanej wizyty. Godzina wizyty wróci do puli aktywnych do rezerwacji."
+msgstr "The cancelled appointment cannot be restored. The appointment time will return to the pool of active booking slots."
+
+msgid "Brak zapisanych osób do tej wizyty."
+msgstr "No people registered for this appointment."
+
+msgid "Operacja zakończona sukcesem"
+msgstr "Operation completed successfully"
+
+msgid "Operacja zakończona niepowodzeniem"
+msgstr "Operation failed"
+
+msgid "Liczba"
+msgstr "Number"
+
+msgid "Zapis na wizytę w BON - krok 4"
+msgstr "BON appointment registration - step 4"
+
+msgid "Słabe hasło"
+msgstr "Weak password"
+
+msgid "Średnie hasło"
+msgstr "Medium password"
+
+msgid "Mocne hasło"
+msgstr "Strong password"
+
+msgid "Hasło musi spełniać poniższe wymagania."
+msgstr "The password must meet the following requirements."
+
+msgid "Siła hasła"
+msgstr "Password strength"
+
+msgid "Mała litera"
+msgstr "Lowercase letter"
+
+msgid "Wielka litera"
+msgstr "Uppercase letter"
+
+msgid "Cyfra"
+msgstr "Digit"
+
+msgid "Znak specjalny, np. !@#$%^&*"
+msgstr "Special character, e.g. !@#$%^&*"
+
+msgid "Hasła są identyczne"
+msgstr "Passwords match"
+
+msgid "Resetowanie hasła"
+msgstr "Password reset"
+
+msgid "Wprowadzenie nowego hasła"
+msgstr "Enter a new password"
+
+msgid "Twój najbliższy zapis na konsultacje"
+msgstr "Your upcoming consultation registration"
+
+msgid "Twoje konto jest zablokowane"
+msgstr "Your account is blocked"
+
+msgid "Zaktualizuj swoje dane z Verbisa"
+msgstr "Update your data from Verbis"
+
+msgid "Nie znaleziono pliku"
+msgstr "File not found"
+
+msgid "Nie udało się zweryfikować bezpieczeństwa żądania. Odśwież stronę i spróbuj ponownie"
+msgstr "The request security check could not be verified. Refresh the page and try again"
+
+msgid "Nie wykryto studenta"
+msgstr "No student detected"
+
+msgid "Nie znaleziono terminu"
+msgstr "Appointment not found"
+
+msgid "Nie można usunąć terminu - wykryto zapisanych studentów"
+msgstr "The appointment cannot be deleted because registered students were found"
+
+msgid "Zbyt wiele prób utworzenia konta. Spróbuj ponownie za kilka minut."
+msgstr "Too many account creation attempts. Try again in a few minutes."
+
+msgid "Wybrany termin nie istnieje."
+msgstr "The selected appointment does not exist."
+
+msgid "Ważna informacja"
+msgstr "Important information"
+
+msgid "Aby zapewnić poprawne działanie serwisu oraz najlepsze doświadczenie użytkownika,\n                                zalecamy korzystanie z jednej z poniższych przeglądarek:"
+msgstr "To ensure the service works correctly and to provide the best user experience,\n                                we recommend using one of the following browsers:"
+
+msgid "Korzystanie z innych przeglądarek może powodować ograniczenia w działaniu niektórych funkcji."
+msgstr "Using other browsers may cause limitations in some features."
+
+msgid "Jeśli posiadasz konto e-mail w domenie vizja.pl"
+msgstr "If you have an email account in the vizja.pl domain"
+
+msgid "Jeśli posiadasz utworzone konto na adres e-mail poza domeną vizja.pl"
+msgstr "If you have an account created with an email address outside the vizja.pl domain"
+
+msgid "Najbliższy wolny termin"
+msgstr "Nearest available appointment"
+
+msgid "Brak wolnych godzin"
+msgstr "No available hours"
+
+msgid "Trwa ładowanie strony…"
+msgstr "The page is loading…"
+
+msgid "Zaoczny"
+msgstr "Part-time"
+
+msgid "Stacjonarny"
+msgstr "Full-time"
+
+msgid "Sprawdź regulamin na stronie BON"
+msgstr "Check the regulations on the BON website"
+
+msgid "(link otwiera się w nowym oknie)"
+msgstr "(link opens in a new window)"
+
+msgid "Można wybrać tylko plik PDF."
+msgstr "Only a PDF file can be selected."
+
+msgid "Wsparcie tłumacza języka migowego"
+msgstr "Sign language interpreter support"
+
+msgid "Wsparcie asystenta dydaktycznego"
+msgstr "Teaching assistant support"
+
+msgid "Archiwum zapisów"
+msgstr "Registration archive"
+
+msgid "Zaktualizuj dane o studiach (Verbis)"
+msgstr "Update study data (Verbis)"
+
+msgid "Zaktualizuj dane o orzeczeniu (Verbis)"
+msgstr "Update certificate data (Verbis)"
+
+msgid "Kraj wydania"
+msgstr "Country of issue"
+
+msgid "Wydano na stałe"
+msgstr "Issued permanently"
+
+msgid "Brak dostępu"
+msgstr "Access denied"
+
+msgid "Nie posiadasz uprawnień do wyświetlania lub edytowania tej strony."
+msgstr "You do not have permission to view or edit this page."
+
+msgid "Komunikat lub kod błędu"
+msgstr "Message or error code"
+
+msgid "Zaloguj się na inne konto"
+msgstr "Sign in with another account"
+
+msgid "Ładowanie godzin..."
+msgstr "Loading hours..."
+
+msgid "Błąd ładowania godzin"
+msgstr "Error loading hours"
+
+msgid "Błąd: brak pola termId"
+msgstr "Error: missing termId field"
+
+msgid "dostępne terminy"
+msgstr "available appointments"
+
+msgid "brak terminów"
+msgstr "no appointments"
+
+msgid "Sprawdź swoje zapisy na konsultacje ze specjalistami"
+msgstr "Check your specialist consultation registrations"
+
+msgid "Wróć do zapisów na konsultacje"
+msgstr "Back to consultation registrations"
+
+msgid "Wróć do moich wizyt"
+msgstr "Back to my appointments"
+
+msgid "Numer kierunkowy"
+msgstr "Country code"
+
+msgid "Numer kierunkowy telefonu"
+msgstr "Phone country code"
+
+msgid "Data rozpoczęcia"
+msgstr "Start date"
+
+msgid "Data zakończenia"
+msgstr "End date"
+
+msgid "Wnioskuj o kartę adaptacji - krok 2"
+msgstr "Apply for an adaptation card - step 2"
+
+msgid "Podaj status: Czy chcesz złożyć wniosek o kartę adaptacji?"
+msgstr "Specify status: Do you want to apply for an adaptation card?"
+
+msgid "Status karty adaptacji - krok 2"
+msgstr "Adaptation card status - step 2"
+
+msgid "Podaj status: Czy masz kartę adaptacji"
+msgstr "Specify status: Do you have an adaptation card?"
+
+msgid "Ogólne zadowolenie"
+msgstr "Overall satisfaction"
+
+msgid "Interfejs i użyteczność"
+msgstr "Interface and usability"
+
+msgid "Funkcjonalności"
+msgstr "Features"
+
+msgid "Wydajność i stabilność"
+msgstr "Performance and stability"
+
+msgid "Wrażenia wizualne"
+msgstr "Visual experience"
+
+msgid "Ogólne pytania otwarte"
+msgstr "General open-ended questions"
+
+msgid "Więcej o Help VIZJA i licencji"
+msgstr "More about Help VIZJA and the License"
+
+msgid "O Help VIZJA"
+msgstr "About Help VIZJA"
+
+msgid "Program do zarządzania usługami Biura ds. Osób z Niepełnosprawnościami (BON)\n                    został opracowany przez Uniwersytet VIZJA na potrzeby realizacji projektu\n                    Vizja Home – Uczelnia dla wszystkich (numer projektu:\n                    FERS.03.01-IP.08-0200/24) realizowanego w ramach programu\n                    Fundusze Europejskie dla Rozwoju Społecznego 2021–2027\n                    współfinansowanego ze środków Europejskiego Funduszu Społecznego Plus."
+msgstr "The software for managing services provided by the Office for Persons with Disabilities (BON) was developed by VIZJA University as part of the Vizja Home – University for Everyone project (project number: FERS.03.01-IP.08-0200/24), implemented under the European Funds for Social Development 2021–2027 programme and co-financed by the European Social Fund Plus."
+
+msgid "Program jest efektem pracy twórczej osób zatrudnionych w Uniwersytecie VIZJA\n                    zaangażowanych w realizację Projektu. Program jest utworem w rozumieniu\n                    ustawy z dnia 4 lutego 1994 r. o prawie autorskim i prawach pokrewnych\n                    objętym w całości licencją CC Uznanie autorstwa CC BY 4.0."
+msgstr "The software is the result of the creative work of employees of VIZJA University involved in the implementation of the Project. The software constitutes a work within the meaning of the Polish Copyright and Related Rights Act of 4 February 1994 and is entirely licensed under the Creative Commons Attribution 4.0 (CC BY 4.0) license."
+
+msgid "Wymagania techniczne"
+msgstr "Technical Requirements"
+
+msgid "Do pełnego wykorzystania wszystkich funkcjonalności wymagane jest\n                    środowisko chmurowe Microsoft Azure. Wykorzystanie dedykowanych usług\n                    chmurowych pozwala na pełną integrację narzędzi zarządzania oraz\n                    gwarantuje najwyższy standard bezpieczeństwa."
+msgstr "To fully utilize all functionalities, a Microsoft Azure cloud environment is required. The use of dedicated cloud services enables full integration of management tools and ensures the highest security standards."
+
+msgid "O licencji"
+msgstr "About the License"
+
+msgid "Program objęty jest licencją CC Uznanie autorstwa CC BY 4.0.\n                        Wolno kopiować, rozprowadzać, przedstawiać i wykonywać utwór\n                        oraz opracowane na jego podstawie utwory zależne pod warunkiem\n                        wskazania autora utworu oryginalnego."
+msgstr "The software is licensed under the Creative Commons Attribution 4.0 (CC BY 4.0) license. You are free to copy, distribute, display, perform, and create derivative works based on it, provided that appropriate credit is given to the original author."
+
+msgid "Dodatkowe informacje o licencji dostępne są na"
+msgstr "Additional information about the license is available on"
+
+msgid "stronie Creative Commons"
+msgstr "the Creative Commons website"
+
+msgid "Link do pełnej treści"
+msgstr "Link to the Full Text"
+
+msgid "licencja CC Uznanie autorstwa CC BY 4.0 w języku polskim"
+msgstr "CC BY 4.0 License in Polish"
+
+msgid "Autorstwo"
+msgstr "Attribution"
+
+msgid "Autorstwo:"
+msgstr "Attribution:"
+
+msgid "Program objęty jest w całości licencją"
+msgstr "The software is fully licensed under"
+
+msgid "CC Uznanie autorstwa CC BY 4.0"
+msgstr "Creative Commons Attribution 4.0 (CC BY 4.0)"
+
+msgid "i powstał w ramach realizacji projektu Vizja Home – Uczelnia dla wszystkich\n                        w ramach programu Fundusze Europejskie dla Rozwoju Społecznego 2021–2027\n                        współfinansowanego ze środków Europejskiego Funduszu Społecznego Plus."
+msgstr "and was created as part of the Vizja Home – University for Everyone project under the European Funds for Social Development 2021–2027 programme, co-financed by the European Social Fund Plus."
+
+msgid "O projekcie Vizja Home"
+msgstr "About the Vizja Home Project"
+
+msgid "Projekt jest realizowany przez Uniwersytet VIZJA w okresie\n                        od 01.01.2025 roku do 31.12.2028 roku zgodnie z zapisami\n                        wniosku o dofinansowanie Projektu."
+msgstr "The project is being implemented by VIZJA University from 01.01.2025 to 31.12.2028 in accordance with the provisions of the project funding application."
+
+msgid "Jednostką realizującą projekt jest Biuro ds. Osób z Niepełnosprawnościami\n                        Uniwersytetu VIZJA."
+msgstr "The unit responsible for implementing the project is the Office for Persons with Disabilities of VIZJA University."
+
+msgid "na stronie internetowej projektu"
+msgstr "on the project website"
+
+msgid "Vizja Home - Uczelnia dla wszystkich"
+msgstr "Vizja Home – University for Everyone"
+
+msgid "Biuro Projektu: Uniwersytet VIZJA, ul. Okopowa 59,\n                            Biuro ds. Osób z Niepełnosprawnościami, pokój 233."
+msgstr "Project Office: VIZJA University, 59 Okopowa Street, Office for Persons with Disabilities, Room 233."
+
+msgid "Kontakt e-mail oraz telefoniczny."
+msgstr "Contact by email and phone."
+
+msgid "Kontakt bezpośredni od poniedziałku do piątku\n                            w godzinach 9:00–15:00."
+msgstr "In-person contact is available from Monday to Friday between 9:00 AM and 3:00 PM."
+
+msgid "Program Help VIZJA jest produktem wytworzonym w ramach projektu\n                        Vizja Home - Uczelnia dla wszystkich."
+msgstr "Help VIZJA is a product developed as part of the Vizja Home – University for Everyone project."
+
+msgid "Język powiadomień"
+msgstr "Notification language"
+
+msgid "Opisz, dlaczego potrzebujesz usług tłumacza"
+msgstr "Describe why you need interpreter services"
+
+msgid "Wróć do Konsultacje"
+msgstr "Back to Consultations"
+
+msgid "CC Uznanie <autorst></autorst>wa CC BY 4.0"
+msgstr "CC Attribution CC BY 4.0"
+
+msgid "Więcej informacji można uzyskać"
+msgstr "More information can be obtained"
+
+msgid "w Biurze Projektu: Uniwersytet VIZJA, ul. Okopowa 59,\n                            Biuro ds. Osób z Niepełnosprawnościami, pokój 233;"
+msgstr "at the Project Office: VIZJA University, 59 Okopowa Street,\n                            Office for Persons with Disabilities, room 233;"
+
+msgid "przez kontakt e-mail oraz telefoniczny."
+msgstr "via email and telephone contact."
+
+msgid "Ikony Creative Commons (CC)"
+msgstr "Creative Commons (CC) icons"
+
+msgid "Wróć do Wizyty w BON"
+msgstr "Back to BON Visits"
+
+msgid "Informacje o plikach cookies"
+msgstr "Cookie information"
+
+msgid "Serwis Help VIZJA zapisuje w przeglądarce wyłącznie informacje niezbędne do prawidłowego działania strony."
+msgstr "The Help VIZJA service stores only information necessary for the proper operation of the website in your browser."
+
+msgid "Dotyczy to między innymi obsługi sesji użytkownika, zapamiętania wybranego motywu strony, ustawień dostępności oraz preferencji językowych."
+msgstr "This includes, among other things, user session handling, remembering the selected website theme, accessibility settings, and language preferences."
+
+msgid "Nie wykorzystujemy tych informacji do celów reklamowych ani profilowania marketingowego."
+msgstr "We do not use this information for advertising or marketing profiling purposes."
+
+msgid "Rozumiem"
+msgstr "I understand"
+
+msgid "Zamknij komunikat"
+msgstr "Close message"
+
+msgid "Zalecane przeglądarki"
+msgstr "Recommended browsers"
+
+msgid "Nie udało się zapisać potwierdzenia. Spróbuj ponownie."
+msgstr "Failed to save confirmation. Please try again."
+
+msgid "Zdjęcie profilowe"
+msgstr "Profile picture"
+
+msgid "Zaloguj"
+msgstr "Log in"
+
+msgid "w Biurze Projektu: Uniwersytet VIZJA, ul. Okopowa 59,\n                            Biuro ds. Osób z Niepełnosprawnościami, pokój 233."
+msgstr "at the Project Office: VIZJA University, 59 Okopowa Street,\n                            Office for Persons with Disabilities, room 233."
+
+msgid "Aby zapewnić poprawne działanie serwisu oraz najlepsze doświadczenie użytkownika,\n                                        zalecamy korzystanie z jednej z poniższych przeglądarek:"
+msgstr "To ensure proper operation of the service and the best user experience,\n                                        we recommend using one of the following browsers:"
+
+msgid "Powtórz hasło"
+msgstr "Repeat password"
+
+msgid "Początek cyklu wizyt od dnia"
+msgstr "Start of the visit cycle from"
+
+msgid "Zakończenie cyklu wizyt w dniu"
+msgstr "End of the visit cycle on"
+
+msgid "Data wydania karty adaptacji"
+msgstr "Adaptation card issue date"
+
+msgid "Wybierz datę wydania adaptacji"
+msgstr "Select the adaptation issue date"
+
+msgid "Zaktualizowano termin konsultacji"
+msgstr "Consultation appointment has been updated"
+
+msgid "Termin wizyty został zaktualizowany"
+msgstr "Visit appointment has been updated"
+
+msgid "Zapisano zmiany"
+msgstr "Changes have been saved"
+
+msgid "Wpisz nazwę modułu…"
+msgstr "Enter module name…"
+
+msgid "Edytuj studenta"
+msgstr "Edit student"
+
+msgid "Lista zapisów na konsultacje"
+msgstr "Consultation registrations list"
+
+msgid "Data – szukaj od"
+msgstr "Date – search from"
+
+msgid "Data – szukaj do"
+msgstr "Date – search to"
+
+msgid "Utworzono konsultacje w dniach"
+msgstr "Consultations created on the following days"
+
+msgid "Edycja konsultacji"
+msgstr "Edit consultation"
+
+msgid "Nowy termin - konsultacje"
+msgstr "New consultation appointment"
+
+msgid "Utwórz konsultację"
+msgstr "Create consultation"
+
+msgid "Utwórz konsultacje"
+msgstr "Create consultations"
+
+msgid "Wizyta"
+msgstr "Visit"
+
+msgid "Edycja terminu"
+msgstr "Edit appointment"
+
+msgid "Nowy termin - wizyty w BON"
+msgstr "New appointment - BON visits"
+
+msgid "Utwórz terminy wizyt w BON"
+msgstr "Create BON visit appointments"
+
+msgid "Wybierz zakres kilku dni, aby utworzyć powtarzalne wizyty w tych samych godzinach"
+msgstr "Select a range of days to create recurring appointments at the same times"
+
+msgid "Zaktualizuj"
+msgstr "Update"
+
+msgid "Nawigacja tabeli"
+msgstr "Table navigation"
+
+msgid "Szukaj użytkownika"
+msgstr "Search user"
+
+msgid "Zamknij okno"
+msgstr "Close window"
+
+msgid "Szukaj frazy"
+msgstr "Search phrase"
+
+msgid "Lista słowników"
+msgstr "Dictionary list"
+
+msgid "Przypisanie studenta"
+msgstr "Student assignment"
+
+msgid "Edytuj słownik"
+msgstr "Edit dictionary"
+
+msgid "Wybierz datę wydania karty adaptacji"
+msgstr "Select the adaptation card issue date"
+
+msgid "Możesz dodać maksymalnie 3 pliki"
+msgstr "You can add a maximum of 3 files"
+
+msgid "Dozwolone są wyłącznie pliki PDF, DOC oraz DOCX"
+msgstr "Only PDF, DOC and DOCX files are allowed"
+
+msgid "Termin nie istnieje"
+msgstr "The appointment slot does not exist"
+
+msgid "Nie znaleziono zapisu"
+msgstr "Registration not found"
+
+msgid "Nie można utworzyć konta dla podanego adresu e-mail."
+msgstr "Unable to create an account for the provided email address."
+
+msgid "Zapisy na konsultacje zostały tymczasowo przeniesione"
+msgstr "Consultation registrations have been temporarily moved"
+
+msgid "Aby zapisać się na konsultację, wybierz odpowiednią usługę z poniższej listy."
+msgstr "To register for a consultation, please select the appropriate service from the list below."
+
+msgid "Psychiatra (w języku polskim lub języku angielskim)"
+msgstr "Psychiatrist (in Polish or English)"
+
+msgid "Psycholog (w języku polskim)"
+msgstr "Psychologist (in Polish)"
+
+msgid "Psycholog (w języku angielskim)"
+msgstr "Psychologist (in English)"
+
+msgid "Doradca zawodowy (w języku polskim lub języku angielskim)"
+msgstr "Career advisor (in Polish or English)"
+
+msgid "Wróć do strony głównej"
+msgstr "Back to the home page"
+
+msgid "Błąd strony"
+msgstr "Page error"
+
+msgid "Nie znaleziono strony"
+msgstr "Page not found"
+
+msgid "Coś poszło nie tak"
+msgstr "Something went wrong"
+
+msgid "Wystąpił nieoczekiwany problem podczas przetwarzania żądania. Spróbuj ponownie za chwilę"
+msgstr "An unexpected error occurred while processing your request. Please try again in a moment"
+
+msgid "Jeżeli problem będzie się powtarzał, skontaktuj się z administratorem"
+msgstr "If the problem persists, please contact the administrator"
+
+msgid "Kod błędu"
+msgstr "Error code"
+
+msgid "Wróć na stronę główną"
+msgstr "Return to the home page"
+
+msgid "Nie posiadasz uprawnień do wyświetlania lub edytowania tej strony"
+msgstr "You do not have permission to view or edit this page"
+
+msgid "Strona, której szukasz, nie istnieje, została przeniesiona lub adres został wpisany nieprawidłowo"
+msgstr "The page you are looking for does not exist, has been moved, or the address was entered incorrectly"
+
+msgid "Konto Office 365 nie jest powiązane z Verbisem"
+msgstr "Office 365 account is not linked to Verbis"
+
+msgid "Nie znaleziono wizyty"
+msgstr "Appointment not found"
+
+msgid "Aby zapewnić poprawne działanie serwisu oraz najlepsze doświadczenie użytkownika,\n                                    zalecamy korzystanie z jednej z poniższych przeglądarek:"
+msgstr "To ensure the proper operation of the service and provide the best user experience,\n                                    we recommend using one of the following web browsers:"
+
+msgid "Audyt wykonywanych akcji w serwisie"
+msgstr "Audit log"
+
+msgid "Archiwum konsultacji"
+msgstr "Consultation archive"
+
+msgid "Wizyta osoby"
+msgstr "Appointment of"
+
+msgid "data"
+msgstr "date"
+
+msgid "godzina"
+msgstr "time"
+
+msgid "Zarządzaj sprzętem"
+msgstr "Manage equipment"
+
+msgid "Edycja typu sprzętu"
+msgstr "Edit equipment type"
+
+msgid "Lista sprzętów"
+msgstr "Equipment list"
+
+msgid "Pokaż sprzęty"
+msgstr "Show equipment"
+
+msgid "Dodawanie typu sprzętu"
+msgstr "Add equipment type"
+
+msgid "Komunikat"
+msgstr "Message"
+
+msgid "Ankietę można wysłać tylko raz na 24 godziny."
+msgstr "The questionnaire can only be submitted once every 24 hours."
+
+msgid "Ścieżka nawigacji"
+msgstr "Breadcrumb"
+
+msgid "Konsultacja"
+msgstr "Consultation"
+
+msgid "język"
+msgstr "language"
+
+msgid "Poniżej znajduje się lista najważniejszych sekcji administracyjnych serwisu Help VIZJA."
+msgstr "Below is a list of the most important administrative sections of the Help VIZJA system."
+
+msgid "Pulpit administratora"
+msgstr "Administrator dashboard"
+
+msgid "Dodaj ogłoszenie"
+msgstr "Add announcement"
+
+msgid "Słowniki"
+msgstr "Dictionaries"
+
+msgid "Aby przejść do paska narzędzi w edytorze treści naciśnij Alt+F10. Nawiguj pomiędzy grupami narzędzi używając klawisza Tab oraz strzałki w prawo lub lewo, aby poruszać się wewnątrz grupy przycisków. Aby otrzymać więcej pomocy dotyczącej dostępności naciśnij Alt+0."
+msgstr "To move to the editor toolbar, press Alt+F10. Navigate between toolbar groups using the Tab key, and use the Left and Right Arrow keys to move within a group of buttons. Press Alt+0 for more accessibility help."
+
+msgid "Przesłane odpowiedzi"
+msgstr "Submitted responses"
+
+msgid "Średnia ocena"
+msgstr "Average rating"
+
+msgid "na 5"
+msgstr "out of 5"
+
+msgid "Wynik procentowy"
+msgstr "Percentage score"
+
+msgid "Wpisz imię, nazwisko lub adres e-mail…"
+msgstr "Enter a first name, last name or email address…"
+
+msgid "Okno potwierdzenia akcji"
+msgstr "Action confirmation dialog"
+
+msgid "Uwaga"
+msgstr "Warning"
+
+msgid "Wpisz szukaną frazę…"
+msgstr "Enter a search phrase…"
+
+msgid "Szukaj typu"
+msgstr "Search type"
+
+msgid "Szukaj typu sprzętu"
+msgstr "Search equipment type"
+
+msgid "Podgląd pliku"
+msgstr "File preview"
+
+msgid "Połącz się z tłumaczem języka migowego"
+msgstr "Connect with a Polish Sign Language interpreter"
+
+msgid "Uniwersytet VIZJA - tlumacz.migam.org"
+msgstr "VIZJA University - tlumacz.migam.org"
+
+msgid "Inne"
+msgstr "Other"
+
+msgid "Lista pracowników"
+msgstr "Employee list"
+
+msgid "Dodaj pracownika"
+msgstr "Add employee"
+
+msgid "Nowe ogłoszenie"
+msgstr "New announcement"
+
+msgid "Tabela wartości słownikowych"
+msgstr "Dictionary values table"
+
+msgid "Tabela zawiera listę wartości słownikowych, ich tłumaczenia, wartości dodatkowe, kolejność wyświetlania oraz informację, czy dana wartość jest aktywna."
+msgstr "The table contains a list of dictionary values, their translations, additional values, display order, and information about whether each value is active."
+
+msgid "Wartość dodatkowa - angielska"
+msgstr "Additional value - English"
+
+msgid "Wartość dodatkowa 2 - angielska"
+msgstr "Additional value 2 - English"
+
+msgid "edytuj wartość słownikową"
+msgstr "edit dictionary value"
+
+msgid "Aktywna"
+msgstr "Active"
+
+msgid "Nieaktywna"
+msgstr "Inactive"
+
+msgid "Brak wartości słownikowych do wyświetlenia."
+msgstr "No dictionary values to display."

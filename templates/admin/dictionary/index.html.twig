@@ -1,0 +1,130 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+{% block title %}{% trans %}Słownik{% endtrans %} | Admin Help VIZJA{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block body %}
+    {{ website_path([
+        { label: 'Ustawienia'|trans, route: 'admin_settings' },
+        { label: 'Słownik'|trans },
+    ]) }}
+
+
+    <section class="space-y-6 max-w-7xl mx-5">
+
+        <h1 id="page-title" class="font-semibold text-xl md:text-2xl lg:text-3xl">
+            {% trans %}Słownik{% endtrans %}
+        </h1>
+        <div class="bg-white overflow-hidden relative dark:bg-zinc-800 sm:rounded-lg">
+            <div class="flex flex-col justify-between p-4 space-y-3">
+                <div class="mb-6 max-w-200">
+                    <form
+                        method="get"
+                        action="{{ path('admin_dictionaries') }}"
+                        class="space-y-2"
+                    >
+                        <label
+                            for="dictionary-search"
+                            class="mb-2 block font-semibold text-zinc-900 dark:text-white"
+                        >
+                            {% trans %}Szukaj frazy{% endtrans %}
+                        </label>
+
+                        <div class="relative">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                <svg
+                                    class="h-5 w-5 text-zinc-500 dark:text-zinc-400"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke="currentColor"
+                                        stroke-linecap="round"
+                                        stroke-width="2"
+                                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+                                    />
+                                </svg>
+                            </div>
+
+                            <input
+                                id="dictionary-search"
+                                name="dictionary"
+                                type="search"
+                                value="{{ filter.dictionary ?? '' }}"
+                                placeholder="{% trans %}Wpisz szukaną frazę…{% endtrans %}"
+                                class="w-full rounded-xl
+                           border-2 border-zinc-500 dark:border-zinc-400
+                           bg-white dark:bg-zinc-900
+                           py-2.5 pl-10 pr-4
+                           text-sm text-zinc-900 dark:text-white
+                           placeholder-zinc-500 dark:placeholder-zinc-400
+                           {{ focusPrimaryWithPadding() }}"
+                            >
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-zinc-900 dark:text-zinc-100 border">
+                    <caption class="sr-only">
+                        {% trans %}Lista słowników{% endtrans %}
+                    </caption>
+
+                    <thead class="bg-zinc-50 text-sm font-semibold text-zinc-900 dark:bg-zinc-700 dark:text-white">
+                        <tr class="border-b">
+                            <th scope="col" class="px-4 py-3 font-semibold">
+                                {% trans %}Lp.{% endtrans %}
+                            </th>
+                            <th scope="col" class="px-4 py-3 font-semibold">
+                                {% trans %}Nazwa{% endtrans %}
+                            </th>
+                            <th scope="col" class="px-4 py-3 font-semibold">
+                                {% trans %}Liczba wartości{% endtrans %}
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for dictionary in pagination %}
+                            <tr class="border-b hover:bg-zinc-50 dark:hover:bg-zinc-700">
+                                <td class="px-4 py-3 w-[75px]">
+                                    {{ pagination.getPaginationData.firstItemNumber + loop.index - 1 }}.
+                                </td>
+
+                                <td class="w-9/12 text-zinc-900 dark:text-white">
+                                    <a
+                                        class="block px-4 py-3 font-normal {{ focusPrimaryWithPadding() }}"
+                                        href="{{ path('admin_dictionary_items', { dictionaryId: dictionary.id }) }}"
+                                    >
+                                        {% if app.locale == 'pl' %}
+                                            {{ dictionary.name.value }}
+                                        {% else %}
+                                            {{ dictionary.nameEnglish }}
+                                        {% endif %}
+                                    </a>
+                                </td>
+
+                                <td class="px-4 py-3 text-zinc-900 dark:text-white">
+                                    {{ dictionary.items|length }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% include '_paginator/paginator.html.twig' with { pagination: pagination } %}
+        </div>
+    </section>
+{% endblock %}

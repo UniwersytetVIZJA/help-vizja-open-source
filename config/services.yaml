@@ -1,0 +1,121 @@
+parameters:
+    locale: 'pl'
+    application_uploads_directory: '%kernel.project_dir%/var/uploads/application'
+
+    # Parametry Azure
+    azure_tenant_id: '%env(AZURE_TENANT)%'
+    azure_client_id: '%env(AZURE_CLIENT_ID)%'
+    azure_client_secret: '%env(AZURE_CLIENT_SECRET)%'
+
+
+services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+        public: false
+
+    App\:
+        resource: '../src/'
+        exclude: '../src/{DependencyInjection,Entity,Tests,Kernel.php}'
+
+    # =========================
+    #  System dziekanatowy
+    # =========================
+    App\Verbis\VerbisService:
+        arguments:
+            $apiUrl: '%env(VERBIS_VDO_API_URL)%'
+            $login: '%env(VERBIS_VDO_LOGIN)%'
+            $password: '%env(VERBIS_VDO_PASSWORD)%'
+
+    App\Verbis\API\PobierzOsobe:
+        arguments:
+            $apiUrl: '%env(VERBIS_VDO_API_URL)%'
+
+
+    # =========================
+    #  SECURITY / AUTH
+    # =========================
+    App\Security\MsAccessTokenProvider: ~
+
+    # =========================
+    #  MICROSOFT GRAPH / OAUTH
+    # =========================
+    App\Graph\GraphClientFactory: ~
+
+    App\Graph\GraphTokenManager:
+        arguments:
+            $clientRegistry: '@knpu.oauth2.registry'
+            $tokenSession: '@App\Graph\GraphTokenSession'
+
+    App\EventSubscriber\LogoutSubscriber:
+        tags: [ 'kernel.event_subscriber' ]
+
+    # App\Graph\TokenAuthProvider:
+    #     arguments:
+    #         - [ '@App\Security\MsAccessTokenProvider', 'getAccessToken' ]
+
+    Microsoft\Graph\GraphServiceClient:
+        factory: [ '@App\Graph\GraphClientFactory', 'create' ]
+
+    App\Graph\GraphCalendarService:
+        arguments:
+            $defaultTimeZone: 'Europe/Warsaw'
+
+
+    # =========================
+    #  SUBSKRYBENTY ZDARZEŃ
+    # =========================
+    App\EventSubscriber\LocaleSubscriber:
+        arguments:
+            $defaultLocale: '%locale%'
+        tags:
+            - 'kernel.event_subscriber'
+
+    App\EventSubscriber\SpecialisedEquipmentStatusSubscriber:
+        tags:
+            - { name: 'doctrine.event_subscriber' }
+
+    # App\EventSubscriber\UserBlockSubscriber:
+    #     tags:
+    #         - { name: 'kernel.event_subscriber' }
+
+
+    # =========================
+    #  PLIKI / NAZWY PLIKÓW
+    # =========================
+    App\Core\File\FileDirectoryNamer: ~
+    App\Core\File\FileNamer: ~
+
+    # =========================
+    #  GLOBAL TWIG
+    # =========================
+    App\TwigHelper\GlobalExtension\NewAnnouncement:
+        tags: [ 'twig.extension' ]
+
+    App\TwigHelper\GlobalExtension\NewEmployeeComment:
+        tags: [ 'twig.extension' ]
+
+
+    # =========================
+    #  SERWISY
+    # =========================
+
+    App\Service\DocxGenerator: ~
+    App\Service\PDFGenerator: ~
+
+    DH\AuditorBundle\Controller\ViewerController:
+        public: true
+        tags: [ 'controller.service_arguments' ]
+        arguments:
+            $environment: '@twig'
+    #            $entityManager: '@doctrine.orm.entity_manager'
+
+
+    # App\Application\Strategy\:
+    #     resource: '../src/Application/Strategy/'
+    #     tags: [ 'app.application_strategy' ]
+    #
+    # App\Application\Strategy\ApplicationStrategyManager:
+    #     arguments:
+    #         $strategies: !tagged_iterator app.application_strategy
+

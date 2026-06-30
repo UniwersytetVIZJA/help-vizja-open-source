@@ -1,0 +1,66 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+{% form_theme form 'student/_layouts/form-tailwind.html.twig' %}
+
+{% block stylesheets %}{{ encore_entry_link_tags('admin_default') }}{% endblock %}
+{% block javascripts %}{{ encore_entry_script_tags('admin_default') }}{% endblock %}
+{% block title %}{% trans %}Nowe ogłoszenie{% endtrans %} | Admin Help VIZJA{% endblock %}
+{% block body %}
+    <header class="mb-6 flex items-start justify-between gap-4">
+        {{ website_path([
+            { label: 'Ogłoszenia'|trans, route: 'admin_announcement' },
+            { label: 'Utwórz nowe ogłoszenie'|trans },
+        ]) }}
+    </header>
+
+    <div class="max-w-2xl space-y-4 w-full">
+        {{ form_start(form, { attr: { 'data-turbo': 'false' } }) }}
+
+        <div class="mb-5">
+            {{ form_row(form.title) }}
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+            {{ form_row(form.startsAt, {
+                attr: {
+                    min: '1900-01-01T00:00',
+                    max: '2099-12-31T23:59',
+                }
+            }) }}
+
+            {{ form_row(form.expiresAt, {
+                attr: {
+                    min: '1900-01-01T00:00',
+                    max: '2099-12-31T23:59',
+                }
+            }) }}
+        </div>
+        <div class="mb-5">
+            {{ form_row(form.published) }}
+        </div>
+    </div>
+    <p class="font-semibold">
+        {% trans %}Treść ogłoszenia{% endtrans %}
+    </p>
+
+    <p id="description-editor-help" class="sr-only">
+        {% trans %}Aby przejść do paska narzędzi w edytorze treści naciśnij Alt+F10. Nawiguj pomiędzy grupami narzędzi używając klawisza Tab oraz strzałki w prawo lub lewo, aby poruszać się wewnątrz grupy przycisków. Aby otrzymać więcej pomocy dotyczącej dostępności naciśnij Alt+0.{% endtrans %}
+    </p>
+
+    <div
+        class="mb-5 w-full max-w-4xl border-2 border-zinc-500 bg-white dark:border-zinc-400 dark:bg-zinc-900"
+        aria-describedby="description-editor-help"
+    >
+        {{ form_row(form.description) }}
+    </div>
+    <div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-4">
+        <button class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+            {% trans %}Utwórz{% endtrans %}
+        </button>
+        <a
+            class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}"
+            href="{{ path('admin_announcement') }}"
+        >
+            {% trans %}Anuluj{% endtrans %}
+        </a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,228 @@
+{% extends 'student/_layouts/after-login.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block title %}{% trans %}Szczegóły zapisu na konsultację{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block body %}
+    <section class="min-h-screen rounded-lg bg-white px-4 py-10 dark:bg-zinc-900">
+        <div class="mx-auto flex max-w-7xl flex-wrap gap-2">
+            <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_dashboard') }}">
+                {% trans %}Wróć do pulpitu{% endtrans %}
+            </a>
+            <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_select_registration') }}">
+                {% trans %}Umów kolejną konsultację{% endtrans %}
+            </a>
+        </div>
+        <br>
+        <h1 class="sr-only">{% trans %}Szczegóły zapisu{% endtrans %}</h1>
+
+        <div class="mx-auto grid max-w-7xl grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+
+            {# === GÓRNA LINIA === #}
+            <div class="min-w-0 sm:col-span-1 xl:col-span-1">
+                {# === KARTA: Liczba zapisów === #}
+                <div class="h-full rounded-xl bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                    <div class="mb-4 flex min-w-0 items-center justify-between gap-3">
+                        <div class="flex min-w-0 items-center gap-3">
+                            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-300 text-green-700">
+                                <svg class="h-6 w-6 text-zinc-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11 9h6m-6 3h6m-6 3h6M6.996 9h.01m-.01 3h.01m-.01 3h.01M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" />
+                                </svg>
+                            </div>
+                            <h2 class="wrap-break-word text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Liczba zapisów{% endtrans %}</h2>
+                        </div>
+                    </div>
+
+                    {% set total = registration.capacity ?? 0 %}
+{#                    {% set used = registration.registered ?? 0 %}#}
+                    {% set used = registration.registeredStudents|length %}
+                    {% set pct = total > 0 ? ((used / total * 100)|round(0, 'floor')) : 0 %}
+                    {% set pctClamped = pct > 100 ? 100 : (pct < 0 ? 0 : pct) %}
+
+                    <div class="space-y-2 min-w-0">
+                        <div class="flex flex-wrap items-baseline justify-between gap-2 text-sm">
+                            <span class="wrap-break-word text-zinc-600 dark:text-zinc-400">
+                                {% trans %}Zapisanych{% endtrans %}: <span class="font-medium text-zinc-900 dark:text-white">{{ used }}</span> / {{ total }}
+                            </span>
+                            <span class="shrink-0 font-medium text-zinc-900 dark:text-white">{{ pctClamped }}%</span>
+                        </div>
+
+                        <div class="h-3 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700"
+                            role="progressbar"
+                            aria-label="{% trans %}Zapełnienie zapisów{% endtrans %}"
+                            aria-valuemin="0"
+                            aria-valuemax="{{ total }}"
+                            aria-valuenow="{{ used }}">
+                            <div class="h-2.5 w-full rounded-full bg-zinc-200 dark:bg-zinc-700">
+                                {% if pctClamped == 100 %}
+                                    <dd class="font-medium text-zinc-900 dark:text-zinc-100">
+                                        <div class="h-2.5 rounded-full bg-red-500" style="width: {{ pctClamped }}%"></div>
+                                    </dd>
+                                {% elseif pctClamped >= 60 %}
+                                    <dd class="font-medium text-zinc-900 dark:text-zinc-100">
+                                        <div class="h-2.5 rounded-full bg-orange-300" style="width: {{ pctClamped }}%"></div>
+                                    </dd>
+                                {% else %}
+                                    <dd class="font-medium text-zinc-900 dark:text-zinc-100">
+                                        <div class="h-2.5 rounded-full bg-green-500" style="width: {{ pctClamped }}%"></div>
+                                    </dd>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="min-w-0 sm:col-span-1 xl:col-span-1">
+                {# === KARTA: Spotkanie na MS Teams === #}
+                <div class="h-full rounded-xl bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                    <div class="mb-4 flex min-w-0 items-center">
+                        <div class="mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+                            <svg class="mr-2 h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path clip-rule="evenodd"
+                                    d="M3.005 12 3 6.408l6.8-.923v6.517H3.005ZM11 5.32 19.997 4v8H11V5.32ZM20.067 13l-.069 8-9.065-1.275L11 13h9.067ZM9.8 19.58l-6.795-.931V13H9.8v6.58Z"
+                                    fill="currentColor" fill-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h2 class="wrap-break-word text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Spotkanie na MS Teams{% endtrans %}</h2>
+                    </div>
+
+                    <ul class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                        <li class="py-3">
+                            {% if registration.teamsMeetingUrl %}
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <a
+                                        href="{{ registration.teamsMeetingUrl }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                                        aria-label="{% trans %}Otwórz link do spotkania w nowej karcie{% endtrans %}"
+                                    >
+                                        {% trans %}Dołącz w Microsoft Teams{% endtrans %}
+                                    </a>
+
+                                    <button
+                                        type="button"
+                                        class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }} border"
+                                        data-copy="{{ registration.teamsMeetingUrl }}"
+                                        aria-label="{% trans %}Skopiuj link do spotkania{% endtrans %}"
+                                    >
+                                        {% trans %}Kopiuj link{% endtrans %}
+                                    </button>
+                                </div>
+                            {% else %}
+                                <span class="wrap-break-word italic text-zinc-400">{% trans %}Brak linku{% endtrans %}</span>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="min-w-0 sm:col-span-1 xl:col-span-1">
+                {# === KARTA: Informacja o wykreśleniu z zapisu === #}
+                <div class="h-full rounded-xl bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                    <div class="mb-4 flex min-w-0 items-center">
+                        <div class="mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+                            <svg class="h-6 w-6 text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd"
+                                    d="M5 8a4 4 0 1 1 8 0 4 4 0 0 1-8 0Zm-2 9a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1Zm13-6a1 1 0 1 0 0 2h4a1 1 0 1 0 0-2h-4Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+
+                        </div>
+                        <h2 class="wrap-break-word text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Jak się wypisać?{% endtrans %}</h2>
+                    </div>
+                    <p class="wrap-break-word">
+                        {% trans %}Jeżeli musisz odwołać lub przełożyć konsultację, poinformuj nas poprzez SMS lub kontakt telefoniczny na numer 533-118-733 {% endtrans %}
+                    </p>
+                </div>
+            </div>
+
+            {# === DOLNA LINIA === #}
+            <div class="min-w-0 sm:col-span-2 xl:col-span-3">
+                {# === KARTA: Podstawowe informacje === #}
+                <div class="h-full max-w-2xl rounded-xl bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                    <div class="mb-4 flex min-w-0 items-center">
+                        <div class="mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+                            <svg class="h-6 w-6 text-zinc-800 dark:text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z" />
+                            </svg>
+                        </div>
+                        <h2 class="wrap-break-word text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Podstawowe informacje{% endtrans %}</h2>
+                    </div>
+
+                    <ul class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                        <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                            <span class="wrap-break-word text-zinc-600 dark:text-zinc-400">{% trans %}Rodzaj konsultacji{% endtrans %}</span>
+                            <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ registration.title.value }}</span>
+                        </li>
+                        <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                            <span class="wrap-break-word text-zinc-600 dark:text-zinc-400">{% trans %}Język konsultacji{% endtrans %}</span>
+                            <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">
+                                {% if app.locale == 'pl' %}
+                                    {{ registration.language.value }}
+                                {% else %}
+                                    {{ registration.language.valueEnglish }}
+                                {% endif %}
+                            </span>
+                        </li>
+                        <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                            <span class="wrap-break-word text-zinc-600 dark:text-zinc-400">{% trans %}Wybrany język konsultacji{% endtrans %}</span>
+                            <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">
+                              {% set isPl = app.locale == 'pl' %}
+
+                                {% set languages = {
+                                    'PL': isPl ? 'Polski' : 'Polish',
+                                    'EN': isPl ? 'Angielski' : 'English'
+                                } %}
+                                {% for rs in registration.registeredStudents %}
+                                    {% if rs.language %}
+                                        {{ languages[rs.language] ?? rs.language }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                {% endfor %}
+                            </span>
+                        </li>
+                        <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                            <span class="wrap-break-word text-zinc-600 dark:text-zinc-400">{% trans %}Specjalista{% endtrans %}</span>
+                            <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ registration.specialist.firstName }} {{ registration.specialist.lastName }}</span>
+                        </li>
+                        <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                            <span class="wrap-break-word text-zinc-600 dark:text-zinc-400">{% trans %}Dzień spotkania{% endtrans %}</span>
+                            <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ registration.startsAt|date('d.m.Y') }}</span>
+                        </li>
+                        <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                            <span class="wrap-break-word text-zinc-600 dark:text-zinc-400">{% trans %}Godziny spotkania{% endtrans %}</span>
+                            <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ registration.startsAt|date('H:i') }} - {{ registration.endsAt|date('H:i') }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest('button[data-copy]');
+            if (!btn) return;
+            const url = btn.getAttribute('data-copy');
+            navigator.clipboard.writeText(url).then(() => {
+                const old = btn.innerHTML;
+                btn.innerHTML = '{% trans %}Skopiowano{% endtrans %} ✓';
+                setTimeout(() => {
+                    btn.innerHTML = old;
+                }, 1800);
+            });
+        });
+    </script>
+{% endblock %}

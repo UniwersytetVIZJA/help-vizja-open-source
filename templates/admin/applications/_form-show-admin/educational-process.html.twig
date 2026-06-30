@@ -1,0 +1,46 @@
+<ul class="divide-y">
+    <li class="flex justify-between py-3">
+        <span class="text-gray-600 dark:text-gray-400">{% trans %}Rodzaje adaptacji{% endtrans %}</span>
+        <div class="text-right font-medium text-gray-900 dark:text-white space-y-1">
+            {% for item in application.adaptations %}
+                <p>- {{ item.value }}</p>
+            {% else %}
+                <p>-</p>
+            {% endfor %}
+        </div>
+    </li>
+    <li class="flex items-start gap-4 py-3">
+        <span class="text-gray-600 dark:text-gray-400 shrink-0">{% trans %}Uzasadnienie{% endtrans %}</span>
+        <div class="flex-1 min-w-0">
+            <p class="font-medium text-gray-900 dark:text-white
+              whitespace-pre-wrap break-all [overflow-wrap:anywhere]">
+                {{ application.description }}
+            </p>
+        </div>
+    </li>
+
+    {% if application.status is same as 'W trakcie' or application.status is same as 'Zaakceptowany' %}
+        {# === Karta adaptacji === #}
+        <div class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 shadow-sm">
+            <div class="flex items-center mb-4">
+                <div class="w-9 h-9 flex items-center justify-center rounded-full bg-blue-100 text-blue-700 mr-3">
+                    <svg class="w-6 h-6 text-zinc-800 dark:text-zinc-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 20v-9l-4 1.125V20h4Zm0 0h8m-8 0V6.66667M16 20v-9l4 1.125V20h-4Zm0 0V6.66667M18 8l-6-4-6 4m5 1h2m-2 3h2" />
+                    </svg>
+
+                </div>
+                <h2 class="text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Karta adaptacji{% endtrans %}</h2>
+            </div>
+
+            <ul class="divide-y divide-zinc-200 dark:divide-zinc-700">
+
+                <li class="flex justify-between py-3">
+                    <span class="text-zinc-600 dark:text-zinc-400">{% trans %}Okres obowiązywania adaptacji{% endtrans %}</span>
+                    <span class="font-medium text-zinc-900 dark:text-white">#####</span>
+                </li>
+
+            </ul>
+        </div>
+    {% endif %}
+</ul>

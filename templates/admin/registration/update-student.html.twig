@@ -1,0 +1,128 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+{% form_theme form 'student/_layouts/form-tailwind.html.twig' %}
+
+{% block stylesheets %}{{ encore_entry_link_tags('admin_default') }}{% endblock %}
+{% block javascripts %}{{ encore_entry_script_tags('admin_default') }}{% endblock %}
+{% block title %}{% trans %}Terminy wizyt{% endtrans %}{% endblock %}
+{% block body %}
+    <header class="mb-6 flex items-start justify-between gap-4">
+        {{ website_path([
+            { label: 'Zapisy na konsultacje'|trans, route: 'admin_registration' },
+            { label: 'Szczegóły zapisu'|trans, route: 'admin_read_registration', route_params: { registrationId: registrationId } },
+            { label: 'Edytuj studenta'|trans },
+        ]) }}
+    </header>
+
+    {{ form_start(form, {
+        attr: {
+            class: 'space-y-8',
+            novalidate: 'novalidate',
+            role: 'form',
+            'aria-describedby': 'form_instructions'
+        }
+    }) }}
+    {# ===== Podsumowanie błędów ===== #}
+    {% set childErrors = [] %}
+    {% for child in form %}
+        {% if child.vars.errors|length %}
+            {% set childErrors = childErrors|merge([{
+                id: child.vars.id,
+                label: child.vars.label is not empty ? child.vars.label : child.vars.name|capitalize,
+                errors: child.vars.errors
+            }]) %}
+        {% endif %}
+    {% endfor %}
+    {% if form_errors(form) is not empty or childErrors is not empty %}
+        {% include '_partials/form-errors.html.twig' with { form: form, childErrors: childErrors } %}
+    {% endif %}
+    <div class="max-w-2xl space-y-4 w-full">
+
+        {{ form_start(form, {
+            attr: {
+                class: 'max-w-2xl space-y-4 w-full',
+                novalidate: 'novalidate'
+            }
+        }) }}
+
+        {% set hasFormErrors = (form_errors(form)|trim) is not empty %}
+        {% set childErrors = [] %}
+
+        {% for child in form %}
+            {% if child is defined and child.vars is defined and child.vars.errors|length > 0 %}
+                {% set labelTxt = (child.vars.label is not empty) ? child.vars.label : (child.vars.name|capitalize) %}
+                {% set childErrors = childErrors|merge([{
+                    id: child.vars.id,
+                    label: labelTxt,
+                    errors: child.vars.errors
+                }]) %}
+            {% endif %}
+        {% endfor %}
+
+        {% if hasFormErrors or childErrors is not empty %}
+            {% include '_partials/form-errors.html.twig' with { form: form, childErrors: childErrors } %}
+        {% endif %}
+
+        <div class="max-w-56">
+            {{ form_errors(form.albumNumber) }}
+            {{ form_row(form.albumNumber) }}
+        </div>
+
+        {% include 'student/_partials/phone.html.twig' %}
+
+        {{ form_row(form.specialNeeds) }}
+        {{ form_row(form.meetingMode) }}
+
+        {% if form.language is defined %}
+            {{ form_row(form.language) }}
+        {% endif %}
+        {{ form_rest(form) }}
+    </div>
+
+    <div class="gap-4 sm:flex sm:items-center">
+        <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('admin_read_registration', { registrationId: registeredStudent.registration.id }) }}">
+            {% trans %}Wróć do szczegółów konsultacji{% endtrans %}
+        </a>
+        <button class="cursor-pointer {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+            {% trans %}Zapisz{% endtrans %}
+        </button>
+    </div>
+    {{ form_end(form) }}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const counter = document.getElementById('desc-count');
+            const textarea = document.getElementById('desc');
+            const phoneInput = document.getElementById('{{ form.phone.number.vars.id }}');
+
+            if (textarea && counter) {
+                const update = () => {
+                    counter.textContent = textarea.value.length;
+                };
+
+                update();
+                textarea.addEventListener('input', update);
+            }
+
+            if (phoneInput) {
+                const sanitizePhone = () => {
+                    phoneInput.value = phoneInput.value.replace(/\D/g, '');
+                };
+
+                phoneInput.addEventListener('input', sanitizePhone);
+                phoneInput.addEventListener('paste', function () {
+                    requestAnimationFrame(sanitizePhone);
+                });
+                phoneInput.addEventListener('drop', function () {
+                    requestAnimationFrame(sanitizePhone);
+                });
+                phoneInput.addEventListener('beforeinput', function (e) {
+                    if (e.data && /\D/.test(e.data)) {
+                        e.preventDefault();
+                    }
+                });
+
+                sanitizePhone();
+            }
+        });
+    </script>
+{% endblock %}

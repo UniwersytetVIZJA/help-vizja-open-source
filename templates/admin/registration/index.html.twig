@@ -1,0 +1,464 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block title %}{% trans %}Konsultacje{% endtrans %} | Admin Help VIZJA{% endblock %}
+
+{% block body %}
+
+    <section class="space-y-6 max-w-7xl mx-5">
+
+        <h1 id="page-title" class="font-semibold text-xl md:text-2xl lg:text-3xl">
+            {% trans %}Lista zapisów na konsultacje{% endtrans %}
+        </h1>
+
+        <div class="mt-2 flex flex-col sm:flex-row sm:items-start gap-4">
+            {% if registration is not empty %}
+                <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                    href="{{ url('admin_create_registration') }}">
+                    {% trans %}Utwórz nowy zapis{% endtrans %}
+                </a>
+            {% endif %}
+
+            <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}"
+                href="{{ url('admin_registration_archive') }}">
+                {% trans %}Archiwum{% endtrans %}
+            </a>
+        </div>
+
+        <div class="max-w">
+            <form method="get"
+                action="{{ path('admin_registration') }}"
+                class="grid grid-cols-1 md:grid-cols-4 gap-3 p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800">
+
+                <div>
+                    <label for="f-title" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+                        {% trans %}Rodzaj konsultacji{% endtrans %}
+                    </label>
+
+                    <select id="f-title" name="title"
+                        class="w-full rounded-lg border-2 border-zinc-500 dark:border-zinc-300 bg-white dark:bg-zinc-900 px-3 py-2 {{ focusPrimary() }}">
+                        <option value="">{% trans %}Wszystkie{% endtrans %}</option>
+
+                        {% for t in titles %}
+                            <option value="{{ t.id }}"
+                                {{ (filters.title ?? '') == t.id ? 'selected="selected"' : '' }}>
+                                {{ t.value }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="f-language" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+                        {% trans %}Język konsultacji{% endtrans %}
+                    </label>
+
+                    <select id="f-language" name="language"
+                        class="w-full rounded-lg border-2 border-zinc-500 dark:border-zinc-300 bg-white dark:bg-zinc-900 px-3 py-2 {{ focusPrimary() }}">
+                        <option value="">{% trans %}Wszystkie{% endtrans %}</option>
+
+                        {% for l in languages %}
+                            <option value="{{ l.id }}"
+                                {{ (filters.language ?? '') == l.id ? 'selected="selected"' : '' }}>
+                                {{ l.value }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {# Specjalista #}
+                <div>
+                    <label for="f-specialist" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+                        {% trans %}Specjalista{% endtrans %}
+                    </label>
+
+                    <select id="f-specialist" name="specialist"
+                        class="w-full rounded-lg border-2 border-zinc-500 dark:border-zinc-300 bg-white dark:bg-zinc-900 px-3 py-2 {{ focusPrimary() }}">
+                        <option value="">{% trans %}Wszyscy{% endtrans %}</option>
+
+                        {% for s in specialists %}
+                            <option value="{{ s.id }}"
+                                {{ (filters.specialist ?? '') == s.id ? 'selected="selected"' : '' }}>
+                                {{ s.firstName }} {{ s.lastName }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {# Data od i do #}
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+
+                    <div>
+                        <label for="f-from"
+                            class="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                            {% trans %}Data – szukaj od{% endtrans %}
+                        </label>
+
+                        <input id="f-from"
+                            name="from"
+                            type="date"
+                            value="{{ filters.from ?? '' }}"
+                            class="w-full rounded-lg border-2 border-zinc-500 dark:border-zinc-300 bg-white dark:bg-zinc-900 px-3 py-2 {{ focusPrimary() }}" />
+                    </div>
+
+                    <div>
+                        <label for="f-to"
+                            class="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                            {% trans %}Data – szukaj do{% endtrans %}
+                        </label>
+
+                        <input id="f-to"
+                            name="to"
+                            type="date"
+                            value="{{ filters.to ?? '' }}"
+                            class="w-full rounded-lg border-2 border-zinc-500 dark:border-zinc-300 bg-white dark:bg-zinc-900 px-3 py-2 {{ focusPrimary() }}" />
+                    </div>
+
+                </div>
+
+                <div class="md:col-span-4 flex items-center justify-end gap-2 pt-1">
+                    <button class="cursor-pointer {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+                        {% trans %}Szukaj{% endtrans %}
+                    </button>
+
+                    <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}"
+                        href="{{ url('admin_registration') }}">
+                        {% trans %}Wyczyść{% endtrans %}
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        {% if registration is empty %}
+            {{ empty_state(
+                'Brak dostępnych terminów zapisów'|trans,
+                'Utwórz nowy zapis, aby się tutaj pojawił'|trans,
+                {
+                    action_route: 'admin_create_registration',
+                    action_route_params: {},
+                    action_label: 'Utwórz nowy zapis'|trans
+                }
+            ) }}
+        {% else %}
+
+            {% set grouped = {} %}
+            {% for r in registration %}
+                {% set key = r.startsAt|date('Y-m-d') %}
+                {% set grouped = grouped|merge({
+                    (key): (grouped[key]|default([]))|merge([r])
+                }) %}
+            {% endfor %}
+            {% set dayKeys = grouped|keys|sort %}
+
+            <h2 id="page-title" class="font-semibold text-2xl">
+                {% trans %}Utworzono konsultacje w dniach{% endtrans %}
+            </h2>
+
+            <div class="min-w-0">
+                <div id="days-strip" class="p-2">
+                    <div class="flex flex-wrap items-stretch gap-3 py-1">
+
+                        {% for dayKey in dayKeys %}
+                            {% set count = grouped[dayKey]|length %}
+
+                            {% if count > 0 %}
+                                <button type="button"
+                                    class="day-tile w-32 cursor-pointer rounded-xl border border-b-zinc-500 bg-white text-center transition dark:border-zinc-700 dark:bg-zinc-900 {{ borderPrimary() }} {{ focusPrimaryWithPadding() }}"
+                                    data-day="{{ dayKey }}"
+                                    aria-pressed="false">
+
+                                    <div class="px-3 py-2">
+                                        <div class="wrap-break-word text-sm font-semibold">
+                                            {{ dayKey|date('d.m.Y') }}
+                                        </div>
+                                        <div class="wrap-break-word text-xs font-bold">
+                                            {% if app.locale == 'en' %}
+                                                {{ dayKey|date('l')|trans }}
+                                            {% else %}
+                                                {{ dayKey|format_datetime(pattern='EEEE', locale='pl')|capitalize }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="border-t border-zinc-200 px-3 py-2 text-xs font-medium dark:border-zinc-700">
+                                        {% trans %}Konsultacji{% endtrans %}: {{ count }}
+                                    </div>
+                                </button>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <h2 id="page-title" class="font-semibold text-2xl">
+                {% trans %}Godziny konsultacji{% endtrans %}
+            </h2>
+            {#            NOWY STYL #}
+            <div id="days-content" class="rounded-xl border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900">
+                {% for dayKey in dayKeys %}
+                    <div class="day-panel hidden" data-day-panel="{{ dayKey }}">
+                        <div class="space-y-4 min-w-0">
+
+                            {% for registration in grouped[dayKey] %}
+                                {% set total = registration.capacity ?? 0 %}
+
+                                {% if registration.registered is defined and registration.registered is not null %}
+                                    {% set used = registration.registeredStudents|length %}
+                                {% elseif registration.registeredStudents is defined and registration.registeredStudents is not null %}
+                                    {% set used = registration.registeredStudents|length %}
+                                {% else %}
+                                    {% set used = 0 %}
+                                {% endif %}
+
+                                {% set full = (total > 0) and (used >= total) %}
+                                {% set pct = total > 0 ? ((used / total) * 100)|round(0, 'floor') : 0 %}
+                                {% set pct = pct < 0 ? 0 : (pct > 100 ? 100 : pct) %}
+
+                                {% set barClass =
+                                    pct == 100 ? 'bg-red-500' :
+                                    (pct >= 60 ? 'bg-orange-300' : 'bg-green-500') %}
+
+                                {% set alreadyBooked = canAccess is defined ? (canAccess[registration.id]|default(false)) : false %}
+                                {% set canBook = (not full) and (not alreadyBooked) %}
+
+                                {% set actionDescId = 'registration-action-desc-' ~ registration.id %}
+
+                                <span id="{{ actionDescId }}" class="sr-only">
+                                    {% trans %}Konsultacja{% endtrans %}:
+                                    {{ registration.startsAt|date('d.m.Y') }},
+                                    {{ registration.startsAt|date('H:i') }} - {{ registration.endsAt|date('H:i') }},
+                                    {{ registration.specialist.firstName ?? '' }} {{ registration.specialist.lastName ?? '' }},
+                                    {{ registration.title.value ?? '' }},
+                                    {% trans %}język{% endtrans %}: {{ registration.language.value }}.
+                                </span>
+
+
+
+                                <div
+                                    class="overflow-hidden rounded-xl border bg-zinc-50 dark:bg-zinc-800 {{ borderPrimary() }}">
+
+                                    <div class="border-b border-zinc-200 px-4 py-3 dark:border-zinc-700">
+                                        <div class="flex shrink-0 items-center gap-2 text-sm font-semibold lg:w-44">
+                                            <svg class="h-4 w-4 text-gray-800 dark:text-white" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                                viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                            </svg>
+
+                                            <span class="wrap-break-word">
+                                                    {{ registration.startsAt|date('H:i') }} - {{ registration.endsAt|date('H:i') }}
+                                                </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="px-4 py-4 flex flex-col lg:flex-row lg:items-stretch gap-4">
+
+                                        <div class="flex-1 min-w-0 flex flex-col gap-3">
+                                            <div class="min-w-0 flex items-center gap-3">
+                                                <div
+                                                    class="w-17 h-17 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-semibold overflow-hidden shrink-0 dark:bg-yellow-400 dark:text-black">
+                                    <span class="avatar-initials hidden">
+                                        {{ registration.specialist.initials }}
+                                    </span>
+
+                                                    <img
+                                                        src="{{ path('admin_ms_user_photo', { upn: registration.specialist.email }) }}"
+                                                        alt="{% trans %}Zdjęcie profilowe{% endtrans %}"
+                                                        class="rounded-full w-17 h-17 object-cover"
+                                                        onerror="
+                                            this.style.display='none';
+                                            this.parentElement.querySelector('.avatar-initials').classList.remove('hidden');
+                                        ">
+                                                </div>
+
+                                                <div class="min-w-0">
+                                                    <div class="font-semibold truncate">
+                                                        {{ registration.specialist.firstName ?? '' }} {{ registration.specialist.lastName ?? '' }}
+                                                    </div>
+                                                    <div class="text-sm opacity-70 truncate">
+                                                        {{ registration.title.value ?? '' }}
+                                                    </div>
+                                                    <div class="text-sm opacity-70 truncate">
+                                                        {% trans %}Język{% endtrans %}
+                                                        : {{ registration.language.value }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mt-auto flex flex-wrap items-center gap-2">
+                                                <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                                                    href="{{ url('admin_read_registration', { registrationId: registration.id }) }}"
+                                                    aria-describedby="{{ actionDescId }}">
+                                                    {% trans %}Podgląd{% endtrans %}
+                                                </a>
+
+                                                <a class="{{ buttonSecondary() }} dark:border {{ focusPrimaryWithPadding() }}"
+                                                    href="{{ url('admin_update_registration', { registrationId: registration.id }) }}"
+                                                    aria-describedby="{{ actionDescId }}">
+                                                    {% trans %}Edytuj{% endtrans %}
+                                                </a>
+
+                                                {% set formId  = 'delete-registration-form-' ~ registration.id %}
+                                                {% set modalId = 'deleteRegistrationModal-' ~ registration.id %}
+
+                                                <form
+                                                    id="{{ formId }}"
+                                                    method="post"
+                                                    action="{{ path('admin_delete_registration', { registrationId: registration.id }) }}"
+                                                    class="inline"
+                                                >
+                                                    <button
+                                                        type="button"
+                                                        data-modal-target="{{ modalId }}"
+                                                        data-modal-toggle="{{ modalId }}"
+                                                        class="{{ buttonDelete() }}"
+                                                        aria-describedby="{{ actionDescId }}"
+                                                    >
+                                                        {{ 'Usuń'|trans }}
+                                                    </button>
+                                                </form>
+
+                                                {% include 'admin/_components/confirm-modal.html.twig' with {
+                                                    modalId: modalId,
+                                                    formId: formId,
+                                                    title: 'Usunąć zapis?'|trans,
+                                                    message: 'Na pewno chcesz usunąć ten zapis?'|trans,
+                                                    warningText: 'Usunięcie zapisu jest nieodwracalne'|trans,
+                                                    confirmLabel: 'Usuń'|trans,
+                                                    cancelLabel: 'Anuluj'|trans
+                                                } %}
+                                            </div>
+                                        </div>
+
+                                        <div class="lg:w-44 shrink-0 flex lg:justify-end">
+                                            <div class="min-w-0 w-full">
+                                                <div class="text-sm font-medium">
+                                                    {% trans %}Zapisanych{% endtrans %}: <span
+                                                        class="font-semibold">{{ used }}</span> / {{ total }}
+                                                </div>
+
+                                                <div
+                                                    class="border-2 mt-2 h-3 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-zinc-700"
+                                                    role="progressbar"
+                                                    aria-label="{% trans %}Zapełnienie zapisów{% endtrans %}"
+                                                    aria-valuemin="0"
+                                                    aria-valuemax="{{ total }}"
+                                                    aria-valuenow="{{ used }}">
+                                                    <div class="{{ barClass }} h-3 rounded-full"
+                                                        style="width: {{ pct }}%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% endif %}
+    </section>
+
+
+    <script>
+        (function () {
+            const tiles = Array.from(document.querySelectorAll('.day-tile'));
+            const panels = Array.from(document.querySelectorAll('.day-panel'));
+
+            if (!tiles.length) return;
+
+            function setActive(day) {
+                panels.forEach(p => {
+                    p.classList.toggle('hidden', p.dataset.dayPanel !== day);
+                });
+
+                tiles.forEach(t => {
+                    const isActive = t.dataset.day === day;
+                    t.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+
+                    t.classList.toggle('bg-blue-600', isActive);
+                    t.classList.toggle('dark:bg-yellow-400', isActive);
+                    t.classList.toggle('text-white', isActive);
+                    t.classList.toggle('dark:text-zinc-900', isActive);
+
+                    if (!isActive) {
+                        t.classList.remove('bg-yellow-400', 'text-white', 'border-yellow-500');
+                        t.classList.add('bg-white', 'dark:bg-zinc-900', 'border-zinc-200', 'dark:border-zinc-700');
+                    } else {
+                        t.classList.remove('bg-white', 'dark:bg-zinc-900', 'border-zinc-200', 'dark:border-zinc-700');
+                    }
+
+                    const muted = t.querySelectorAll('.text-zinc-500, .text-zinc-600, .dark\\:text-zinc-400, .dark\\:text-zinc-300');
+                    muted.forEach(el => {
+                        if (isActive) {
+                            el.classList.add('text-white');
+                            el.classList.remove('text-zinc-500', 'text-zinc-600', 'dark:text-zinc-400', 'dark:text-zinc-300');
+                        }
+                    });
+                });
+
+                const activeTile = tiles.find(t => t.dataset.day === day);
+                activeTile?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+
+            window.__setActiveDay = setActive;
+
+            tiles.forEach(t => {
+                t.addEventListener('click', () => setActive(t.dataset.day));
+            });
+
+            setActive(tiles[0].dataset.day);
+        })();
+    </script>
+
+    <script>
+        function filterCards(q = '') {
+            q = (q || '').trim().toLowerCase();
+
+            const daysContent = document.getElementById('days-content');
+            if (!daysContent) return;
+
+            const panels = Array.from(daysContent.querySelectorAll('[data-day-panel-wrap]'));
+            const tiles = Array.from(document.querySelectorAll('[data-day-tile]'));
+
+            panels.forEach(panel => {
+                const cards = Array.from(panel.querySelectorAll('[data-card]'));
+
+                cards.forEach(card => {
+                    const text = (card.innerText || '').toLowerCase();
+                    const match = text.includes(q);
+                    card.style.display = match ? '' : 'none';
+                });
+
+                const anyVisible = cards.some(c => c.style.display !== 'none');
+                panel.style.display = anyVisible ? '' : 'none';
+            });
+
+            tiles.forEach(tile => {
+                const day = tile.dataset.day;
+                const panel = daysContent.querySelector('[data-day-panel="' + day + '"]');
+                const visible = panel && panel.style.display !== 'none';
+
+                tile.style.display = visible ? '' : 'none';
+            });
+
+            const firstVisibleTile = tiles.find(t => t.style.display !== 'none');
+            if (firstVisibleTile && window.__setActiveDay) {
+                window.__setActiveDay(firstVisibleTile.dataset.day);
+            }
+        }
+    </script>
+
+{% endblock %}

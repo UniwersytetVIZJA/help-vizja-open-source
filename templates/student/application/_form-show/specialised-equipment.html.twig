@@ -1,0 +1,30 @@
+    <li class="flex justify-between py-3">
+        <span class="block">{% trans %}Wypożyczany sprzęt{% endtrans %}</span>
+        <div class="text-right font-medium text-zinc-900 dark:text-white space-y-1">
+            {% for inventory in application.equipment %}
+                {% if app.locale === 'pl' %}
+                <p>- {{ inventory.equipment.inv.value }}: {{ inventory.equipment.type }}</p>
+                {% else %}
+                    <p>- {{ inventory.equipment.inv.valueEnglish }}: {{ inventory.equipment.type }}</p>
+                    {% endif %}
+            {% else %}
+                <p>—</p>
+            {% endfor %}
+        </div>
+    </li>
+
+    <li class="flex justify-between py-3">
+        <span class="block">{% trans %}Data wypożyczenia sprzętu{% endtrans %}</span>
+        <span class="font-medium text-zinc-900 dark:text-white">
+      {{ application.rentStart ? application.rentStart|date('d.m.y') : '—' }}
+      -
+      {{ application.rentEnd ? application.rentEnd|date('d.m.y') : '—' }}
+    </span>
+    </li>
+
+    <li class="py-2">
+        <span class="block">{% trans %}Uzasadnienie{% endtrans %}</span>
+        <span class="font-medium break-all whitespace-pre-line mt-1 block">
+        {{ application.description }}
+    </span>
+    </li>

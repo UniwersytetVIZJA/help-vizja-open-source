@@ -1,0 +1,62 @@
+{% extends 'student/_layouts/after-login.html.twig' %}
+
+{% block title %}{% trans %}Brak dostępu{% endtrans %}: 403 | Help VIZJA{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block body %}
+    <div class="min-h-[60vh] flex items-center justify-center px-4 py-8">
+        <div class="w-full max-w-xl rounded-2xl border-4 border-red-500 dark:border-red-300 px-6 py-8 text-center">
+            <div class="w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full border-2 border-rose-400 bg-rose-50 text-2xl">
+                <svg class="w-6 h-6 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd"
+                          d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
+                          clip-rule="evenodd" />
+                </svg>
+
+            </div>
+
+            <section
+                role="alert"
+                aria-labelledby="error-title"
+                aria-describedby="error-description error-code"
+            >
+                <h1 id="error-title" class="mb-2 text-2xl font-bold">
+                    {% trans %}Brak dostępu{% endtrans %}
+                </h1>
+
+                <p id="error-description" class="mb-2">
+                    {% trans %}Nie posiadasz uprawnień do wyświetlania lub edytowania tej strony{% endtrans %}.
+                </p>
+
+                <p id="error-code" class="mb-8 text-base">
+                    {% trans %}Kod błędu{% endtrans %}:
+                    <span class="font-semibold">
+            {{ status_code }}
+        </span>
+                </p>
+
+                {% if message %}
+                    <p id="error-code" class="mb-8 text-base">
+                        {% trans %}Komunikat{% endtrans %}:
+                        <span class="font-semibold">
+            {{ message }}
+        </span>
+                    </p>
+                {% endif %}
+            </section>
+
+            <a href="{{ path('student_dashboard') }}"
+               class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}">
+                {% trans %}Wróć na stronę główną{% endtrans %}
+            </a>
+        </div>
+    </div>
+{% endblock %}
+

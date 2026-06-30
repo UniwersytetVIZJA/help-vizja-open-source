@@ -1,0 +1,108 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+{% form_theme form 'student/_layouts/form-tailwind.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+{% block title %}{% trans %}Edycja użytkownika{% endtrans %} | Admin Help VIZJA{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+{% block body %}
+    {{ website_path([
+        { label: 'Ustawienia'|trans, route: 'admin_settings' },
+        { label: 'Pracownicy'|trans, route: 'admin_users' },
+        { label: 'Edytuj użytkownika'|trans},
+    ]) }}
+
+
+    <h1 class="text-2xl font-bold mb-4">{% trans %}Edytuj użytkownika{% endtrans %}</h1>
+
+    {# ===== Podsumowanie błędów ===== #}
+    {% set childErrors = [] %}
+    {% for child in form %}
+        {% if child.vars.errors|length %}
+            {% set childErrors = childErrors|merge([{
+                id: child.vars.id,
+                label: child.vars.label is not empty ? child.vars.label : child.vars.name|capitalize,
+                errors: child.vars.errors
+            }]) %}
+        {% endif %}
+    {% endfor %}
+    {% if form_errors(form) is not empty or childErrors is not empty %}
+        <div id="form_error_summary"
+            class="rounded-lg border border-red-300 bg-red-50 text-red-900 p-4 focus:outline-none focus:ring-2 focus:ring-red-600"
+            role="alert" tabindex="-1" aria-labelledby="error_heading">
+            <h2 id="error_heading" class="font-semibold mb-2">
+                <div class="flex items-center space-x-2">
+                    <span>{% trans %}Proszę poprawić poniższe błędy{% endtrans %}:</span>
+                </div>
+
+            </h2>
+            {{ form_errors(form) }}
+            {% if childErrors is not empty %}
+                <ul class="list-disc ms-5">
+                    {% for e in childErrors %}
+                        <li class="mb-1">
+                            <a class="underline hover:no-underline" href="#{{ e.id }}"
+                                data-focus-target="{{ e.id }}">{{ e.label }}</a>
+                            <ul class="list-[square] ms-5">
+                                {% for err in e.errors %}
+                                    <li>{{ err.message }}</li>{% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <div class="flex flex-col md:flex-row items-start gap-8">
+        <div class="shrink-0">
+            <div class="rounded-full text-white flex items-center justify-center text-sm font-semibold overflow-hidden">
+                        <span class="avatar-initials hidden w-12 h-12 bg-red-500">
+                        {{ user.initials }}
+                        </span>
+                <img
+                    src="{{ path('admin_ms_user_photo', { upn: user.email }) }}"
+                    alt="{{ user.initials }}"
+                    class="rounded-full w-56 h-56"
+                    onerror=
+                    "this.style.display='none';
+                            this.parentElement.querySelector('.avatar-initials').classList.remove('hidden');"
+                >
+
+            </div>
+
+        </div>
+
+        <div class="flex-1">
+            {{ form_start(form, {
+                attr: {
+                    class: 'space-y-8',
+                    novalidate: 'novalidate',
+                    role: 'form',
+                    'aria-describedby': 'form_instructions'
+                }
+            }) }}
+            <div class="max-w-2xl space-y-4 w-full">
+
+                {{ form_row(form.email) }}
+                {{ form_row(form.roles) }}
+                {{ form_row(form.isActive) }}
+
+                <div class="mt-10 space-x-1">
+                    <button class="cursor-pointer {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+                        {% trans %}Zapisz{% endtrans %}
+                    </button>
+                    <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('admin_users') }}">
+                        {% trans %}Powrót{% endtrans %}
+                    </a>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}

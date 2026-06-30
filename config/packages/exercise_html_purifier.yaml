@@ -1,0 +1,27 @@
+exercise_html_purifier:
+    # Gdzie trzymać cache parsera (standardowo katalog cache Symfony)
+    default_cache_serializer_path: '%kernel.cache_dir%/htmlpurifier'
+
+    # Konfiguracja profili (możesz mieć np. "default", "strict", "emails" itd.)
+    html_profiles:
+        default:
+            config:
+                Core.Encoding: 'UTF-8'
+
+                # Co wolno w treści HTML (tagi + atrybuty)
+                HTML.Allowed: >
+                    p,b,strong,i,em,u,a[href|title|target|rel],
+                    ul,ol,li,blockquote,br,sub,sup,small,
+                    h2,h3,h4,h5,h6,span[style],
+                    table,thead,tbody,tr,th,td
+
+                # Zezwól na linki otwierane w nowym oknie
+                Attr.AllowedFrameTargets: [ '_blank' ]
+
+                # Zezwól na style inline (np. <span style="color:red;">)
+                CSS.AllowedProperties: 'color,font-weight,font-style,text-decoration,text-align'
+
+                # Filtr XSS — włączony domyślnie, ale warto przypomnieć :)
+                HTML.SafeEmbed: true
+                HTML.SafeObject: true
+                Output.CommentScriptContents: false

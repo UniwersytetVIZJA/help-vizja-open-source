@@ -1,0 +1,68 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+
+{% form_theme form 'student/_layouts/form-tailwind.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block title %}{% trans %}Edycja wniosku{% endtrans %} {{ application.applicationNumber }} | Admin Help VIZJA{% endblock %}
+
+{% block body %}
+    <section class="space-y-8">
+        <header class="mb-6 flex items-start justify-between gap-4">
+            {{ website_path([
+                { label: 'Wnioski'|trans, route: 'admin_applications' },
+                { label: 'Szczegóły wniosku'|trans, route: 'admin_applications_applicationDetails', route_params: {applicationId: application.id}},
+                { label: 'Edycja wniosku'|trans },
+            ]) }}
+        </header>
+
+        <h1 id="page-title" class="font-semibold text-xl md:text-2xl lg:text-3xl">
+            {% trans %}Edycja wniosku o numerze{% endtrans %}: {{ application.applicationNumber }}
+        </h1>
+
+        {{ form_start(form, {'attr': { 'novalidate': 'novalidate' }}) }}
+
+        {# Podsumowanie błędów #}
+        {% set hasFormErrors = (form_errors(form)|trim) is not empty %}
+        {% set childErrors = [] %}
+
+        {% for child in form %}
+            {% if child is defined and child.vars is defined and child.vars.errors|length > 0 %}
+                {% set labelTxt = (child.vars.label is not empty) ? child.vars.label : (child.vars.name|capitalize) %}
+                {% set childErrors = childErrors|merge([{
+                    id: child.vars.id,
+                    label: labelTxt,
+                    errors: child.vars.errors
+                }]) %}
+            {% endif %}
+        {% endfor %}
+        {% if hasFormErrors or childErrors is not empty %}
+            {% include '_partials/form-errors.html.twig' with { form: form, childErrors: childErrors } %}
+        {% endif %}
+
+        <div class="flex space-x-3 items-stretch mb-5">
+            {% include 'student/_partials/phone.html.twig' %}
+        </div>
+
+        <div class="min-w-0">
+            {% include 'admin/applications/_form/' ~ application.type.hiddenValue ~ '.html.twig' %}
+        </div>
+
+        <div class="mt-10 space-x-1">
+            <button class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+                {% trans %}Zapisz{% endtrans %}
+            </button>
+
+            <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('admin_applications_applicationDetails', { applicationId: application.id }) }}">
+                {% trans %}Wróć{% endtrans %}
+            </a>
+        </div>
+        {{ form_end(form, { render_rest: false }) }}
+    </section>
+{% endblock %}

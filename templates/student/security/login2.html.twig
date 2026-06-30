@@ -1,0 +1,372 @@
+{% extends 'student/_layouts/before-login.html.twig' %}
+{% block title %}{% trans %}Zaloguj się{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block body %}
+    <header>
+        <nav aria-label="{% trans %}Nawigacja górna{% endtrans %}" class="bg-white dark:bg-zinc-900">
+            <div class="flex flex-wrap items-center justify-end max-w-screen-2xl min-h-[100px] mx-auto px-4 py-2.5 md:px-4">
+                <div class="flex items-center md:space-x-2">
+                    {% include 'admin/_components/change-theme.html.twig' %}
+                    {% include 'student/_components/change-language.html.twig' %}
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="flex items-center justify-center gap-4 sm:gap-6">
+        <figure class="flex flex-1 justify-end">
+            <img
+                alt="{% trans %}Uniwersytet Vizja{% endtrans %}"
+                class="block h-auto w-full max-w-[180px] sm:max-w-[260px] md:max-w-[320px] dark:hidden"
+                src="{{ asset('images/logo/header/' ~ app.request.locale ~ '.png') }}"
+            >
+
+            <img
+                alt="{% trans %}Uniwersytet Vizja{% endtrans %}"
+                class="hidden h-auto w-full max-w-[180px] sm:max-w-[260px] md:max-w-[320px] dark:block"
+                src="{{ asset('images/logo/header/' ~ app.request.locale ~ '-transparent.png') }}"
+            >
+        </figure>
+
+        <figure class="flex flex-1 justify-start">
+            <img
+                alt="{% trans %}Logo Biura do spraw osób z niepełnosprawnościami{% endtrans %}"
+                class="block h-auto w-full max-w-[180px] sm:max-w-[260px] md:max-w-[320px] dark:hidden"
+                src="{{ asset('images/logo/bon/' ~ app.request.locale ~ '.png') }}"
+            >
+
+            <img
+                alt="{% trans %}Logo Biura do spraw osób z niepełnosprawnościami{% endtrans %}"
+                class="hidden h-auto w-full max-w-[180px] sm:max-w-[260px] md:max-w-[320px] dark:block"
+                src="{{ asset('images/logo/bon/' ~ app.request.locale ~ '-transparent.png') }}"
+            >
+
+        </figure>
+    </div>
+
+    <section class="bg-zinc-50 dark:bg-zinc-900 mb-10">
+        <div class="bg-white flex items-center justify-center px-4">
+            <img
+                alt="{% trans %}Logo Funduszy Europejskich{% endtrans %}"
+                class="block w-full max-w-[800px] h-auto py-5"
+                src="{{ asset('images/logo/unijne-logotypy/' ~ app.request.locale ~ '.png') }}"
+            >
+        </div>
+        <div class="max-w-screen-2xl mx-auto px-4 py-8 space-y-8">
+            <div class="bg-white mx-auto rounded-lg shadow-lg w-full max-w-200 dark:bg-zinc-800">
+                <div class="p-4 space-y-4 sm:p-8">
+                    <h1 id="login-page-title" class="font-semibold text-xl md:text-2xl lg:text-2xl">
+                        {% trans %}Wygodnie umawiaj spotkania i składaj wnioski z Help VIZJA{% endtrans %}
+                    </h1>
+
+                    <div class="items-start max-w-200 mx-auto space-y-10">
+                        <div class="bg-white mx-auto order-2 rounded-lg shadow-lg w-full dark:bg-zinc-800 md:mt-0 lg:order-1 xl:p-0">
+                            <div class="p-4 space-y-4 sm:p-8">
+                                <h2 class="font-semibold text-xl md:text-2xl lg:text-2xl">
+                                    {% trans %}Studenci i pracownicy{% endtrans %}
+                                </h2>
+
+                                <p class="font-semibold">
+                                    {% trans %}Jeśli posiadasz konto e-mail w domenie vizja.pl{% endtrans %}
+                                </p>
+
+                                <div class="space-y-8">
+                                    <div>
+                                        <a href="{{ path('security_azure_login') }}" class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }} text-center w-full">
+                                            <div class="flex items-center justify-center">
+                                                <svg class="flex h-6 mr-2 w-6"
+                                                    aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24">
+
+                                                    <path clip-rule="evenodd"
+                                                        d="M3.005 12 3 6.408l6.8-.923v6.517H3.005ZM11 5.32 19.997 4v8H11V5.32ZM20.067 13l-.069 8-9.065-1.275L11 13h9.067ZM9.8 19.58l-6.795-.931V13H9.8v6.58Z"
+                                                        fill="currentColor"
+                                                        fill-rule="evenodd" />
+                                                </svg>
+
+                                                <span>
+                                            {% trans %}Zaloguj się kontem Office 365{% endtrans %}
+                                        </span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white mx-auto order-2 rounded-lg shadow-lg w-full dark:bg-zinc-800 md:mt-0 lg:order-1 xl:p-0">
+                            <div class="p-4 space-y-4 sm:p-8">
+                                <h2 class="font-semibold text-xl md:text-2xl lg:text-2xl">
+                                    {% trans %}Goście{% endtrans %}
+                                </h2>
+
+                                <p class="font-semibold">
+                                    {% trans %}Jeśli posiadasz utworzone konto na adres e-mail poza domeną vizja.pl{% endtrans %}
+                                </p>
+
+                                <form action="{{ path('student_login') }}" class="space-y-5 w-full" method="post">
+
+                                    <input type="hidden"
+                                        data-controller="csrf-protection"
+                                        name="_csrf_token"
+                                        value="{{ csrf_token('authenticate') }}">
+
+                                    {{ flash_messages() }}
+
+                                    {% if error %}
+                                        <div class="bg-red-50 mb-4 p-4 rounded-lg text-left text-red-800 dark:bg-red-100 dark:text-red-900"
+                                            role="alert"
+                                        >
+                                      <span class="font-medium flex items-center gap-2">
+                                                <svg class="w-6 h-6 text-red-800 dark:text-red-700"
+                                                    aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="24"
+                                                    height="24"
+                                                    fill="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path fill-rule="evenodd"
+                                                        d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+
+                                                {% trans %}Błąd{% endtrans %}!
+                                            </span>
+
+                                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                                        </div>
+                                    {% endif %}
+
+                                    <div>
+                                        <label for="username" class="block font-medium mb-2">
+                                            {% trans %}Email{% endtrans %}
+                                        </label>
+
+                                        <input type="text"
+                                            id="username"
+                                            name="_username"
+                                            value="{{ last_username }}"
+                                            class="bg-zinc-100 block border-2 border-zinc-350 p-2.5 rounded-lg w-full dark:bg-zinc-700 dark:placeholder-zinc-400 {{ focusPrimary() }}">
+                                    </div>
+
+                                    <div>
+                                        <label for="password" class="block font-medium mb-2">
+                                            {% trans %}Hasło{% endtrans %}
+                                        </label>
+
+                                        <input type="password"
+                                            id="password"
+                                            name="_password"
+                                            autocomplete="off"
+                                            class="bg-zinc-100 block border-2 border-zinc-350 p-2.5 rounded-lg w-full dark:bg-zinc-700 dark:placeholder-zinc-400 {{ focusPrimary() }}">
+                                    </div>
+
+                                    <div class="flex items-start">
+                                        <div class="flex h-5 items-center">
+                                            <input type="checkbox"
+                                                id="remember"
+                                                class="bg-zinc-100 border-2 border-zinc-700 h-4 w-4 rounded-sm
+                                                dark:bg-zinc-700 dark:border-zinc-500 dark:ring-offset-zinc-800 {{ focusPrimary() }}">
+                                        </div>
+
+                                        <label for="remember" class="font-medium ms-2">
+                                            {% trans %}Zapamiętaj mnie{% endtrans %}
+                                        </label>
+                                    </div>
+
+                                    <div class="flex flex-col gap-4 sm:flex-row sm:items-stretch">
+                                        <button type="submit"
+                                            class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }} cursor-pointer w-full sm:flex-1 flex items-center justify-center">
+                                            {% trans %}Zaloguj się{% endtrans %}
+                                        </button>
+
+                                        <a href="{{ path('app_forgot_password_request') }}"
+                                            class="{{ buttonSecondary() }} w-full sm:w-auto flex items-center justify-center text-center whitespace-nowrap {{ focusPrimaryWithPadding() }}">
+                                            {% trans %}Nie pamiętam hasła{% endtrans %}
+                                        </a>
+                                    </div>
+                                </form>
+
+                                <div class="flex items-center">
+                                    <div class="bg-zinc-100 h-0.5 w-full dark:bg-zinc-700"></div>
+
+                                    <div class="px-5 text-center text-zinc-500 whitespace-nowrap dark:text-zinc-300">
+                                        {% trans %}Jeśli nie masz konta{% endtrans %}
+                                    </div>
+
+                                    <div class="bg-zinc-100 h-0.5 w-full dark:bg-zinc-700"></div>
+                                </div>
+
+                                <div class="flex gap-x-4 items-center justify-between">
+
+                                    <a href="{{ path('guest_dashboard') }}"
+                                        class="{{ buttonSecondary() }} text-center w-full {{ focusPrimaryWithPadding() }}">
+                                        {% trans %}Wejdź jako gość bez logowania{% endtrans %}
+                                    </a>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+    </section>
+    <a
+        href="https://tlumacz.migam.org/Vizja"
+        rel="noopener noreferrer"
+        class="block bg-white p-5 shadow-lg transition hover:bg-zinc-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 {{ focusPrimaryWithPadding() }}"
+    >
+        <div class="flex items-center justify-center gap-4 text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="text-blue-600 dark:text-yellow-400" width="62.957" height="54.519" viewBox="0 0 62.957 54.519">
+                <g id="Group_1629" data-name="Group 1629" transform="translate(-1810.663 -45.71)">
+                    <path id="Path_811" data-name="Path 811"
+                        d="M875.927,441.05s-5.065,3.9-10.513,2.974a3.223,3.223,0,0,0-3.536.165,81.1,81.1,0,0,1-8.289,2.5,3.581,3.581,0,0,0-2.724,2.087c-.29.58-1.855,4.579-1.855,4.579s-.174.869.29,1.043a12.784,12.784,0,0,0-.322,2.145c.032.58.264,2.956.264,2.956s1.333,2.319,5.622,4.7c0,0,4.834.29,7.171-1.217l-4.853,3.768a37.712,37.712,0,0,0-4.463.464s-3-4.53-5.49-.995c0,0-.838.309,1.143,1.4a12.223,12.223,0,0,1,2.9,2.377,8.77,8.77,0,0,0,6.042.479,43.46,43.46,0,0,0,5.025-1.867l-4.053,3.3-3.652,1.333s-4.224.29-4.083,2.666c0,0-.438.87,1.938.638s6.9-.348,12.346-5.68l-4.115,5.391s-1.42,1.62-.259,2.877a1.415,1.415,0,0,0,.413.235c.164.09.175.389.737-.212.211-.226.507-.519.849-.929.87-1.043,4.174-4.7,4.174-4.7a19.291,19.291,0,0,0,1.913-3.3c.29-.985,3.072-3.942,4.231-8.289,1.7-6.385,4.638-7.051,6.377-7.8,0,0,.6-7.4-3.225-13.081m-15.81,18.142s-2.616-.039-3.8,1.237a5.858,5.858,0,0,0-3.42-1.913s-.648-3.754-2.861-4.019c0,0,2.427-.328,3.874-3.776,0,0,1.971,1.1,5.595-.378a13.728,13.728,0,0,0,2.771,3.365,1.087,1.087,0,0,1,.483,1.082c-.158,1.221-.664,3.616-2.638,4.4"
+                        transform="translate(994.434 -379.289)" fill="currentColor" />
+                    <path id="Path_812" data-name="Path 812"
+                        d="M1.009,33.663s5.867-2.541,10.922-.306a3.223,3.223,0,0,0,3.468.707,81.073,81.073,0,0,1,8.649-.393A3.582,3.582,0,0,0,27.2,32.316c.423-.491,2.921-3.985,2.921-3.985s.382-.8-.025-1.083a12.771,12.771,0,0,0,.838-2c.111-.57.468-2.931.468-2.931s-.724-2.575-4.3-5.93c0,0-4.616-1.466-7.251-.578l5.628-2.463a37.709,37.709,0,0,0,4.441.645s1.8,5.127,5.079,2.31c0,0,.888-.094-.765-1.638a12.22,12.22,0,0,1-2.227-3.015A8.769,8.769,0,0,0,26.269,9.7a43.454,43.454,0,0,0-5.329.578l4.739-2.207,3.867-.4s4.167.755,4.612-1.584c0,0,.638-.736-1.723-1.093s-6.773-1.354-13.362,2.48l5.311-4.217s1.774-1.222.957-2.726C25.26.39,25.113.316,25,.208c-.137-.127-.074-.42-.766.025-.26.167-.619.379-1.05.693-1.1.8-5.2,3.529-5.2,3.529a19.282,19.282,0,0,0-2.664,2.734c-.523.884-3.945,3.068-6.134,7-3.216,5.773-6.225,5.7-8.1,6,0,0-2.4,7.027-.081,13.472M20.784,19.951s2.527.679,3.991-.266a5.857,5.857,0,0,0,2.847,2.693s-.292,3.8,1.788,4.6c0,0-2.434-.277-4.681,2.711,0,0-1.641-1.549-5.517-1.005A13.726,13.726,0,0,0,17.35,24.74a1.087,1.087,0,0,1-.2-1.168c.453-1.145,1.53-3.342,3.636-3.621"
+                        transform="translate(1810.663 45.715)" fill="currentColor" />
+                </g>
+            </svg>
+
+            <div>
+                <h2 class="text-lg font-semibold text-zinc-900 dark:text-white">
+                    {% trans %}Połącz się z tłumaczem języka migowego{% endtrans %}
+                </h2>
+
+                <p class="mt-1 text-base">
+                    {% trans %}Uniwersytet VIZJA - tlumacz.migam.org{% endtrans %}
+                </p>
+            </div>
+        </div>
+    </a>
+
+    <footer class="bg-zinc-900 py-10 text-zinc-100">
+        <div class="mx-auto max-w-screen-2xl px-4 text-center">
+            <ul class="flex flex-col md:flex-row justify-center items-center min-w-0">
+                <li class="min-w-0">
+                    <a href="{{ app.request.locale == 'pl'
+                    ? 'https://vizja.pl/kontakt/#biuro-rekrutacji'
+                    : 'https://vizja.pl/en/contact/#biuro-rekrutacji' }}"
+                        class="block px-4 py-2 rounded-lg underline hover:text-yellow-400 break-words {{ focusPrimary() }}">
+                        {% trans %}Biuro Rekrutacji{% endtrans %}
+                    </a>
+                </li>
+                <li class="min-w-0">
+
+                    <a href="{{ app.request.locale == 'pl'
+                    ? 'https://bon.vizja.pl/kontakt/'
+                    : 'https://vizja.pl/en/contact' }}" class="block px-4 py-2 rounded-lg underline hover:text-yellow-400 wrap-break-word {{ focusPrimary() }}">
+                        {% trans %}Kontakt{% endtrans %}
+                    </a>
+                </li>
+                <li class="min-w-0">
+
+                    <a href="{{ app.request.locale == 'pl'
+                    ? 'https://vizja.pl/kontakt/#social-media'
+                    : 'https://vizja.pl/en/contact/#social-media' }}" class="block px-4 py-2 rounded-lg underline hover:text-yellow-400 wrap-break-word {{ focusPrimary() }}">
+                        {% trans %}Social media{% endtrans %}
+                    </a>
+                </li>
+                <li class="min-w-0">
+                    <a href="{{ app.request.locale == 'pl'
+                    ? 'https://vizja.pl/polityka-prywatnosci'
+                    : 'https://vizja.pl/en/polityka-prywatnosci/' }}" class="block px-4 py-2 rounded-lg underline hover:text-yellow-400 wrap-break-word {{ focusPrimary() }}">
+                        {% trans %}Polityka prywatności{% endtrans %}
+                    </a>
+                </li>
+
+                <li class="min-w-0">
+                    <a href="{{ url('app_guest_accesibilitystatement_index') }}" class="block px-4 py-2 rounded-lg underline hover:text-yellow-400 wrap-break-word {{ focusPrimary() }}">
+                        {% trans %}Deklaracja dostępności{% endtrans %}
+                    </a>
+                </li>
+            </ul>
+
+            <div class="my-10"></div>
+
+            <div class="flex flex-col justify-center items-center">
+                {% if app.request.locale == 'pl' %}
+                    <img alt="{% trans %}Logo Uniwersytetu Vizja{% endtrans %}"
+                        class="max-w-65 mb-10"
+                        src="{{ asset('images/logo/uv/logo_pl_PL_poziom_kontra.png') }}">
+                {% elseif app.request.locale == 'en' %}
+                    <img alt="{% trans %}Logo Uniwersytetu Vizja{% endtrans %}"
+                        class="max-w-65 mb-10"
+                        src="{{ asset('images/logo/uv/logo_en_US_poziom_kontra.png') }}">
+                {% endif %}
+
+            </div>
+
+            <div class="flex flex-col justify-center items-center gap-y-2 text-sm">
+                <div>
+                    {% trans %}ul. Okopowa 59{% endtrans %}
+                </div>
+                <div>
+                    01-043, {% trans %}Warszawa{% endtrans %}
+                </div>
+                <div>
+                    {% trans %}piętro{% endtrans %} II, {% trans %}pokój{% endtrans %} 233
+                </div>
+                <div class="mt-10 mb-5 px-4">
+                    <div class="max-w-screen-2xl mx-auto text-left">
+                        <div class="max-w-none">
+                            {% trans %}Program do zarządzania usługami Biura ds. Osób z Niepełnosprawnościami (BON) został opracowany przez Uniwersytet VIZJA w ramach realizacji projektu{% endtrans %}
+                            <a class="underline" target="_blank" rel="noopener noreferrer"
+                                href="https://vizja.pl/projekty-europejskie/vizja-home-uczelnia-dla-wszystkich/">
+                                {% trans %}Vizja Home – Uczelnia dla wszystkich{% endtrans %}
+                            </a>
+                            {% trans %}w ramach programu Fundusze Europejskie dla Rozwoju Społecznego 2021-2027 współfinansowanego ze środków Europejskiego Funduszu Społecznego Plus i objęty jest w całości licencją{% endtrans %}
+                            <a class="underline" target="_blank" rel="noopener noreferrer"
+                                href="https://creativecommons.org/licenses/by/4.0/legalcode.pl">
+                                {% trans %}Creative Commons Uznanie autorstwa CC BY 4.0{% endtrans %}
+                            </a>.
+                            <p class="mt-2">
+                                <a class="underline wrap-break-word" rel="noopener noreferrer"
+                                    href="{{ url('guest_license_index') }}">
+                                    {% trans %}Więcej o Help VIZJA i licencji{% endtrans %}
+                                </a>
+                            </p>
+
+                            <div class="mt-7">
+                                <div class="flex items-center gap-2" role="img" aria-label="{% trans %}Logo licencji Creative Commons – Uznanie autorstwa{% endtrans %}">
+                                    <svg class="fill-white w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                                        <path
+                                            d="M317.8 278.9L284.6 296.2C275.2 276.6 259.4 276.3 257.1 276.3C235 276.3 223.9 290.9 223.9 320.1C223.9 343.7 233.1 363.9 257.1 363.9C271.6 363.9 281.7 356.8 287.7 342.6L318.3 358.1C312.1 369.6 292.6 397.1 253.2 397.1C230.6 397.1 179.2 386.8 179.2 320.1C179.2 261.4 222.2 243 251.8 243C282.5 243 304.5 254.9 317.8 278.9zM460.8 278.9L428 296.2C418.5 276.4 402.3 276.3 400.1 276.3C378 276.3 366.9 290.9 366.9 320.1C366.9 343.6 376.1 363.9 400.1 363.9C414.5 363.9 424.7 356.8 430.6 342.6L461.6 358.1C459.5 361.9 440.2 397.1 396.5 397.1C373.8 397.1 322.5 387.2 322.5 320.1C322.5 261.4 365.5 243 395.1 243C425.8 243 447.7 254.9 460.7 278.9zM319.6 72C176.7 72 72 187.1 72 320.1C72 458.5 185.6 568.1 319.6 568.1C449.5 568.1 568 467.2 568 320.1C568 182.2 461.4 72 319.6 72zM320.5 522.8C208 522.8 116.8 429.8 116.8 320C116.8 214.6 202.2 116.7 320.5 116.7C433 116.7 523.3 206.2 523.3 320C523.3 441.7 423.6 522.8 320.5 522.8z" />
+                                    </svg>
+                                    <svg class="fill-white w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                                        <path
+                                            d="M386.9 258.4L386.9 359.8L358.6 359.8L358.6 480.3L281.5 480.3L281.5 359.9L253.2 359.9L253.2 258.4C253.2 254 254.8 250.2 257.8 247.1C260.9 244 264.7 242.4 269.1 242.4L371 242.4C375.1 242.4 378.8 244 382.1 247.1C385.2 250.3 386.9 254 386.9 258.4zM354.4 193.9C354.6 213 339.4 228.6 320.3 228.8C301.2 229 285.6 213.8 285.4 194.7C285.2 175.6 300.4 160 319.5 159.8C338.6 159.6 354.2 174.8 354.4 193.9zM319.6 72C461.4 72 568 182.1 568 320C568 467.1 449.5 568 319.6 568C185.6 568 72 458.5 72 320C72 187.1 176.7 72 319.6 72zM320.4 116.7C202.2 116.7 116.7 214.6 116.7 320C116.7 429.8 207.9 522.8 320.4 522.8C423.6 522.8 523.2 441.7 523.2 320C523.3 206.2 433 116.7 320.4 116.7z" />
+                                    </svg>
+                                </div>
+
+                                <div class="mt-2 wrap-break-word">
+                                    {% trans %}Ikony Creative Commons (CC){% endtrans %}:
+                                    <a
+                                        class="underline wrap-break-word"
+                                        rel="noopener noreferrer"
+                                        target="_blank"
+                                        href="https://fontawesome.com/"
+                                    >
+                                        Font Awesome
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'student/_layouts/after-login.html.twig' %}
+{% form_theme form 'student/_layouts/form-tailwind.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block title %}{% trans %}Zapis na wizytę w BON - krok 2{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block body %}
+    <section class="space-y-8">
+        <header class="space-y-2">
+            <h1 id="page-title" class="wrap-break-word text-xl font-semibold md:text-2xl lg:text-3xl">
+                {% trans %}Zapisz się na wizytę w BON{% endtrans %}
+            </h1>
+            <p class="wrap-break-word text-sm text-zinc-600 dark:text-zinc-300 md:text-base">
+                {% trans %}Sprawdź szczegóły rezerwacji. W razie potrzeby możesz ją anulować.{% endtrans %}
+            </p>
+        </header>
+
+        {% include 'student/office-registration/_partials/stepper.html.twig' with { currentStep: 2 } %}
+
+        <h2 class="flex items-center wrap-break-word font-medium text-md md:text-lg lg:text-xl">
+            {% trans %}Rezerwowany termin{% endtrans %}: {{ officeRegistration.startAt|date('d.m.Y H:i') }}
+        </h2>
+
+        {# Podsumowanie błędów #}
+        {% set hasFormErrors = (form_errors(form)|trim) is not empty %}
+        {% set childErrors = [] %}
+
+        {% for child in form %}
+            {% if child is defined and child.vars is defined and child.vars.errors|length > 0 %}
+                {% set labelTxt = (child.vars.label is not empty) ? child.vars.label : (child.vars.name|capitalize) %}
+                {% set childErrors = childErrors|merge([{
+                    id: child.vars.id,
+                    label: labelTxt,
+                    errors: child.vars.errors
+                }]) %}
+            {% endif %}
+        {% endfor %}
+
+        {% if hasFormErrors or childErrors is not empty %}
+            {% include '_partials/form-errors.html.twig' with { form: form, childErrors: childErrors } %}
+        {% endif %}
+
+
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+        <div class="w-full max-w-2xl min-w-0 space-y-4">
+            {{ form_row(form.meetingMode) }}
+            {{ form_row(form.description) }}
+        </div>
+
+        <div class="mt-10 flex flex-wrap gap-2">
+            <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_office_registration_step_1') }}">
+                {% trans %}Wróć do poprzedniego kroku{% endtrans %}
+            </a>
+            <button class="cursor-pointer {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+                {% trans %}Poproś o rezerwację{% endtrans %}
+            </button>
+        </div>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

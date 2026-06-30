@@ -1,0 +1,32 @@
+{% set start = ((pagination.currentPageNumber - 1) * pagination.itemNumberPerPage) + 1 %}
+{% set end = min(pagination.currentPageNumber * pagination.itemNumberPerPage, pagination.totalItemCount) %}
+
+{% if pagination.pageCount >= 1 %}
+    <div class="overflow-hidden relative rounded-b-lg dark:mt-4">
+        <nav class="flex flex-col items-center justify-center p-4 space-y-3  md:flex-row md:items-center md:space-y-0"
+             aria-label="Table navigation"
+        >
+        <span class="font-normal">
+            {% trans %}Wyniki{% endtrans %}
+            <span class="font-semibold text-gray-900 dark:text-white">
+                {{ start }}-{{ end }}
+            </span>
+            {% trans %}z{% endtrans %}
+            <span class="font-semibold">
+                {{ pagination.totalItemCount }}
+            </span>
+        </span>
+        </nav>
+    </div>
+
+    {% if pagination.pageCount > 1 %}
+        <div class="overflow-hidden relative rounded-b-lg">
+            <nav
+                class="flex flex-col items-center justify-center p-4 space-y-3 md:flex-row md:items-center md:space-y-0 {{ focusPrimary() }}"
+                aria-label="Table navigation"
+            >
+                {{ knp_pagination_render(pagination) }}
+            </nav>
+        </div>
+    {% endif %}
+{% endif %}

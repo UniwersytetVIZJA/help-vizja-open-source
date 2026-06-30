@@ -1,0 +1,11 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        application_file:
+            uri_prefix: /uploads/applications
+            upload_destination: '%kernel.project_dir%/public/uploads/applications'
+            directory_namer:
+                service: App\Core\File\FileDirectoryNamer
+            namer:
+                service: App\Core\File\FileNamer

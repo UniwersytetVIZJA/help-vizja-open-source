@@ -1,0 +1,229 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+
+{% block stylesheets %}{{ encore_entry_link_tags('admin_default') }}{% endblock %}
+{% block javascripts %}{{ encore_entry_script_tags('admin_default') }}{% endblock %}
+{% block title %}
+    {% trans %}Wizyta{% endtrans %}: {{ registration.startAt|date('d.m.Y') }}, {{ registration.startAt|date('H:i') }} - {{ registration.endAt|date('H:i') }} | Admin Help VIZJA
+{% endblock %}
+
+{% block body %}
+
+
+    <section class="py-8 antialiased md:py-16">
+        {{ website_path([
+            { label: 'Wizyty w biurze'|trans, route: 'admin_office_registration_terms' },
+            { label: 'Szczegóły zapisu'|trans },
+        ]) }}
+        <h1 class="text-xl font-semibold text-zinc-900 dark:text-white sm:text-2xl md:text-3xl">
+            {% trans %}Wizyta w biurze BON{% endtrans %}: {{ registration.startAt|date('d.m.Y') }},
+            godzina: {{ registration.startAt|date('H:i') }} - {{ registration.endAt|date('H:i') }}
+        </h1>
+        <div class="max-w-screen-xl px-4 2xl:px-0">
+            <div class="gap-8 lg:flex">
+                <div class="w-full">
+
+                    <div class="py-5">
+                        <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                            href="{{ url('admin_office_registration_terms_edit', { id: registration.id }) }}">
+                            {% trans %}Edytuj termin{% endtrans %}
+                        </a>
+
+                        <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                            href="{{ url('admin_office_registration_add_student', { officeRegistrationId: registration.id }) }}">
+                            {% trans %}Dodaj studenta{% endtrans %}
+                        </a>
+                    </div>
+
+                    <h2 class="text-xl font-semibold text-zinc-900 dark:text-white mb-3">
+                        {% trans %}Szczegóły zapisu{% endtrans %}
+                    </h2>
+
+                    {% for rs in registeredStudents %}
+                        {% set visitContextId = 'office-registration-context-' ~ rs.id %}
+                        {% set personName = rs.student.firstName ~ ' ' ~ rs.student.lastName %}
+                        <div class="border-3
+                        {% if rs.confirmed is same as(false) %}
+                            border-red-600 dark:border-red-400
+                        {% elseif rs.confirmed is same as(true) %}
+                            border-emerald-600 dark:border-emerald-400
+                        {% elseif rs.confirmed is null %}
+                            border-orange-500 dark:border-orange-400
+                        {% endif %}
+                        bg-zinc-50 mb-4 rounded-lg p-4 dark:bg-zinc-800 {{ borderPrimary() }}">
+
+                            <span id="{{ visitContextId }}" class="sr-only">
+                                {% trans %}Wizyta osoby{% endtrans %}
+                                {{ personName }},
+                                {% trans %}data{% endtrans %}
+                                {{ registration.startAt|date('d.m.Y') }},
+                                {% trans %}godzina{% endtrans %}
+                                {{ registration.startAt|date('H:i') }} - {{ registration.endAt|date('H:i') }}.
+                            </span>
+
+                            <div
+                                class="items-start justify-between border-b border-zinc-100 pb-4 dark:border-zinc-700 sm:flex">
+                                <div class="mb-4 sm:mb-0">
+                                    <div class="dark:text-zinc-200 mb-2 text-zinc-900">
+                                        {% trans %}Imię i nazwisko{% endtrans %}:
+                                        <span class="font-medium text-zinc-900 dark:text-white">
+                                            {{ rs.student.firstName }} {{ rs.student.lastName }}
+                                        </span>
+                                    </div>
+
+                                    <div class="dark:text-zinc-200 mb-2 text-zinc-900">
+                                        {% trans %}Adres e-mail{% endtrans %}:
+                                        <span class="font-medium text-zinc-900 dark:text-white">
+                                            {{ rs.student.email }}
+                                        </span>
+                                    </div>
+
+                                    {% if rs.description %}
+                                        <div class="dark:text-zinc-200 mb-2 text-zinc-900">
+                                            {% trans %}Opis sprawy{% endtrans %}:
+                                            <span class="font-medium text-zinc-900 dark:text-white">
+                                                {{ rs.description }}
+                                            </span>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if rs.meetingMode %}
+                                        <div class="dark:text-zinc-200 mb-2 text-zinc-900">
+                                            {% trans %}Forma spotkania{% endtrans %}:
+                                            <span class="font-medium text-zinc-900 dark:text-white">
+                                                {{ rs.meetingMode }}
+                                            </span>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
+                                    {% set formId = 'confirm-office-registration-form-' ~ rs.id %}
+                                    {% set modalId = 'confirmOfficeRegistrationModal-' ~ rs.id %}
+
+                                    {% if not rs.confirmed %}
+                                        <form
+                                            id="{{ formId }}"
+                                            method="post"
+                                            action="{{ path('admin_office_registration_confirm', { id: rs.id }) }}"
+                                        >
+                                            <input type="hidden" name="_token"
+                                                value="{{ csrf_token('confirm_office_registration_' ~ rs.id) }}">
+
+                                            <button
+                                                type="button"
+                                                data-modal-target="{{ modalId }}"
+                                                data-modal-toggle="{{ modalId }}"
+                                                aria-describedby="{{ visitContextId }}"
+                                                class="cursor-pointer hover:bg-blue-600 {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                                            >
+                                                <strong>{% trans %}Potwierdź wizytę{% endtrans %}</strong>
+                                            </button>
+                                        </form>
+                                    {% endif %}
+
+                                    {% include 'admin/_components/confirm-modal.html.twig' with {
+                                        modalId: modalId,
+                                        formId: formId,
+                                        title: 'Potwierdzić wizytę?'|trans,
+                                        message: 'Czy na pewno chcesz potwierdzić wizytę? Osoba zostanie powiadomiona o tym drogą mailową.'|trans,
+                                        warningText: 'Wizytę będzie można usunąć przez jej całkowite anulowanie. Osoba zostanie usunięta z zapisu, a godzina wróci do puli aktywnych.'|trans,
+                                        confirmLabel: 'Potwierdź'|trans,
+                                        cancelLabel: 'Wróć'|trans
+                                    } %}
+                                    {% set formId = 'cancel-office-registration-form-' ~ rs.id %}
+                                    {% set modalId = 'cancelOfficeRegistrationModal-' ~ rs.id %}
+
+                                    {% if rs.confirmed %}
+                                        <form
+                                            id="{{ formId }}"
+                                            method="post"
+                                            action="{{ path('admin_office_registration_cancel', { id: rs.id }) }}"
+                                        >
+                                            <input type="hidden" name="_token"
+                                                value="{{ csrf_token('cancel_office_registration_' ~ rs.id) }}">
+
+                                            <button
+                                                type="button"
+                                                data-modal-target="{{ modalId }}"
+                                                data-modal-toggle="{{ modalId }}"
+                                                aria-describedby="{{ visitContextId }}"
+                                                class="{{ buttonDelete() }}{{ focusPrimaryWithPadding() }}"
+                                            >
+                                                <strong>{% trans %}Anuluj wizytę{% endtrans %}</strong>
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                    {% include 'admin/_components/confirm-modal.html.twig' with {
+                                        modalId: modalId,
+                                        formId: formId,
+                                        title: 'Anulować wizytę?'|trans,
+                                        message: 'Czy na pewno chcesz anulować wizytę? Osoba zostanie powiadomiona o tym drogą mailową.'|trans,
+                                        warningText: 'Nie będzie można przywrócić anulowanej wizyty. Godzina wizyty wróci do puli aktywnych do rezerwacji.'|trans,
+                                        confirmLabel: 'Anuluj wizytę'|trans,
+                                        cancelLabel: 'Wróć'|trans
+                                    } %}
+                                </div>
+                            </div>
+
+                            <div class="mb-4 items-center sm:flex sm:flex-wrap xl:flex">
+                                <dl class="mt-4 flex items-center text-zinc-900 dark:text-zinc-400 sm:me-8">
+                                    <dt class="me-2 dark:text-zinc-200 text-zinc-900">{% trans %}Data{% endtrans %}:
+                                    </dt>
+                                    <dd class="me-2 font-medium text-zinc-900 dark:text-white">{{ registration.startAt|date('d.m.Y') }}</dd>
+                                </dl>
+
+                                <dl class="mt-4 flex items-center text-zinc-900 dark:text-zinc-400 sm:me-8">
+                                    <dt class="me-2 dark:text-zinc-200 text-zinc-900">{% trans %}Godzina{% endtrans %}
+                                        :
+                                    </dt>
+                                    <dd class="me-2 font-medium text-zinc-900 dark:text-white">{{ registration.startAt|date('H:i') }}
+                                        - {{ registration.endAt|date('H:i') }}</dd>
+                                </dl>
+
+                            </div>
+
+                            {% if rs.confirmed is null %}
+                                <p class="flex items-center gap-2 font-semibold text-orange-700 dark:text-orange-300">
+                                    <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M13.09 3.294c1.924.95 3.422 1.69 5.472.692a1 1 0 0 1 1.438.9v9.54a1 1 0 0 1-.562.9c-2.981 1.45-5.382.24-7.25-.701a38.739 38.739 0 0 0-.622-.31c-1.033-.497-1.887-.812-2.756-.77-.76.036-1.672.357-2.81 1.396V21a1 1 0 1 1-2 0V4.971a1 1 0 0 1 .297-.71c1.522-1.506 2.967-2.185 4.417-2.255 1.407-.068 2.653.453 3.72.967.225.108.443.216.655.32Z" />
+                                    </svg>
+
+                                    {% trans %}Oczekuje na potwierdzenie{% endtrans %}
+                                </p>
+                            {% elseif rs.confirmed is same as(true) %}
+                                <p class="flex items-center gap-2 font-semibold text-emerald-600 dark:text-emerald-300">
+                                    <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd"
+                                            d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    {% trans %}Wizyta potwierdzona{% endtrans %}
+                                </p>
+                            {% else %}
+                                <p class="flex items-center gap-2 font-semibold text-red-600 dark:text-red-400">
+                                    <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd"
+                                            d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    {% trans %}Wizyta anulowana{% endtrans %}
+                                </p>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="rounded-lg bg-white p-4 dark:bg-zinc-800 {{ borderPrimary() }}">
+                            <p class="text-zinc-900 dark:text-zinc-400">
+                                {% trans %}Brak zapisanych osób do tej wizyty.{% endtrans %}
+                            </p>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

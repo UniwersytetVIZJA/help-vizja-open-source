@@ -1,0 +1,40 @@
+{% extends 'student/_layouts/after-login.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block title %}{% trans %}Wnioskuj o kartę adaptacji - krok 2{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block body %}
+    <section class="bg-white px-4 py-8 rounded-lg dark:bg-zinc-900">
+        <div class="mx-auto max-w-screen-2xl px-4 2xl:px-0">
+            {% include 'student/application/_partials/stepper.html.twig' with { currentStep: 2 } %}
+
+            {{ form_start(form, {'attr': { 'novalidate': 'novalidate' }}) }}
+            <div class="space-y-6">
+                <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">
+                    {% trans %}Krok{% endtrans %} 2. {% trans %}Podaj status: Czy chcesz złożyć wniosek o kartę adaptacji?{% endtrans %}
+                </h2>
+                <div class="py-5">
+                    {% trans %}Aby złożyć wniosek{% endtrans %} <strong>{{ adaptationType }}</strong> {% trans %}najpierw musisz otrzymać
+                        <strong>Kartę adaptacji</strong>. Czy chcesz teraz złożyć wniosek o wydanie Karty adaptacji?{% endtrans %}
+                </div>
+                <div class="mt-10 space-x-1">
+                    <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_choose_application_type') }}">
+                        {% trans %}Wróć do Wniosków{% endtrans %}
+                    </a>
+                    {{ form_start(form) }}
+                    <button class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+                        {% trans %}Wnioskuję o Kartę adaptacji{% endtrans %}
+                    </button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

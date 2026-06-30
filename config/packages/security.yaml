@@ -1,0 +1,100 @@
+security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+            algorithm: auto
+    role_hierarchy:
+        ROLE_SPECIALIST: [ ROLE_SPECIALIST ]
+        ROLE_EMPLOYEE: [ ROLE_EMPLOYEE ]
+        ROLE_ADMIN: [ ROLE_ADMIN, ROLE_EMPLOYEE, ROLE_SPECIALIST ]
+
+    providers:
+        admin_user_provider:
+            entity:
+                class: App\Database\Entity\User
+                property: email
+        student_user_provider:
+            entity:
+                class: App\Database\Entity\Student
+                property: email
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        admin:
+            custom_authenticators:
+                - App\Security\AdminMyAzureAuthenticator
+            entry_point: form_login
+            form_login:
+                check_path: /admin/zaloguj
+                default_target_path: admin_dashboard
+                login_path: /admin/zaloguj
+            logout:
+                path: /admin/wyloguj
+                target: /admin/zaloguj
+                invalidate_session: true
+            pattern: ^/admin
+            provider: admin_user_provider
+            security: true
+            user_checker: App\Security\User\UserChecker
+
+        main:
+            custom_authenticators:
+                - App\Security\MyAzureAuthenticator
+                - App\Security\LoginFormAuthenticator
+            entry_point: form_login
+            form_login:
+                check_path: /zaloguj
+                default_target_path: guest_dashboard
+                login_path: /zaloguj
+                success_handler: App\Security\LoginSuccessHandler
+            logout:
+                path: /wyloguj
+                target: /zaloguj
+                invalidate_session: true
+            pattern: ^/
+            provider: student_user_provider
+            security: true
+            user_checker: App\Security\Student\StudentChecker
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /gosc
+                # by default, the feature is enabled by checking a checkbox in the
+                # login form, uncomment the following line to always enable it.
+                #always_remember_me: true
+
+    access_control:
+        - { path: ^/admin/audit, roles: ROLE_DEV }
+        - { path: ^/admin/logout-full$, roles: PUBLIC_ACCESS }
+        - { path: ^/admin/zaloguj$, roles: PUBLIC_ACCESS }
+        - { path: ^/logout$, roles: PUBLIC_ACCESS }
+        - { path: ^/wyloguj$, roles: PUBLIC_ACCESS }
+        - { path: ^/zaloguj$, roles: PUBLIC_ACCESS }
+
+        - { path: ^/gosc, roles: PUBLIC_ACCESS }
+
+        - { path: ^/admin/security/azure/error }
+        - { path: ^/admin/security/azure/check }
+        - { path: ^/admin/security/azure/login }
+        - { path: ^/security/azure/error }
+        - { path: ^/security/azure/check }
+        - { path: ^/security/azure/login }
+
+        - { path: ^/admin/user/avatar, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/user/avatar, roles: IS_AUTHENTICATED_FULLY }
+
+        - { path: ^/admin, roles: [ ROLE_ADMIN, ROLE_EMPLOYEE, ROLE_SPECIALIST ] }
+        - { path: ^/$, roles: [ ROLE_STUDENT, ROLE_PRACOWNIK, ROLE_GOSC ] }
+        - { path: ^/, roles: [ ROLE_STUDENT, ROLE_PRACOWNIK ] }
+
+when@test:
+    security:
+        password_hashers:
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4
+                memory_cost: 10
+                time_cost: 3

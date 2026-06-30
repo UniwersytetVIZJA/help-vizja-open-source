@@ -1,0 +1,54 @@
+<div
+    id="form_error_summary"
+    class="bg-red-50 mb-8 p-4 rounded-lg space-y-2 text-red-950 dark:bg-zinc-800 dark:text-red-300 {{ borderPrimary() }}"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+    aria-labelledby="error_heading"
+    tabindex="-1"
+>
+    <p id="error_heading" class="flex items-center space-x-2 font-semibold">
+        <svg class="w-5 h-5" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z" clip-rule="evenodd"/>
+        </svg>
+
+        <span>
+            {% trans %}Proszę poprawić poniższe błędy{% endtrans %}:
+        </span>
+    </p>
+
+    <div class="space-y-2">
+        {{ form_errors(form) }}
+    </div>
+
+    {% if childErrors is not empty %}
+        <ul class="list-disc ms-5 space-y-1">
+            {% for e in childErrors %}
+                <li>
+                    <a class="underline" href="#{{ e.id }}" data-focus-target="{{ e.id }}">
+                        {{ e.label }}
+                    </a>
+                    <ul class="list-[square] ms-5">
+                        {% for err in e.errors %}
+                            <li>{{ err.message }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const summary = document.getElementById('form_error_summary');
+
+        if (!summary) {
+            return;
+        }
+
+        window.setTimeout(function () {
+            summary.focus();
+        }, 150);
+    });
+</script>

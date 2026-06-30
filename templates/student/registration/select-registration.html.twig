@@ -1,0 +1,175 @@
+{% extends 'student/_layouts/after-login.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+
+{% block title %}{% trans %}Kryteria wyszukiwania konsultacji{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block body %}
+    <h1 id="page-title" class="font-semibold text-3xl mb-5">
+        {% trans %}Zapisy na konsultacje - wybierz kryteria wyszukiwania{% endtrans %}
+    </h1>
+    <section class="relative overflow-hidden rounded-3xl">
+        <div class="pointer-events-none absolute inset-0">
+            <div class="absolute -top-28 -left-28 h-80 w-80 rounded-full"></div>
+            <div class="absolute -bottom-28 -right-28 h-80 w-80 rounded-full"></div>
+            <div
+                class="absolute inset-0 {{ borderPrimary() }}"></div>
+        </div>
+
+        <div class="relative p-5 sm:p-7">
+            {# header #}
+
+
+            {# karta formularza #}
+            <div class="mt-6 rounded-3xl border border-zinc-200 bg-white shadow-md
+            dark:border-zinc-700 dark:bg-zinc-800
+           ">
+                <form method="get"
+                    action="{{ path('student_registration') }}"
+                    class="p-4 sm:p-6">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-4">
+
+                        {# Rodzaj konsultacji #}
+                        <div class="xl:col-span-4">
+                            <label for="f-title" class="mb-1.5 block font-semibold tracking-wide text-zinc-600 dark:text-zinc-400">
+                                {% trans %}Rodzaj konsultacji{% endtrans %}
+                            </label>
+
+                            <div class="group relative">
+                                <select id="f-title" name="title"
+                                    class="bg-zinc-100 block border-2 border-zinc-350 p-2.5 rounded-lg w-full dark:bg-zinc-700 {{ focusPrimary() }}">
+                                    <option value="">{% trans %}Wszystkie{% endtrans %}</option>
+
+                                    {% for t in titles %}
+                                        <option value="{{ t.id }}" {% if (filters.title ?? '') == t.id %}selected{% endif %}>
+                                            {% if app.locale === 'pl' %}
+                                            {{ t.value }}
+                                            {% else %}
+                                                {{ t.valueEnglish }}
+                                                {% endif %}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        {# Język konsultacji #}
+                        <div class="xl:col-span-4">
+                            <label for="f-language" class="mb-1.5 block font-semibold tracking-wide text-zinc-600 dark:text-zinc-400">
+                                {% trans %}Język konsultacji{% endtrans %}
+                            </label>
+
+                            <div class="group relative">
+                                <select id="f-language" name="language"
+                                    class="bg-zinc-100 block border-2 border-zinc-350 p-2.5 rounded-lg w-full dark:bg-zinc-700 {{ focusPrimary() }}">
+                                    <option value="">{% trans %}Wszystkie{% endtrans %}</option>
+
+                                    {% for l in languages %}
+                                        <option value="{{ l.id }}" {% if (filters.language ?? '') == l.id %}selected{% endif %}>
+                                            {% if app.locale === 'pl' %}
+                                            {{ l.value }}
+                                            {% else %}
+                                                {{ l.valueEnglish }}
+                                                {% endif %}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        {# Specjalista #}
+                        {#                        <div class="xl:col-span-4"> #}
+                        {#                            <label for="f-specialist" class="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-zinc-600 dark:text-zinc-400"> #}
+                        {#                                {% trans %}Specjalista{% endtrans %} #}
+                        {#                            </label> #}
+
+                        {#                            <div class="group relative"> #}
+                        {#                                <select id="f-specialist" name="specialist" #}
+                        {#                                    class="bg-zinc-100 w-full appearance-none rounded-2xl border border-zinc-200/80 dark:border-zinc-800 dark:bg-zinc-950/40 #}
+                        {#                                           px-10 py-3 text-sm text-zinc-900 dark:text-zinc-100 #}
+                        {#                                           transition #}
+                        {#                                           {{ focusPrimary() }} #}
+                        {#                                           hover:border-zinc-300 dark:hover:border-zinc-700"> #}
+                        {#                                    <option value="">{% trans %}Wszyscy{% endtrans %}</option> #}
+                        {#                                    {% for s in specialists %} #}
+                        {#                                        <option value="{{ s.id }}" {% if (filters.specialist ?? '') == s.id %}selected{% endif %}> #}
+                        {#                                            {{ s.firstName }} {{ s.lastName }} #}
+                        {#                                        </option> #}
+                        {#                                    {% endfor %} #}
+                        {#                                </select> #}
+
+                        {#                                <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-zinc-400"> #}
+                        {#                                    #}{# chevron #}
+                        {#                                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none">a #}
+                        {#                                        <path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /> #}
+                        {#                                    </svg> #}
+                        {#                                </div> #}
+                        {#                            </div> #}
+                        {#                        </div> #}
+
+                        {# Data od #}
+                        <div class="xl:col-span-2">
+                            <label for="f-from" class="mb-1.5 block font-semibold tracking-wide text-zinc-600 dark:text-zinc-400">
+                                {% trans %}Data - szukaj od{% endtrans %}
+                            </label>
+
+                            <input
+                                id="f-from"
+                                name="from"
+                                type="date"
+                                value="{{ filters.from ? filters.from|date('Y-m-d') : '' }}"
+                                min="1900-01-01"
+                                max="2099-12-31"
+{#                                onkeydown="return false"#}
+{#                                onpaste="return false"#}
+                                class="bg-zinc-100 block border-2 border-zinc-350 p-2.5 rounded-lg w-full dark:bg-zinc-700 {{ focusPrimary() }}"
+                            />
+                        </div>
+
+                        {# Data do #}
+                        <div class="xl:col-span-2">
+                            <label for="f-to" class="mb-1.5 block font-semibold tracking-wide text-zinc-600 dark:text-zinc-400">
+                                {% trans %}Data - szukaj do{% endtrans %}
+                            </label>
+
+                            <input
+                                id="f-to"
+                                name="to"
+                                type="date"
+                                value="{{ filters.to ? filters.to|date('Y-m-d') : '' }}"
+                                min="1900-01-01"
+                                max="2099-12-31"
+{#                                onkeydown="return false"#}
+{#                                onpaste="return false"#}
+                                class="bg-zinc-100 block border-2 border-zinc-350 p-2.5 rounded-lg w-full dark:bg-zinc-700 {{ focusPrimary() }}"
+                            />
+                        </div>
+                    </div>
+
+                    {# divider + akcje #}
+                    <div class="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-4">
+                        <p class="text-zinc-600 dark:text-zinc-400">
+                            <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_my_registrations') }}">
+                                {% trans %}Moje zapisy{% endtrans %}
+                            </a>
+                        </p>
+
+                        <button type="submit"
+                            class="cursor-pointer {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }} w-full sm:w-auto rounded-2xl px-5 py-2.5
+                                   transition-transform active:scale-[0.98]">
+                            {% trans %}Szukaj{% endtrans %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}

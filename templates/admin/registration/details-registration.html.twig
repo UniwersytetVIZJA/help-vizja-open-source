@@ -1,0 +1,572 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block title %}
+    {{ registration.title.value }} {{ registration.startsAt|date('d.m.Y') }}, {{ registration.startsAt|date('H:i') }} - {{ registration.endsAt|date('H:i') }} | Admin Help VIZJA
+{% endblock %}
+
+{% block body %}
+    <section class="px-4 py-10 rounded-lg min-h-screen">
+
+        {{ website_path([
+            { label: 'Zapisy na konsultacje'|trans, route: 'admin_registration' },
+            { label: 'Szczegóły zapisu'|trans },
+        ]) }}
+
+        <br>
+        <h1 class="sr-only">{% trans %}Szczegóły zapisu{% endtrans %}</h1>
+
+        <div class="mx-auto max-w-8xl grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+
+            <div class="min-w-0 sm:col-span-1 xl:col-span-1">
+                <div class="h-full rounded-xl bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                    <div class="mb-4 flex min-w-0 items-center justify-between gap-3">
+                        <div class="flex min-w-0 items-center gap-3">
+                            <div
+                                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-300 text-green-700">
+                                <svg class="h-6 w-6 text-zinc-800 dark:text-white" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                    viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M11 9h6m-6 3h6m-6 3h6M6.996 9h.01m-.01 3h.01m-.01 3h.01M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" />
+                                </svg>
+                            </div>
+                            <h2 class="wrap-break-word text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Liczba zapisów{% endtrans %}</h2>
+                        </div>
+                    </div>
+
+                    {% set total = registration.capacity ?? 0 %}
+                    {% set used = registration.registeredStudents|length %}
+                    {% set pct = total > 0 ? ((used / total * 100)|round(0, 'floor')) : 0 %}
+                    {% set pctClamped = pct > 100 ? 100 : (pct < 0 ? 0 : pct) %}
+
+                    <div class="space-y-2 min-w-0">
+                        <div class="flex flex-wrap items-baseline justify-between gap-2 text-sm">
+                            <span class="wrap-break-word text-zinc-600 dark:text-zinc-400">
+                                {% trans %}Zapisanych{% endtrans %}: <span
+                                    class="font-medium text-zinc-900 dark:text-white">{{ used }}</span> / {{ total }}
+                            </span>
+                            <span class="shrink-0 font-medium text-zinc-900 dark:text-white">{{ pctClamped }}%</span>
+                        </div>
+
+                        <div class="border-2 h-3 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700"
+                            role="progressbar"
+                            aria-label="{% trans %}Zapełnienie zapisów{% endtrans %}"
+                            aria-valuemin="0"
+                            aria-valuemax="{{ total }}"
+                            aria-valuenow="{{ used }}">
+                            <div class="h-2.5 w-full rounded-full bg-zinc-200 dark:bg-zinc-700">
+                                {% if pctClamped == 100 %}
+                                    <dd class="font-medium text-zinc-900 dark:text-zinc-100">
+                                        <div class="h-2.5 rounded-full bg-red-500"
+                                            style="width: {{ pctClamped }}%"></div>
+                                    </dd>
+                                {% elseif pctClamped >= 60 %}
+                                    <dd class="font-medium text-zinc-900 dark:text-zinc-100">
+                                        <div class="h-2.5 rounded-full bg-orange-300"
+                                            style="width: {{ pctClamped }}%"></div>
+                                    </dd>
+                                {% else %}
+                                    <dd class="font-medium text-zinc-900 dark:text-zinc-100">
+                                        <div class="h-2.5 rounded-full bg-green-500"
+                                            style="width: {{ pctClamped }}%"></div>
+                                    </dd>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-full max-w-2xl rounded-xl bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                <div class="mb-4 flex min-w-0 items-center">
+                    <div
+                        class="mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+                        <svg class="h-6 w-6 text-zinc-800 dark:text-zinc-800" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z" />
+                        </svg>
+                    </div>
+                    <h2 class="wrap-break-word text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Podstawowe informacje{% endtrans %}</h2>
+                </div>
+
+                <ul class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                    <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <span
+                            class="wrap-break-word text-zinc-600 dark:text-zinc-400">{% trans %}Rodzaj konsultacji{% endtrans %}</span>
+                        <span
+                            class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ registration.title.value }}</span>
+                    </li>
+                    <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <span
+                            class="wrap-break-word text-zinc-600 dark:text-zinc-400">{% trans %}Język konsultacji{% endtrans %}</span>
+                        <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">
+                                {% if app.locale == 'pl' %}
+                                    {{ registration.language.value }}
+                                {% else %}
+                                    {{ registration.language.valueEnglish }}
+                                {% endif %}
+                            </span>
+                    </li>
+                    <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <span
+                            class="wrap-break-word text-zinc-600 dark:text-zinc-400">{% trans %}Specjalista{% endtrans %}</span>
+                        <span
+                            class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ registration.specialist.firstName }} {{ registration.specialist.lastName }}</span>
+                    </li>
+                    <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <span
+                            class="wrap-break-word text-zinc-600 dark:text-zinc-400">{% trans %}Dzień spotkania{% endtrans %}</span>
+                        <span
+                            class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ registration.startsAt|date('d.m.Y') }}</span>
+                    </li>
+                    <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <span
+                            class="wrap-break-word text-zinc-600 dark:text-zinc-400">{% trans %}Godziny spotkania{% endtrans %}</span>
+                        <span
+                            class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ registration.startsAt|date('H:i') }} - {{ registration.endsAt|date('H:i') }}</span>
+                    </li>
+                    {% if registration.description %}
+                        <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                            <span
+                                class="wrap-break-word text-zinc-600 dark:text-zinc-400">{% trans %}Dodatkowe informacje{% endtrans %}</span>
+                            <span
+                                class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">{{ registration.description }}</span>
+                        </li>
+                    {% endif %}
+                    {% if registration.registeredStudents %}
+                        {% for rs in registration.registeredStudents %}
+                            <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                                <span
+                                    class="wrap-break-word text-zinc-600 dark:text-zinc-400">{% trans %}Tryb spotkania{% endtrans %}</span>
+                                <span class="wrap-break-word font-medium text-zinc-900 dark:text-white sm:text-right">
+                                    {% if rs.meetingMode %}
+                                        {{ rs.meetingMode }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </span>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="h-full rounded-xl bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                <div class="mb-4 flex min-w-0 items-center">
+                    <div
+                        class="mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+                        <svg class="mr-2 h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" fill="none" viewBox="0 0 24 24">
+                            <path clip-rule="evenodd"
+                                d="M3.005 12 3 6.408l6.8-.923v6.517H3.005ZM11 5.32 19.997 4v8H11V5.32ZM20.067 13l-.069 8-9.065-1.275L11 13h9.067ZM9.8 19.58l-6.795-.931V13H9.8v6.58Z"
+                                fill="currentColor" fill-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h2 class="wrap-break-word text-lg font-semibold text-zinc-900 dark:text-white">{% trans %}Spotkanie na MS Teams{% endtrans %}</h2>
+                </div>
+
+                <ul class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                    <li class="py-3">
+                        {% if registration.teamsMeetingUrl %}
+                            <div class="flex flex-wrap items-center gap-2">
+                                <a
+                                    href="{{ registration.teamsMeetingUrl }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                                    aria-label="{% trans %}Otwórz link do spotkania w nowej karcie{% endtrans %}"
+                                >
+                                    {% trans %}Dołącz w Microsoft Teams{% endtrans %}
+                                </a>
+
+                                <button
+                                    type="button"
+                                    class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }} border"
+                                    data-copy="{{ registration.teamsMeetingUrl }}"
+                                    aria-label="{% trans %}Skopiuj link do spotkania{% endtrans %}"
+                                >
+                                    {% trans %}Kopiuj link{% endtrans %}
+                                </button>
+                            </div>
+                        {% else %}
+                            <span
+                                class="wrap-break-word italic text-zinc-400">{% trans %}Brak linku{% endtrans %}</span>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+
+            <div class="h-full rounded-xl bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                <div class="flex items-center justify-between gap-4 mb-4">
+                    <div class="flex items-center">
+                        <div
+                            class="w-9 h-9 flex items-center justify-center rounded-full bg-blue-100 text-blue-700 mr-3">
+                            <svg class="w-6 h-6 text-zinc-800 dark:text-zinc-800" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                                    d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                            </svg>
+                        </div>
+
+                        <h2 class="text-lg font-semibold text-zinc-900 dark:text-white">
+                            {% trans %}Zapisane osoby{% endtrans %}
+                        </h2>
+                    </div>
+
+                    <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                        href="{{ url('admin_registration_add_student', { registrationId: registration.id }) }}">
+                        {% trans %}Dodaj studenta{% endtrans %}
+                    </a>
+                </div>
+                {% if registration.registeredStudents %}
+                    {% for rs in registration.registeredStudents %}
+                        <ul class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                        <li class="flex items-center justify-between py-3">
+                          <span class="font-medium text-zinc-900 dark:text-white">
+                            {{ rs.student.firstName }} {{ rs.student.lastName }}
+                          </span>
+
+                            <div class="flex items-center gap-2 ml-4">
+
+                                <button
+                                    type="button"
+                                    class="cursor-pointer {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                                    aria-label="Pokaż szczegóły"
+                                    data-modal-open="student-{{ rs.student.id }}"
+                                >
+                                    <span>{% trans %}Szczegóły{% endtrans %}</span>
+                                </button>
+
+                                {% set formId  = 'delete-registration-form-' ~ registration.id %}
+                                {% set modalId = 'deleteRegistrationModal-' ~ registration.id %}
+                                <form
+                                    id="{{ formId }}"
+                                    method="post"
+                                    action="{{ path('admin_delete_student', {registrationId: registration.id, studentId: rs.student.id}) }}"
+                                    class="ml-1"
+                                >
+                                    <button
+                                        type="button"
+                                        data-modal-target="{{ modalId }}"
+                                        data-modal-toggle="{{ modalId }}"
+                                        class="{{ buttonDelete() }}"
+                                    >
+                                        {{ 'Usuń'|trans }}
+                                    </button>
+                                </form>
+                                {% include 'admin/_components/confirm-modal.html.twig' with {
+                                    modalId: modalId,
+                                    formId: formId,
+                                    title: 'Usunąć osobę?'|trans,
+                                    message: 'Na pewno chcesz usunąć <br><strong>' ~ rs.student.firstName ~ ' ' ~ rs.student.lastName ~ '</strong> z zapisu?'|trans,
+                                    warningText: 'Usunięcie osoby jest nieodwracalne'|trans,
+                                    confirmLabel: 'Usuń'|trans,
+                                    cancelLabel: 'Anuluj'|trans
+                                } %}
+                            </div>
+                        </li>
+
+                        <div
+                            id="student-{{ rs.student.id }}"
+                            class="fixed inset-0 z-50 hidden"
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="student-title-{{ rs.student.id }}"
+                            aria-describedby="student-desc-{{ rs.student.id }}"
+                        >
+                            <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" data-modal-close></div>
+
+                            <div class="absolute inset-0 flex items-center justify-center p-4">
+                                <div
+                                    class="w-full max-w-2xl rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-xl"
+                                    data-modal-content
+                                >
+
+                                    <div
+                                        class="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-700">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-9 h-9 flex items-center justify-center rounded-full bg-blue-100 text-blue-700">
+                                                <svg class="w-6 h-6 text-zinc-800 dark:text-zinc-800" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-width="2"
+                                                        d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                                                    <path stroke="currentColor" stroke-width="2"
+                                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                </svg>
+
+                                            </div>
+                                            <h3 id="student-title-{{ rs.student.id }}"
+                                                tabindex="-1"
+                                                class="text-lg font-semibold text-zinc-900 dark:text-white">
+                                                {% trans %}Szczegóły{% endtrans %}
+                                                : {{ rs.student.firstName }} {{ rs.student.lastName }}
+                                            </h3>
+
+                                            <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                                                href="{{ url('admin_registration_update_student', { registeredStudent: rs.id }) }}">
+                                                {% trans %}Edytuj{% endtrans %}
+                                            </a>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            class="rounded-xl p-2 text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:text-zinc-700 {{ focusPrimaryWithPadding() }}"
+                                            aria-label="{% trans %}Zamknij okno szczegółów{% endtrans %}"
+                                            data-modal-close
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24"
+                                                fill="currentColor">
+                                                <path
+                                                    d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7A1 1 0 0 0 5.7 7.11L10.59 12l-4.9 4.89a1 1 0 1 0 1.41 1.41L12 13.41l4.89 4.9a1 1 0 0 0 1.41-1.41L13.41 12l4.9-4.89a1 1 0 0 0-.01-1.4z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    <div id="student-desc-{{ rs.student.id }}" class="px-6 py-5">
+                                        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                                            <div>
+                                                <dt class="text-sm text-zinc-500 dark:text-zinc-400">{% trans %}Imię{% endtrans %}</dt>
+                                                <dd class="mt-1 font-medium text-zinc-900 dark:text-zinc-100">{{ rs.student.firstName }}</dd>
+                                                <div class="my-3 border-t border-zinc-200 dark:border-zinc-700"
+                                                    aria-hidden="true"></div>
+
+                                            </div>
+                                            <div>
+                                                <dt class="text-sm text-zinc-500 dark:text-zinc-400">{% trans %}Nazwisko{% endtrans %}</dt>
+                                                <dd class="mt-1 font-medium text-zinc-900 dark:text-zinc-100">{{ rs.student.lastName }}</dd>
+                                                <div class="my-3 border-t border-zinc-200 dark:border-zinc-700"
+                                                    aria-hidden="true"></div>
+
+                                            </div>
+
+                                            {% if rs.student is defined and rs.phone is defined and rs.phone %}
+                                                <div>
+                                                    <dt class="text-sm text-zinc-500 dark:text-zinc-400">E-mail</dt>
+                                                    <dd class="mt-1 font-medium text-zinc-900 dark:text-zinc-100">{{ rs.student.email }}</dd>
+                                                    <div class="my-3 border-t border-zinc-200 dark:border-zinc-700"
+                                                        aria-hidden="true"></div>
+
+                                                </div>
+
+                                                <div>
+                                                    <dt class="text-sm text-zinc-500 dark:text-zinc-400">{% trans %}Telefon{% endtrans %}</dt>
+                                                    <dd class="mt-1 font-medium text-zinc-900 dark:text-zinc-100">
+                                                        +{{ rs.phone.countryCode }} {{ rs.phone.nationalNumber }}</dd>
+                                                    <div class="my-3 border-t border-zinc-200 dark:border-zinc-700"
+                                                        aria-hidden="true"></div>
+
+                                                </div>
+                                            {% endif %}
+
+                                            {% if rs.meetingMode is defined and rs.createdAt %}
+                                                <div class="sm:col-span-2">
+                                                    <dt class="text-sm text-zinc-500 dark:text-zinc-400">{% trans %}Rodzaj konsultacji{% endtrans %}</dt>
+                                                    <dd class="mt-1 font-medium text-zinc-900 dark:text-zinc-100">{{ rs.meetingMode }}</dd>
+                                                    <div class="my-3 border-t border-zinc-200 dark:border-zinc-700"
+                                                        aria-hidden="true"></div>
+
+                                                </div>
+                                            {% endif %}
+
+                                            {% if rs.language is defined and rs.createdAt %}
+                                                <div class="sm:col-span-2">
+                                                    <dt class="text-sm text-zinc-500 dark:text-zinc-400">{% trans %}Język konsultacji{% endtrans %}</dt>
+                                                    <dd class="mt-1 font-medium text-zinc-900 dark:text-zinc-100">
+                                                        {% set isPl = app.locale == 'pl' %}
+
+                                                        {% set languages = {
+                                                            'PL': isPl ? 'Polski' : 'Polish',
+                                                            'EN': isPl ? 'Angielski' : 'English'
+                                                        } %}
+                                                        {% for rs in registration.registeredStudents %}
+                                                            {% if rs.language %}
+                                                                {{ languages[rs.language] ?? rs.language }}
+                                                            {% else %}
+                                                                -
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </dd>
+                                                    <div class="my-3 border-t border-zinc-200 dark:border-zinc-700"
+                                                        aria-hidden="true"></div>
+
+                                                </div>
+                                            {% endif %}
+
+                                            {% if rs.specialNeeds is defined and rs.createdAt %}
+                                                <div class="sm:col-span-2">
+                                                    <dt class="text-sm text-zinc-500 dark:text-zinc-400">{% trans %}Specjalne potrzeby{% endtrans %}</dt>
+                                                    <dd class="mt-1 font-medium text-zinc-900 dark:text-zinc-100">{{ rs.specialNeeds }}</dd>
+                                                    <div class="my-3 border-t border-zinc-200 dark:border-zinc-700"
+                                                        aria-hidden="true"></div>
+
+                                                </div>
+                                            {% endif %}
+
+                                            {% set extra = rs.formData ?? rs.answers ?? rs.extraData ?? null %}
+                                            {% if extra %}
+                                                {% for label, value in extra %}
+                                                    <div class="sm:col-span-2">
+                                                        <dt class="text-sm text-zinc-500 dark:text-zinc-400">{{ label }}</dt>
+                                                        <dd class="mt-1 font-medium text-zinc-900 dark:text-zinc-100">
+                                                            {% if value is iterable %}
+                                                                {{ value|join(', ') }}
+                                                            {% else %}
+                                                                {{ value }}
+                                                            {% endif %}
+                                                        </dd>
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </dl>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    {% else %}
+                        <em>{% trans %}Brak zapisanych osób{% endtrans %}</em>
+                    {% endfor %}
+                {% else %}
+                    <span class="text-zinc-400 italic">{% trans %}Brak zapisanych osób{% endtrans %}</span>
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+
+    </section>
+
+
+
+    <script>
+        let lastModalTrigger = null;
+
+        function getFocusableElements(modal) {
+            return Array.from(modal.querySelectorAll(
+                'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+            )).filter((el) => !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden'));
+        }
+
+        function openModal(modal, trigger) {
+            lastModalTrigger = trigger;
+
+            modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+
+            const title = modal.querySelector('[id^="student-title-"]');
+            const focusable = getFocusableElements(modal);
+
+            requestAnimationFrame(() => {
+                if (title) {
+                    title.focus();
+                } else if (focusable.length) {
+                    focusable[0].focus();
+                }
+            });
+        }
+
+        function closeModal(modal) {
+            modal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+
+            if (lastModalTrigger) {
+                lastModalTrigger.focus();
+                lastModalTrigger = null;
+            }
+        }
+
+        document.addEventListener('click', function (e) {
+            const copyBtn = e.target.closest('button[data-copy]');
+
+            if (copyBtn) {
+                const url = copyBtn.getAttribute('data-copy');
+
+                navigator.clipboard.writeText(url).then(() => {
+                    const old = copyBtn.innerHTML;
+
+                    copyBtn.innerHTML = 'Skopiowano ✓';
+
+                    setTimeout(() => {
+                        copyBtn.innerHTML = old;
+                    }, 1800);
+                });
+
+                return;
+            }
+
+            const openBtn = e.target.closest('[data-modal-open]');
+
+            if (openBtn) {
+                const id = openBtn.getAttribute('data-modal-open');
+                const modal = document.getElementById(id);
+
+                if (modal) {
+                    openModal(modal, openBtn);
+                }
+
+                return;
+            }
+
+            const closeTarget = e.target.closest('[data-modal-close]');
+
+            if (closeTarget) {
+                const modal = closeTarget.closest('[role="dialog"]');
+
+                if (modal) {
+                    closeModal(modal);
+                }
+
+                return;
+            }
+        });
+
+        document.addEventListener('keydown', function (e) {
+            const modal = document.querySelector('[role="dialog"]:not(.hidden)');
+
+            if (!modal) {
+                return;
+            }
+
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                closeModal(modal);
+                return;
+            }
+
+            if (e.key !== 'Tab') {
+                return;
+            }
+
+            const focusable = getFocusableElements(modal);
+
+            if (!focusable.length) {
+                e.preventDefault();
+                return;
+            }
+
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        });
+    </script>
+{% endblock %}

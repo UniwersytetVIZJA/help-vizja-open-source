@@ -1,0 +1,45 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+{% block body %}
+    <div class="max-w-lg mx-auto bg-white dark:bg-zinc-800 shadow-md rounded-lg p-6">
+        <h1 class="text-2xl font-bold mb-4">{% trans %}Edytuj użytkownika{% endtrans %}</h1>
+
+        <form method="post" action="#" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium">{% trans %}Imię{% endtrans %}</label>
+                <input type="text" name="firstName" value="{{ user.firstName }}" class="w-full border rounded-lg px-3 py-2 dark:bg-zinc-700">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">{% trans %}Nazwisko{% endtrans %}</label>
+                <input type="text" name="lastName" value="{{ user.lastName }}" class="w-full border rounded-lg px-3 py-2 dark:bg-zinc-700">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">E-mail</label>
+                <input type="email" name="email" value="{{ user.email }}" class="w-full border rounded-lg px-3 py-2 dark:bg-zinc-700">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">{% trans %}Stare hasło{% endtrans %}</label>
+                <input type="password" name="password" class="w-full border rounded-lg px-3 py-2 dark:bg-zinc-700">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">{% trans %}Ustaw nowe hasło{% endtrans %}</label>
+                <input type="password" name="password" class="w-full border rounded-lg px-3 py-2 dark:bg-zinc-700">
+            </div>
+
+            <div class="flex justify-between">
+                <a href="{{ path('admin_dashboard') }}" class="bg-zinc-500 hover:bg-zinc-600 text-white px-4 py-2 rounded-lg">{% trans %}Powrót{% endtrans %}</a>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">{% trans %}Zapisz{% endtrans %}</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

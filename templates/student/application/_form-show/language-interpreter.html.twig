@@ -1,0 +1,47 @@
+    <li class="flex justify-between py-3">
+        <span class="text-zinc-600 dark:text-zinc-300">{% trans %}Na kiedy{% endtrans %}</span>
+        <div class="text-left font-medium text-zinc-900 dark:text-white space-y-1">
+            {% for item in application.request %}
+            {% if app.locale === 'pl' %}
+                <p>- {{ item.value }}</p>
+                {% else %}
+                    <p>- {{ item.valueEnglish }}</p>
+                    {% endif %}
+            {% else %}
+                <p>—</p>
+            {% endfor %}
+        </div>
+    </li>
+
+    <li class="flex justify-between py-3">
+        <span class="text-zinc-600 dark:text-zinc-300">{% trans %}Preferencje tłumacza języka migowego{% endtrans %}</span>
+        <div class="text-right font-medium text-zinc-900 dark:text-white space-y-1">
+            {% for item in application.preferences %}
+                {% if app.locale === 'pl' %}
+                <p>- {{ item.value }}</p>
+                {% else %}
+                    <p>- {{ item.valueEnglish }}</p>
+                    {% endif %}
+            {% else %}
+                <p>—</p>
+            {% endfor %}
+        </div>
+    </li>
+
+    <li class="flex justify-between py-3">
+        <span class="text-zinc-600 dark:text-zinc-300">{% trans %}Preferencje tłumacza języka migowego{% endtrans %}</span>
+        <div class="text-right font-medium text-zinc-900 dark:text-white space-y-1">
+            {% if application.anotherPreferences %}
+                {{ application.anotherPreferences }}
+            {% else %}
+                —
+            {% endif %}
+        </div>
+    </li>
+
+    <li class="py-2">
+        <span class="block">{% trans %}Uzasadnienie{% endtrans %}</span>
+        <span class="font-medium break-all whitespace-pre-line mt-1 block">
+        {{ application.justification }}
+    </span>
+    </li>

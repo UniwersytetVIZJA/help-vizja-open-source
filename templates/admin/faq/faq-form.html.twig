@@ -1,0 +1,34 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+{% form_theme form 'student/_layouts/form-tailwind.html.twig' %}
+
+{% block stylesheets %}{{ encore_entry_link_tags('admin_default') }}{% endblock %}
+{% block javascripts %}{{ encore_entry_script_tags('admin_default') }}{% endblock %}
+{% block title %}{% trans %}FAQ - edycja{% endtrans %}| Help VIZJA{% endblock %}
+
+{% block body %}
+    {{ website_path([
+        { label: 'Ustawienia'|trans, route: 'admin_settings' },
+        { label: 'FAQ'|trans, route: 'admin_faq' },
+        { label: 'Utwórz nowe pytanie'|trans },
+    ]) }}
+
+    {{ form_start(form) }}
+
+    <div class="max-w-2xl space-y-4 w-full">
+        {{ form_row(form.question) }}
+        {{ form_row(form.answer) }}
+        {{ form_row(form.language) }}
+    </div>
+
+    <div class="gap-4 sm:flex sm:items-center">
+        <button class="cursor-pointer {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+            {% trans %}Utwórz{% endtrans %}
+        </button>
+
+        <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('admin_faq') }}">
+            {% trans %}Wróć do listy{% endtrans %}
+        </a>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

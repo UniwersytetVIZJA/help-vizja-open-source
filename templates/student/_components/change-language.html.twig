@@ -1,0 +1,101 @@
+{% set qs_pl = app.request.query.all|merge({'_locale':'pl'}) %}
+{% set qs_en = app.request.query.all|merge({'_locale':'en'}) %}
+
+<button type="button"
+    class="font-medium inline-flex items-center px-2 py-2 rounded-lg text-sm dark:hover:bg-zinc-800 {{ focusPrimary() }} hover:bg-zinc-50"
+    data-collapse-toggle="change-language-dropdown"
+    data-dropdown-toggle="change-language-dropdown"
+    id="change-language-button"
+    aria-label="{% trans %}Język strony: {% endtrans %} {% if app.locale == 'pl' %}{% trans %}polski{% endtrans %}{% else %}{% trans %}angielski{% endtrans %}{% endif %}"
+    aria-controls="change-language-dropdown"
+    aria-expanded="false"
+    aria-haspopup="listbox"
+>
+    <span class="flex items-center">
+        {% if app.locale == 'pl' %}
+            <svg aria-hidden="true" class="h-4 w-4 me-1 sm:me-2 border rounded-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <mask id="pl-current" fill="#fff">
+                    <circle cx="256" cy="256" r="256" />
+                </mask>
+                <g mask="url(#pl-current)">
+                    <path fill="#fff" d="M0 0h512v256H0z" />
+                    <path fill="#dc143c" d="M0 256h512v256H0z" />
+                </g>
+            </svg>
+            <span class="hidden sm:block">Polski</span>
+        {% else %}
+            <svg aria-hidden="true" class="h-4 me-1 sm:me-2 w-4 border rounded-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <mask id="uk" fill="#fff">
+                    <circle cx="256" cy="256" r="256" />
+                </mask>
+                <g mask="url(#uk)">
+                    <path fill="#012169" d="M0 0h512v512H0z" />
+                    <path fill="#fff" d="M0 0l512 512M512 0L0 512" />
+                    <path fill="#C8102E" d="M0 0l512 512M512 0L0 512" stroke-width="60" stroke="#C8102E" />
+                    <path fill="#fff" d="M208 0h96v512h-96zM0 208h512v96H0z" />
+                    <path fill="#C8102E" d="M224 0h64v512h-64zM0 224h512v64H0z" />
+                </g>
+            </svg>
+            <span class="hidden sm:block">English</span>
+        {% endif %}
+    </span>
+
+    <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 10 4 4 4-4" />
+    </svg>
+</button>
+
+<div class="bg-white divide-zinc-100 divide-y hidden rounded-lg shadow-sm z-10 dark:bg-zinc-700 dark:divide-zinc-600"
+    id="change-language-dropdown"
+>
+    <ul aria-labelledby="change-language-button" class="p-0.5 text-sm text-center" role="listbox">
+        <li>
+            <a href="{{ app.request.pathInfo ~ '?' ~ (qs_pl|url_encode) }}"
+                role="option"
+                lang="pl"
+                {% if app.request.locale == 'pl' %} aria-selected="true"{% endif %}
+                class="block px-4 py-2 rounded-lg dark:hover:bg-zinc-600 {{ focusPrimary() }} hover:bg-zinc-100"
+                aria-posinset="1"
+            >
+                <div class="inline-flex items-center">
+                    <svg aria-hidden="true" class="h-4 me-2 w-4 border rounded-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <mask id="pl" fill="#fff">
+                            <circle cx="256" cy="256" r="256" />
+                        </mask>
+                        <g mask="url(#pl)">
+                            <path fill="#fff" d="M0 0h512v256H0z" />
+                            <path fill="#dc143c" d="M0 256h512v256H0z" />
+                        </g>
+                    </svg>
+                    Polski
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="{{ app.request.pathInfo ~ '?' ~ (qs_en|url_encode) }}"
+                role="option"
+                lang="en"
+                {% if app.request.locale == 'en' %} aria-selected="true"{% endif %}
+                class="block px-4 py-2 rounded-lg dark:hover:bg-zinc-600 {{ focusPrimary() }} hover:bg-zinc-100"
+                aria-posinset="2"
+            >
+                <div class="inline-flex items-center">
+                    <svg aria-hidden="true" class="h-4 me-2 w-4 border rounded-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <mask id="uk" fill="#fff">
+                            <circle cx="256" cy="256" r="256" />
+                        </mask>
+                        <g mask="url(#uk)">
+                            <path fill="#012169" d="M0 0h512v512H0z" />
+                            <path fill="#fff" d="M0 0l512 512M512 0L0 512" />
+                            <path fill="#C8102E" d="M0 0l512 512M512 0L0 512" stroke-width="60" stroke="#C8102E" />
+                            <path fill="#fff" d="M208 0h96v512h-96zM0 208h512v96H0z" />
+                            <path fill="#C8102E" d="M224 0h64v512h-64zM0 224h512v64H0z" />
+                        </g>
+                    </svg>
+                    English
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+

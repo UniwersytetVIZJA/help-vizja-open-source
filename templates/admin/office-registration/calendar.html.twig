@@ -1,0 +1,198 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+
+{% block title %}{% trans %}Kalendarz{% endtrans %}{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const calEl = document.getElementById('calendar');
+            const loadingEl = document.getElementById('calendar-loading');
+
+            const calendar = new FullCalendar.Calendar(calEl, {
+                locale: 'pl',
+                timeZone: 'Europe/Warsaw',
+                firstDay: 1,
+                height: 'auto',
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+                buttonText: {
+                    today: '{% trans %}Dziś{% endtrans %}',
+                    month: '{% trans %}Miesiąc{% endtrans %}',
+                    week: '{% trans %}Tydzień{% endtrans %}',
+                    day: '{% trans %}Dzień{% endtrans %}',
+                    list: '{% trans %}Lista{% endtrans %}'
+                },
+
+                eventSources: [{
+                    url: '{{ path("admin_api_calendar_events_office_registration") }}',
+                    method: 'GET',
+                    extraParams: () => ({ scope: 'student' })
+                }],
+
+                eventTimeFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
+
+                loading(isLoading) {
+                    if (!loadingEl) return;
+                    loadingEl.classList.toggle('hidden', !isLoading);
+                },
+
+                eventClick(info) {
+                    info.jsEvent?.preventDefault?.();
+                    const url = info.event.url || info.event.extendedProps?.url;
+                    if (url) {
+                        window.open(url, '_blank', 'noopener'); // przejście na spotkanie online
+                        return;
+                    }
+
+                    // fallback — brak linku: pokaż modal / alert
+                    const e = info.event;
+                    alert(`${ e.title }\n${ e.start?.toLocaleString('pl-PL') }`);
+                },
+
+                // czas + tytuł + specjalista + tryb spotkania
+                eventContent(arg) {
+                    const nodes = [];
+
+                    // 1) GODZINA (z FullCalendar, respektuje eventTimeFormat i strefę)
+                    if (arg.timeText) {
+                        const time = document.createElement('div');
+                        time.className = 'text-xs opacity-80';
+                        time.textContent = arg.timeText; // np. "10:00 – 11:00"
+                        nodes.push(time);
+                    }
+
+                    // 2) TYTUŁ
+                    const title = document.createElement('div');
+                    title.className = 'fc-event-title';
+                    title.textContent = arg.event.title;
+                    nodes.push(title);
+
+                    // 3) SPECJALISTA + TRYB
+                    const ep = arg.event.extendedProps || {};
+
+                    const name = ep.studentName;
+
+                    const rawMode =
+                        ep.meetingMode
+                        ?? ep.mode
+                        ?? (
+                            ep.isOnline === true
+                                ? 'online'
+                                : (
+                                    ep.isOnline === false
+                                        ? 'stationary'
+                                        : null
+                                )
+                        );
+
+                    let mode = null;
+
+                    if (typeof rawMode === 'string') {
+                        const normalizedMode = rawMode.toLowerCase();
+
+                        if (normalizedMode.includes('online')) {
+                            mode = '{% trans %}Online{% endtrans %}';
+                        }
+
+                        if (
+                            normalizedMode.includes('stacjonarne')
+                            || normalizedMode.includes('stationary')
+                        ) {
+                            mode = '{% trans %}Stacjonarnie{% endtrans %}';
+                        }
+                    }
+
+                    // if (name) {
+                    //     const sub = document.createElement('div');
+                    //
+                    //     sub.className = 'text-xs opacity-80';
+                    //     sub.textContent = name;
+                    //
+                    //     nodes.push(sub);
+                    // }
+
+                    if (mode) {
+                        const sub2 = document.createElement('div');
+
+                        sub2.className = 'text-xs opacity-80';
+                        sub2.textContent = mode;
+
+                        nodes.push(sub2);
+                    }
+
+                    // wrap
+                    const wrap = document.createElement('div');
+                    nodes.forEach(n => wrap.appendChild(n));
+                    return { domNodes: [wrap] };
+                },
+
+                eventDidMount(info) {
+                    // Tooltip z nazwiskiem specjalisty i trybem
+                    const ep = info.event.extendedProps || {};
+                    const name = ep.studentName;
+                    const rawMode = (ep.meetingMode ?? ep.mode ?? (ep.isOnline === true ? 'online' : (ep.isOnline === false ? 'stationary' : null)));
+                    const mode = rawMode === 'online' || rawMode === true
+                        ? '{% trans %}Online{% endtrans %}'
+                        : (rawMode === 'stationary' || rawMode === 'stacjonarne' || rawMode === false
+                            ? '{% trans %}Stacjonarnie{% endtrans %}'
+                            : null);
+
+                    const parts = [info.event.title];
+                    if (name) parts.push(name);
+                    if (mode) parts.push(mode);
+                    info.el.title = parts.join('\n');
+
+                    // Widok listy: dodaj specjalistę i tryb obok tytułu
+                    if (info.view.type.startsWith('list') && (name || mode)) {
+                        const container = info.el.querySelector('.fc-list-event-title, .fc-list-event-dot') || info.el;
+
+                        // if (name) {
+                        //     const tagName = document.createElement('span');
+                        //     tagName.className = 'ml-2 text-xs opacity-80';
+                        //     tagName.textContent = `• ${ name }`;
+                        //     container.appendChild(tagName);
+                        // }
+
+                        if (mode) {
+                            const tagMode = document.createElement('span');
+                            tagMode.className = 'ml-2 text-xs opacity-80';
+                            tagMode.textContent = `• ${ mode }`;
+                            container.appendChild(tagMode);
+                        }
+                    }
+                },
+
+                // eventColor: '#f8b64b',
+                eventTextColor: '#000000',
+                eventDisplay: 'block'
+                // eventBackgroundColor: '#f8b64b',
+                // eventBorderColor: '#f8b64b'
+            });
+
+            calendar.render();
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    {{ website_path([
+        { label: 'Centrum wizyt'|trans, route: 'admin_office_registration_index' },
+        { label: 'Wizyty'|trans, route: 'admin_office_registration_index' },
+        { label: 'Kalendarz'|trans },
+    ]) }}
+    <div class="p-4">
+        <h1 class="text-2xl font-bold text-zinc-800 dark:text-white mb-4">{% trans %}Kalendarz{% endtrans %}</h1>
+
+        <div id="calendar" class="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow"></div>
+    </div>
+{% endblock %}

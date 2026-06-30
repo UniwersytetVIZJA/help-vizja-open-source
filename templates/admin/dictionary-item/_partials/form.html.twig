@@ -1,0 +1,26 @@
+{{ form_start(form, {'attr': { 'novalidate': 'novalidate' }}) }}
+    {{ form_row(form.value) }}
+    {{ form_row(form.valueEnglish) }}
+    {{ form_row(form.valueKey) }}
+{{ form_row(form.valueKeyEng) }}
+    {{ form_row(form.valueKey2) }}
+{{ form_row(form.valueKey2Eng) }}
+    {{ form_row(form.displayOrder) }}
+    {{ form_row(form.isActive) }}
+
+<br>
+<div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-4">
+
+    <button class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+        {% trans %}Zapisz{% endtrans %}
+    </button>
+
+    <a
+        class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}"
+        href="{{path('admin_dictionary_items', { dictionaryId: dictionary.id }) }}"
+    >
+        {% trans %}Anuluj i wróć do listy{% endtrans %}
+    </a>
+</div>
+
+{{ form_end(form) }}

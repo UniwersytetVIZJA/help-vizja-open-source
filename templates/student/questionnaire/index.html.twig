@@ -1,0 +1,169 @@
+{% extends 'student/_layouts/after-login.html.twig' %}
+{% form_theme form 'student/_layouts/form-tailwind.html.twig' %}
+
+{% block title %}{% trans %}Ankieta oceny aplikacji{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% import _self as forms %}
+
+{% macro choice_horizontal(field) %}
+    <fieldset class="min-w-0">
+        <legend class="mb-2 block wrap-break-word font-medium">
+            {{ field.vars.label|trans }}
+        </legend>
+
+        {{ form_errors(field) }}
+
+        <div class="mt-2 flex flex-wrap gap-4">
+            {% for child in field %}
+                <label class="inline-flex max-w-full items-center gap-2">
+                    {{ form_widget(child) }}
+                    {#                    <span class="wrap-break-word">{{ child.vars.label }}</span> #}
+                </label>
+            {% endfor %}
+        </div>
+    </fieldset>
+{% endmacro %}
+
+{% block body %}
+    <h1 id="page-title" class="mb-6 wrap-break-word text-xl font-semibold md:text-2xl lg:text-3xl">
+        {% trans %}Ankieta oceny aplikacji{% endtrans %}
+    </h1>
+
+    {{ form_start(form, {
+        attr: {
+            class: 'max-w-2xl space-y-4 w-full',
+            novalidate: 'novalidate'
+        }
+    }) }}
+
+    {% set hasFormErrors = (form_errors(form)|trim) is not empty %}
+    {% set childErrors = [] %}
+
+    {% for child in form %}
+        {% if child is defined and child.vars is defined and child.vars.errors|length > 0 %}
+            {% set labelTxt = (child.vars.label is not empty) ? child.vars.label : (child.vars.name|capitalize) %}
+            {% set childErrors = childErrors|merge([{
+                id: child.vars.id,
+                label: labelTxt,
+                errors: child.vars.errors
+            }]) %}
+        {% endif %}
+    {% endfor %}
+
+    {% if hasFormErrors or childErrors is not empty %}
+        {% include '_partials/form-errors.html.twig' with { form: form, childErrors: childErrors } %}
+    {% endif %}
+
+    {# 1. Ogólne zadowolenie #}
+    <section class="survey-section mb-8">
+        <div class="mb-4 text-2xl">
+            <h2 class="wrap-break-word">1. {% trans %}Ogólne zadowolenie{% endtrans %}</h2>
+        </div>
+        <div class="mb-6 min-w-0">
+            {{ forms.choice_horizontal(form.q1) }}
+        </div>
+        <div class="min-w-0">
+            {{ forms.choice_horizontal(form.q2) }}
+        </div>
+    </section>
+
+    <hr class="my-6">
+
+    {# 2. Interfejs i użyteczność #}
+    <section class="survey-section mb-8">
+        <div class="mb-4 text-2xl">
+            <h2 class="wrap-break-word">2. {% trans %}Interfejs i użyteczność{% endtrans %}</h2>
+        </div>
+
+        <div class="mb-6 min-w-0">
+            {{ forms.choice_horizontal(form.q3) }}
+        </div>
+        <div class="mb-6 min-w-0">
+            {{ forms.choice_horizontal(form.q4) }}
+        </div>
+        <div class="min-w-0">
+            {{ forms.choice_horizontal(form.q5) }}
+        </div>
+    </section>
+
+    <hr class="my-6">
+
+    {# 3. Funkcjonalności #}
+    <section class="survey-section mb-8">
+        <div class="mb-4 text-2xl">
+            <h2 class="wrap-break-word">3. {% trans %}Funkcjonalności{% endtrans %}</h2>
+        </div>
+
+        <div class="mb-6 w-full max-w-2xl min-w-0 space-y-4">
+            {{ form_row(form.q6) }}
+        </div>
+        <div class="min-w-0">
+            {{ forms.choice_horizontal(form.q7) }}
+        </div>
+    </section>
+
+    <hr class="my-6">
+
+    {# 4. Wydajność i stabilność #}
+    <section class="survey-section mb-8">
+        <div class="mb-4 text-2xl">
+            <h2 class="wrap-break-word">4. {% trans %}Wydajność i stabilność{% endtrans %}</h2>
+        </div>
+
+        <div class="mb-6 w-full max-w-2xl min-w-0 space-y-4">
+            {{ form_row(form.q8) }}
+        </div>
+        <div class="min-w-0">
+            {{ forms.choice_horizontal(form.q9) }}
+        </div>
+    </section>
+
+    <hr class="my-6">
+
+    {# 5. Wrażenia wizualne #}
+    <section class="survey-section mb-8">
+        <div class="mb-4 text-2xl">
+            <h2 class="wrap-break-word">5. {% trans %}Wrażenia wizualne{% endtrans %}</h2>
+        </div>
+
+        <div class="mb-6 min-w-0">
+            {{ forms.choice_horizontal(form.q10) }}
+        </div>
+        <div class="min-w-0">
+            {{ forms.choice_horizontal(form.q11) }}
+        </div>
+    </section>
+
+    <hr class="my-6">
+
+    {# 6. Ogólne pytania otwarte #}
+    <section class="survey-section mb-8">
+        <div class="mb-4 text-2xl">
+            <h2 class="wrap-break-word">6. {% trans %}Ogólne pytania otwarte{% endtrans %}</h2>
+        </div>
+        <div class="w-full max-w-2xl min-w-0 space-y-4">
+            {{ form_row(form.q12) }}
+            {{ form_row(form.q13) }}
+            {{ form_row(form.q14) }}
+        </div>
+    </section>
+
+    <div class="flex flex-wrap items-center justify-start gap-2 pt-1 md:col-span-5">
+        <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_dashboard') }}">
+            {% trans %}Wróć do Pulpitu{% endtrans %}
+        </a>
+        <button class="cursor-pointer {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+            {% trans %}Wyślij ankietę{% endtrans %}
+        </button>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

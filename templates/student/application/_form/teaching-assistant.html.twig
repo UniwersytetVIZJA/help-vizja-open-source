@@ -1,0 +1,673 @@
+<p id="form_help" class="sr-only">
+    {% trans %}Formularz zgłoszeniowy. Pola wymagane oznaczono gwiazdką. Użyj klawisza Tab, aby przechodzić między polami.{% endtrans %}
+</p>
+
+<div class="max-w-2xl w-full space-y-4">
+
+    {{ form_row(form.assistant) }}
+
+    {% if form.preferences is defined %}
+        <div class="space-y-2">
+            <p class="text-base text-black dark:text-zinc-200 font-medium">
+                {% trans %}Wybierz preferencje dotyczące realizacji wsparcia{% endtrans %}
+            </p>
+
+            <fieldset class="min-w-0 space-y-3">
+                <legend class="sr-only">{% trans %}Preferencje{% endtrans %}</legend>
+
+                {{ form_widget(form.preferences, { attr: { fieldset: false } }) }}
+                {{ form_errors(form.preferences) }}
+                {{ form_help(form.preferences) }}
+            </fieldset>
+        </div>
+    {% endif %}
+
+    {{ form_row(form.assistantTask) }}
+    {{ form_row(form.assistantHours) }}
+
+    {% set decisionFiles = application.files|default([])|filter(file => file.category2|default('') == 'decision') %}
+    {% set scheduleFiles = application.files|default([])|filter(file => file.category2|default('') == 'schedule') %}
+
+    {% set rootErrorsText = form_errors(form)|striptags %}
+
+    {% set decisionHasError =
+        form.decision.vars.errors|length > 0
+        or 'orzeczenie' in rootErrorsText
+        or 'dokument' in rootErrorsText
+    %}
+
+    {% set scheduleHasError =
+        form.schedule.vars.errors|length > 0
+        or 'harmonogram' in rootErrorsText
+    %}
+
+    <div class="space-y-6">
+        <h3 id="files_heading" class="flex items-center font-medium text-md lg:text-lg">
+            {% trans %}Załączniki{% endtrans %}
+        </h3>
+
+        {# DECISION #}
+        <div class="space-y-4 rounded-lg {{ decisionHasError ? 'border border-red-500 bg-red-50 dark:bg-red-900/20' : '' }}">
+            <p id="decision_files_hint" class="space-y-1">
+            <span class="block {{ decisionHasError ? 'font-semibold text-red-700 dark:text-red-400' : '' }}">
+                {% trans %}Wgraj orzeczenie lub inny dokument potwierdzający specjalne potrzeby{% endtrans %}*
+            </span>
+                <span class="block">{% trans %}Możesz dodać do 3 plików.{% endtrans %}</span>
+            </p>
+
+            <div id="decision_file_wrapper"
+                class="space-y-2"
+                role="group"
+                aria-labelledby="files_heading"
+                aria-describedby="decision_files_hint decision_files_counter"
+                data-existing-count="{{ decisionFiles|length }}"
+                data-prototype="{{ form_widget(form.decision.vars.prototype)|e('html_attr') }}"
+                data-max="3"
+                data-entry-class="file-field"
+                data-index="{{ form.decision|length }}">
+
+                {% for file in decisionFiles %}
+
+                    <div class="file-field rounded-xl bg-zinc-50 px-4 py-2 dark:bg-zinc-800 {{ borderPrimary() }}">
+
+                        <div class="flex items-center justify-between gap-3">
+
+                <span class="file-name truncate text-sm font-semibold">
+
+                    {{ file.originalName ?? file.fileName ?? 'Załącznik' }}
+
+                </span>
+                            <button type="button"
+                                class="{{ buttonDelete() }} remove-file-btn inline-flex items-center rounded-xl px-3 py-1.5 text-sm font-medium {{ focusPrimaryWithPadding() }}"
+                                data-csrf="{{ csrf_token('delete_application_file_' ~ file.id) }}"
+                                data-href="{{ path('student_application_file_delete', { fileId: file.id }) }}">
+                                {% trans %}Usuń{% endtrans %}
+                            </button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <button type="button"
+                class="cursor-pointer add_file_btn {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                data-wrapper-id="decision_file_wrapper">
+                {% trans %}Dodaj załącznik{% endtrans %}
+            </button>
+
+            <p id="decision_files_counter" class="text-sm">
+                {% trans %}Liczba dodanych plików{% endtrans %}:
+                <span data-counter-for="decision_file_wrapper">{{ decisionFiles|length }}</span>/3
+            </p>
+
+            {{ form_errors(form.decision) }}
+        </div>
+
+        {# SCHEDULE #}
+        <div class="space-y-4 rounded-lg {{ scheduleHasError ? 'border border-red-500 bg-red-50 dark:bg-red-900/20' : '' }}">
+            <p id="schedule_files_hint" class="space-y-1">
+            <span class="block {{ scheduleHasError ? 'font-semibold text-red-700 dark:text-red-400' : '' }}">
+                {% trans %}Wgraj harmonogram zajęć z zaznaczeniem, na których zajęciach asystent jest niezbędny{% endtrans %}*
+            </span>
+                <span class="block">{% trans %}Możesz dodać do 3 plików.{% endtrans %}</span>
+            </p>
+
+            <div id="schedule_file_wrapper"
+                class="space-y-2"
+                role="group"
+                aria-labelledby="files_heading"
+                aria-describedby="schedule_files_hint schedule_files_counter"
+                data-existing-count="{{ scheduleFiles|length }}"
+                data-prototype="{{ form_widget(form.schedule.vars.prototype)|e('html_attr') }}"
+                data-max="3"
+                data-entry-class="file-field"
+                data-index="{{ form.schedule|length }}">
+
+                {% for file in scheduleFiles %}
+
+                    <div class="file-field rounded-xl bg-zinc-50 px-4 py-2 dark:bg-zinc-800 {{ borderPrimary() }}">
+
+                        <div class="flex items-center justify-between gap-3">
+
+                <span class="file-name truncate text-sm font-semibold">
+                    {{ file.originalName ?? file.fileName ?? 'Załącznik' }}
+                </span>
+                            <button type="button"
+                                class="{{ buttonDelete() }} remove-file-btn inline-flex items-center rounded-xl px-3 py-1.5 text-sm font-medium {{ focusPrimaryWithPadding() }}"
+                                data-csrf="{{ csrf_token('delete_application_file_' ~ file.id) }}"
+                                data-href="{{ path('student_application_file_delete', { fileId: file.id }) }}">
+                                {% trans %}Usuń{% endtrans %}
+                            </button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <button type="button"
+                class="cursor-pointer add_file_btn {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}"
+                data-wrapper-id="schedule_file_wrapper">
+                {% trans %}Dodaj załącznik{% endtrans %}
+            </button>
+
+            <p id="schedule_files_counter" class="text-sm">
+                {% trans %}Liczba dodanych plików{% endtrans %}:
+                <span data-counter-for="schedule_file_wrapper">{{ scheduleFiles|length }}</span>/3
+            </p>
+
+            {{ form_errors(form.schedule) }}
+        </div>
+    </div>
+
+    <fieldset>
+        <legend class="font-semibold">
+            {% trans %}Potwierdzam, że{% endtrans %}:*
+        </legend>
+        {{ form_row(form.statute, { row_attr: { class: 'space-y-1' } }) }}
+    </fieldset>
+
+    <div class="py-5">
+        {% trans %}Sprawdź regulamin na stronie BON{% endtrans %}:
+        <a
+            href="https://bon.vizja.pl/wsparcie-asystenta-dydaktycznego/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="{{ linkPrimary() }} {{ focusPrimary() }}"
+        >
+    <span>
+        {% trans %}Wsparcie asystenta dydaktycznego{% endtrans %}
+    </span>
+
+            {#    <span class="sr-only">#}
+            {#        {% trans %}(otwiera się w nowym oknie){% endtrans %}#}
+            {#    </span>#}
+        </a>
+        {% trans %}(link otwiera się w nowym oknie){% endtrans %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const phoneInput = document.getElementById('{{ form.phone.number.vars.id }}');
+
+        if (phoneInput) {
+            const sanitizePhone = () => {
+                phoneInput.value = phoneInput.value.replace(/\D/g, '');
+            };
+
+            phoneInput.addEventListener('input', sanitizePhone);
+            phoneInput.addEventListener('paste', function () {
+                requestAnimationFrame(sanitizePhone);
+            });
+            phoneInput.addEventListener('drop', function () {
+                requestAnimationFrame(sanitizePhone);
+            });
+            phoneInput.addEventListener('beforeinput', function (e) {
+                if (e.data && /\D/.test(e.data)) {
+                    e.preventDefault();
+                }
+            });
+
+            sanitizePhone();
+        }
+    });
+</script>
+
+<script>
+    (function () {
+        function byId(id) {
+            return document.getElementById(id);
+        }
+
+        function getEntryClass(wrapper) {
+            return wrapper?.dataset.entryClass || 'file-field';
+        }
+
+        function getFileFields(wrapper) {
+            if (!wrapper) {
+                return [];
+            }
+
+            return Array.from(wrapper.querySelectorAll('.' + getEntryClass(wrapper)));
+        }
+
+        function updateCounter(wrapper) {
+            if (!wrapper) {
+                return 0;
+            }
+
+            const count = getFileFields(wrapper).length;
+
+            const counter = document.querySelector(
+                '[data-counter-for="' + wrapper.id + '"]'
+            );
+
+            if (counter) {
+                counter.textContent = String(count);
+
+                counter.setAttribute(
+                    'aria-label',
+                    '{% trans %}Liczba dodanych plików{% endtrans %}: ' + count
+                );
+            }
+
+            return count;
+        }
+
+        function findLiveRegion(addBtn) {
+            return addBtn.closest('div')?.querySelector('.files_live')
+                || document.getElementById('files_live')
+                || null;
+        }
+
+        function announce(liveRegion, message) {
+            if (!liveRegion) {
+                return;
+            }
+
+            liveRegion.setAttribute('role', 'status');
+            liveRegion.setAttribute('aria-live', 'polite');
+            liveRegion.setAttribute('aria-atomic', 'true');
+
+            liveRegion.textContent = '';
+
+            window.setTimeout(function () {
+                liveRegion.textContent = message;
+            }, 50);
+        }
+
+        function setBtnState(wrapper, addBtn) {
+            if (!wrapper || !addBtn) {
+                return;
+            }
+
+            const max = parseInt(wrapper.dataset.max || '3', 10);
+            const count = updateCounter(wrapper);
+            const disabled = count >= max;
+
+            addBtn.disabled = disabled;
+            addBtn.setAttribute('aria-disabled', String(disabled));
+
+            if (disabled) {
+                addBtn.setAttribute(
+                    'aria-label',
+                    '{% trans %}Nie można dodać więcej plików. Osiągnięto limit{% endtrans %}: ' + max
+                );
+            } else {
+                addBtn.setAttribute(
+                    'aria-label',
+                    '{% trans %}Dodaj plik. Dodano{% endtrans %}: ' + count + ' {% trans %}z{% endtrans %} ' + max
+                );
+            }
+        }
+
+        function focusBestTarget(wrapper, addBtn) {
+            if (!wrapper || !addBtn) {
+                return;
+            }
+
+            const fields = getFileFields(wrapper);
+            const lastRemoveBtn = fields.length
+                ? fields[fields.length - 1].querySelector('.remove-file-btn')
+                : null;
+
+            if (lastRemoveBtn) {
+                lastRemoveBtn.focus();
+                return;
+            }
+
+            addBtn.focus();
+        }
+
+        async function removeFile(container, wrapper, addBtn, removeBtn, live) {
+            const href = removeBtn?.dataset.href;
+            const csrf = removeBtn?.dataset.csrf;
+
+            const fileNameElement = container.querySelector('.file-name');
+            const fileName = fileNameElement?.textContent?.trim() || '{% trans %}plik{% endtrans %}';
+
+            if (href && csrf) {
+                const deleteUrl = href + '?_token=' + encodeURIComponent(csrf);
+
+                try {
+                    const response = await fetch(deleteUrl, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        announce(live, '{% trans %}Nie udało się usunąć pliku{% endtrans %}: ' + fileName + '.');
+                        return;
+                    }
+                } catch (error) {
+                    announce(live, '{% trans %}Nie udało się usunąć pliku{% endtrans %}: ' + fileName + '.');
+                    return;
+                }
+            }
+
+            container.remove();
+
+            const count = updateCounter(wrapper);
+            setBtnState(wrapper, addBtn);
+
+            announce(
+                live,
+                '{% trans %}Usunięto plik{% endtrans %}: ' + fileName + '. {% trans %}Liczba dodanych plików{% endtrans %}: ' + count + '.'
+            );
+
+            focusBestTarget(wrapper, addBtn);
+        }
+
+        function prepareExistingFileFields(wrapper, addBtn, live) {
+            getFileFields(wrapper).forEach(function (container) {
+                const removeBtn = container.querySelector('.remove-file-btn');
+                const fileName = container.querySelector('.file-name')?.textContent?.trim();
+
+                if (!removeBtn) {
+                    return;
+                }
+
+                if (fileName) {
+                    removeBtn.setAttribute('aria-label', '{% trans %}Usuń plik{% endtrans %}: ' + fileName);
+                }
+
+                removeBtn.addEventListener('click', function () {
+                    removeFile(container, wrapper, addBtn, removeBtn, live);
+                });
+            });
+        }
+
+        function createFileField(html, wrapper, addBtn, live) {
+            const container = document.createElement('div');
+
+            container.className = 'file-field rounded-xl bg-zinc-50 px-4 py-2 dark:bg-zinc-800 {{ borderPrimary() }}';
+            container.innerHTML =
+                '<div class="sr-only">' + html + '</div>' +
+                '<div class="flex items-center justify-between gap-3">' +
+                '<span class="file-name truncate text-m font-semibold">{% trans %}Nie wybrano pliku{% endtrans %}</span>' +
+                '<button type="button" class="{{ buttonDanger() }} remove-file-btn inline-flex items-center rounded-xl px-3 py-1.5 text-sm font-medium" aria-label="{% trans %}Usuń niewybrany plik{% endtrans %}">' +
+                '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">' +
+                '<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />' +
+                '</svg>' +
+                '<span>{% trans %}Usuń{% endtrans %}</span>' +
+                '</button>' +
+                '</div>';
+
+            const fileInput = container.querySelector('input[type="file"]');
+            const fileName = container.querySelector('.file-name');
+            const removeBtn = container.querySelector('.remove-file-btn');
+
+            if (!fileInput) {
+                return;
+            }
+
+            fileInput.setAttribute('accept', 'application/pdf,.pdf');
+            fileInput.classList.add('sr-only');
+
+            removeBtn.addEventListener('click', function () {
+                removeFile(container, wrapper, addBtn, removeBtn, live);
+            });
+
+            wrapper.appendChild(container);
+
+            let fileChosen = false;
+
+            fileInput.addEventListener('change', function () {
+                if (fileInput.files && fileInput.files.length > 0) {
+                    const selectedFile = fileInput.files[0];
+                    const selectedFileName = selectedFile.name || '';
+                    const selectedFileType = selectedFile.type || '';
+
+                    const isPdf =
+                        selectedFileType === 'application/pdf'
+                        || selectedFileName.toLowerCase().endsWith('.pdf');
+
+                    if (!isPdf) {
+                        fileInput.value = '';
+                        fileChosen = false;
+
+                        if (fileName) {
+                            fileName.textContent = '{% trans %}Nie wybrano pliku{% endtrans %}';
+                        }
+
+                        removeBtn.setAttribute(
+                            'aria-label',
+                            '{% trans %}Usuń niewybrany plik{% endtrans %}'
+                        );
+
+                        announce(live, '{% trans %}Można wybrać tylko plik PDF.{% endtrans %}');
+                        alert('{% trans %}Można wybrać tylko plik PDF.{% endtrans %}');
+
+                        return;
+                    }
+
+                    fileChosen = true;
+
+                    if (fileName) {
+                        fileName.textContent = selectedFileName;
+                    }
+
+                    removeBtn.setAttribute(
+                        'aria-label',
+                        '{% trans %}Usuń plik{% endtrans %}: ' + selectedFileName
+                    );
+
+                    setBtnState(wrapper, addBtn);
+
+                    announce(
+                        live,
+                        '{% trans %}Dodano plik{% endtrans %}: ' + selectedFileName + '. {% trans %}Liczba dodanych plików{% endtrans %}: ' + updateCounter(wrapper) + '.'
+                    );
+
+                    removeBtn.focus();
+                }
+            });
+
+            window.addEventListener('focus', function handleWindowFocus() {
+                window.setTimeout(function () {
+                    window.removeEventListener('focus', handleWindowFocus);
+
+                    if (!fileChosen && (!fileInput.files || fileInput.files.length === 0)) {
+                        container.remove();
+                        setBtnState(wrapper, addBtn);
+                        announce(live, '{% trans %}Anulowano wybór pliku{% endtrans %}.');
+                        addBtn.focus();
+                    }
+                }, 300);
+            }, { once: true });
+
+            setBtnState(wrapper, addBtn);
+
+            fileInput.click();
+        }
+
+        function wireAddButton(addBtn) {
+            const wrapperId = addBtn.getAttribute('data-wrapper-id');
+            const wrapper = byId(wrapperId);
+
+            if (!wrapper) {
+                return;
+            }
+
+            let index = parseInt(wrapper.dataset.index || '0', 10);
+            const live = findLiveRegion(addBtn);
+
+            prepareExistingFileFields(wrapper, addBtn, live);
+            setBtnState(wrapper, addBtn);
+
+            addBtn.addEventListener('click', function () {
+                const max = parseInt(wrapper.dataset.max || '3', 10);
+                const count = updateCounter(wrapper);
+
+                if (count >= max) {
+                    announce(live, '{% trans %}Nie można dodać więcej plików. Osiągnięto limit{% endtrans %}: ' + max + '.');
+                    return;
+                }
+
+                const prototype = wrapper.dataset.prototype;
+                const html = prototype.replace(/__name__/g, index);
+
+                index++;
+                wrapper.dataset.index = String(index);
+
+                createFileField(html, wrapper, addBtn, live);
+            });
+        }
+
+        document.querySelectorAll('.remove-existing-file-btn').forEach(btn => {
+            btn.addEventListener('click', async function () {
+                const container = btn.closest('.existing-file');
+
+                if (!container) {
+                    return;
+                }
+
+                const deleteUrl = container.dataset.deleteUrl;
+
+                if (!deleteUrl) {
+                    container.remove();
+                    return;
+                }
+
+                try {
+                    const response = await fetch(deleteUrl, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        return;
+                    }
+
+                    const wrapper = container.closest('.space-y-4')
+                        ?.querySelector('[data-existing-count]');
+
+                    if (wrapper) {
+                        const current = parseInt(
+                            wrapper.dataset.existingCount || '0',
+                            10
+                        );
+
+                        wrapper.dataset.existingCount = String(
+                            Math.max(0, current - 1)
+                        );
+
+                        updateCounter(wrapper);
+                    }
+
+                    container.remove();
+                } catch (e) {
+                    console.error(e);
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const summary = byId('form_error_summary');
+
+            if (summary) {
+                summary.setAttribute('tabindex', '-1');
+                summary.focus();
+            }
+
+            document.querySelectorAll('.add_file_btn').forEach(wireAddButton);
+
+            const existingWrapper = byId('existing_files_wrapper');
+            const anyLive = document.querySelector('.files_live') || null;
+
+            if (existingWrapper) {
+                existingWrapper.querySelectorAll('.file-field').forEach(function (container) {
+                    const removeBtn = container.querySelector('.remove-file-btn');
+                    const fileName = container.querySelector('.file-name')?.textContent?.trim();
+
+                    if (!removeBtn) {
+                        return;
+                    }
+
+                    if (fileName) {
+                        removeBtn.setAttribute('aria-label', '{% trans %}Usuń plik{% endtrans %}: ' + fileName);
+                    }
+
+                    removeBtn.addEventListener('click', function () {
+                        removeFile(container, null, null, null, anyLive);
+                    });
+                });
+            }
+        });
+
+        document.addEventListener('click', function (event) {
+            const target = event.target.closest('[data-focus-target]');
+
+            if (!target) {
+                return;
+            }
+
+            const id = target.getAttribute('data-focus-target');
+            const field = document.getElementById(id);
+
+            if (field) {
+                field.focus();
+            }
+        });
+    })();
+</script>
+<script>
+    document.querySelectorAll('.remove-existing-file-btn').forEach(btn => {
+        btn.addEventListener('click', async function () {
+            const container = btn.closest('.existing-file');
+
+            if (!container) {
+                return;
+            }
+
+            const deleteUrl = container.dataset.deleteUrl;
+            const csrf = container.dataset.csrf;
+
+            if (!deleteUrl || !csrf) {
+                return;
+            }
+
+            try {
+                const response = await fetch(deleteUrl, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        _token: csrf
+                    })
+                });
+
+                if (!response.ok) {
+                    return;
+                }
+
+                const wrapper = container.closest('.space-y-4')
+                    ?.querySelector('[data-existing-count]');
+
+                if (wrapper) {
+                    const current = parseInt(wrapper.dataset.existingCount || '0', 10);
+
+                    wrapper.dataset.existingCount = String(
+                        Math.max(0, current - 1)
+                    );
+
+                    const counter = document.querySelector(
+                        '[data-counter-for="' + wrapper.id + '"]'
+                    );
+
+                    if (counter) {
+                        counter.textContent = wrapper.dataset.existingCount;
+                    }
+                }
+
+                container.remove();
+            } catch (e) {
+                console.error(e);
+            }
+        });
+    });
+</script>

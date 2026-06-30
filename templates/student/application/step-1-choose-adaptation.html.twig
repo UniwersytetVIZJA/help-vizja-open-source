@@ -1,0 +1,81 @@
+{% extends 'student/_layouts/after-login.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block title %}{% trans %}Status karty adaptacji - krok 2{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block body %}
+    <section class="space-y-8">
+        <h1 id="page-title" class="wrap-break-word text-xl font-semibold md:text-2xl lg:text-3xl">
+            {% trans %}Złóż wniosek{% endtrans %}
+        </h1>
+
+        {% include 'student/application/_partials/stepper.html.twig' with { currentStep: 2 } %}
+
+        {{ form_start(form, {'attr': { 'novalidate': 'novalidate' }}) }}
+
+        <div class="space-y-8">
+            <fieldset class="space-y-8">
+                <h2 class="flex items-center wrap-break-word font-medium text-md md:text-lg lg:text-xl">
+                    {% trans %}Krok{% endtrans %} 2. {% trans %}Podaj status: Czy masz kartę adaptacji{% endtrans %}?
+                </h2>
+
+                <p class="sr-only">
+                    Użyj klawiszy strzałek, aby zmienić wybór.
+                </p>
+
+                <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                    {% for choice in form.adaptation %}
+                        <div class="mr-auto flex h-full w-full min-w-0 text-base border-2 rounded-lg">
+                            <input
+                                class="peer sr-only {{ choice.vars.attr.class|default('') }}"
+                                id="{{ choice.vars.id }}"
+                                name="{{ choice.vars.full_name }}"
+                                type="radio"
+                                value="{{ choice.vars.value }}"
+                                {% if choice.vars.checked %}checked="checked"{% endif %}
+                                {% if choice.vars.required %}required="required"{% endif %}
+                                {% if choice.vars.disabled %}disabled="disabled"{% endif %}
+                            >
+
+                            <label for="{{ choice.vars.id }}"
+                                class="
+                                        block w-full cursor-pointer rounded-lg bg-zinc-50 p-4 font-medium dark:bg-zinc-800 {{ borderPrimary() }}
+                                        peer-checked:border-blue-600 peer-checked:bg-blue-600 peer-checked:text-white
+                                        dark:peer-checked:border-yellow-400 dark:peer-checked:bg-yellow-400 dark:peer-checked:text-zinc-950
+                                        {{ peerFocusPrimaryWithPadding() }}
+                                    "
+                            >
+                                <span class="wrap-break-word font-bold">
+                                    {{ choice.vars.label }}
+                                </span>
+                                <br>
+                                <span id="{{ choice.vars.id }}-text" class="mt-2 inline-block wrap-break-word text-base font-normal">
+                                    {{ choice.vars.attr['data-description']|default('') }}
+                                </span>
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="mt-10 flex flex-wrap gap-2">
+            <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_choose_application_type') }}">
+                {% trans %}Wróć do poprzedniego kroku{% endtrans %}
+            </a>
+
+            <button class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+                {% trans %}Przejdź dalej{% endtrans %}
+            </button>
+        </div>
+
+        {{ form_end(form, { render_rest: false }) }}
+    </section>
+{% endblock %}

@@ -1,0 +1,34 @@
+<fieldset>
+    <legend class="sr-only">{% trans %}Telefon{% endtrans %}</legend>
+
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
+            {{ form_label(form.phone.country, 'Numer kierunkowy'|trans ~ '*') }}
+            {{ form_widget(form.phone.country, {
+                attr: {
+                    class: 'w-full',
+                    'aria-label': 'Numer kierunkowy telefonu'|trans,
+                    'aria-describedby': form.phone.vars.id ~ '_help'
+                }
+            }) }}
+        </div>
+
+        <div>
+            {{ form_label(form.phone.number, 'Numer telefonu'|trans ~ '*') }}
+            {{ form_widget(form.phone.number, {
+                attr: {
+                    class: 'w-full',
+                    inputmode: 'numeric',
+                    autocomplete: 'tel',
+                    placeholder: '123456789',
+                    'aria-describedby': form.phone.vars.id ~ '_help',
+                    'aria-invalid': form.phone.vars.errors|length ? 'true' : 'false'
+                }
+            }) }}
+        </div>
+    </div>
+
+    {{ form_errors(form.phone) }}
+    {{ form_errors(form.phone.country) }}
+    {{ form_errors(form.phone.number) }}
+</fieldset>

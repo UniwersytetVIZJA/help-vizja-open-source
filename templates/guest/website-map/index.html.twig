@@ -1,0 +1,114 @@
+{% extends 'guest/_layouts/after-login.html.twig' %}
+{% block title %}{% trans %}Mapa strony{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+
+{% block body %}
+    <section class="space-y-8">
+        <header class="space-y-3">
+            <h1 id="page-title" class="text-2xl font-bold md:text-3xl">
+                {% trans %}Mapa strony{% endtrans %}
+            </h1>
+
+            <p class="max-w-3xl text-zinc-700 dark:text-zinc-300">
+                {% trans %}Poniżej znajduje się lista najważniejszych sekcji i podstron serwisu Help VIZJA.{% endtrans %}
+            </p>
+        </header>
+
+        <nav aria-labelledby="site-map-heading" class="space-y-8">
+            <h2 id="site-map-heading" class="sr-only">
+                {% trans %}Nawigacja mapy strony{% endtrans %}
+            </h2>
+
+            <section aria-labelledby="main-pages-heading" class="space-y-4">
+                <h2 id="main-pages-heading" class="text-xl font-semibold">
+                    {% trans %}Główne sekcje{% endtrans %}
+                </h2>
+
+                <ul class="list-disc space-y-3 ps-6">
+                    <li>
+                        <a href="{{ path('guest_dashboard') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Pulpit{% endtrans %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('guest_office_registration_step_1') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Zapisy{% endtrans %}
+                        </a>
+                    </li>
+                    {% if app.user %}
+                    <li>
+                        <a href="{{ path('guest_registration_center_my_registrations') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Moje zapisy{% endtrans %}
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </section>
+            <section aria-labelledby="help-heading" class="space-y-4">
+                <h2 id="help-heading" class="text-xl font-semibold">
+                    {% trans %}Pomoc i informacje{% endtrans %}
+                </h2>
+
+                <ul class="list-disc space-y-3 ps-6">
+                    <li>
+                        <a href="https://bon.vizja.pl/kontakt/" class="underline rounded-sm {{ focusPrimaryWithPadding() }}" rel="noopener noreferrer">
+                            {% trans %}Kontakt z BON{% endtrans %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://vizja.pl/polityka-prywatnosci" class="underline rounded-sm {{ focusPrimaryWithPadding() }}" rel="noopener noreferrer">
+                            {% trans %}Polityka prywatności{% endtrans %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Deklaracja dostępności{% endtrans %}
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section aria-labelledby="account-heading" class="space-y-4">
+                <h2 id="account-heading" class="text-xl font-semibold">
+                    {% trans %}Konto{% endtrans %}
+                </h2>
+
+                {% if not app.user %}
+                <ul class="list-disc space-y-3 ps-6">
+                    <li>
+                        <a href="{{ path('student_login') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Zaloguj{% endtrans %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('guest_register') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Załóż konto{% endtrans %}
+                        </a>
+                    </li>
+                </ul>
+                {% else %}
+                <ul class="list-disc space-y-3 ps-6">
+                    <li>
+                        <a href="{{ path('guest_profile_update_data') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Uzupełnij swój profil{% endtrans %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('guest_logout') }}" class="underline rounded-sm {{ focusPrimaryWithPadding() }}">
+                            {% trans %}Wyloguj{% endtrans %}
+                        </a>
+                    </li>
+                </ul>
+                {% endif %}
+            </section>
+        </nav>
+    </section>
+{% endblock %}

@@ -1,0 +1,13 @@
+twig:
+    file_name_pattern: '*.twig'
+    form_themes:
+#        - '@TalesFromADevFlowbite/form/default.html.twig'
+        - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
+
+when@dev:
+    twig:
+        cache: false
+
+when@test:
+    twig:
+        strict_variables: true

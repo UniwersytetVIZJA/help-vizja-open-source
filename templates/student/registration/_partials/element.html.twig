@@ -1,0 +1,79 @@
+<article class="bg-zinc-50 p-4 rounded-lg space-y-4 dark:bg-zinc-800 {{ borderPrimary() }}">
+    <header class="flex items-start justify-between">
+        <h3 class="flex font-medium items-center text-md md:text-lg lg:text-xl">
+            {{ registration.title.value }}
+        </h3>
+    </header>
+
+    <dl class="space-y-2 text-sm">
+        <div class="flex items-center space-x-1">
+            <dt>{% trans %}Język spotkania{% endtrans %}:</dt>
+            <dd class="font-medium">{{ registration.title.valueKey }}</dd>
+        </div>
+        <div class="flex items-center space-x-1">
+            <dt>{% trans %}Specjalista{% endtrans %}:</dt>
+            <dd class="font-medium">{{ registration.specialist.firstName }} {{ registration.specialist.lastName }}</dd>
+        </div>
+        <div class="flex items-center space-x-1">
+            <dt>{% trans %}Dzień{% endtrans %}:</dt>
+            <dd class="font-medium">{{ registration.startsAt|date('d.m.Y') }}</dd>
+        </div>
+        <div class="flex items-center space-x-1">
+            <dt>{% trans %}Godzina{% endtrans %}:</dt>
+            <dd class="font-medium">{% trans %}od{% endtrans %} {{ registration.startsAt|date('H:i') }} {% trans %}do{% endtrans %} {{ registration.endsAt|date('H:i') }}</dd>
+        </div>
+
+        {% set procent = 0 %}
+
+        {% if registration.capacity > 0 %}
+            {% set procent = (registration.registeredStudents|length / registration.capacity * 100)|round %}
+        {% endif %}
+
+        <div class="flex items-center justify-between mt-6">
+            <div class="flex items-center space-x-1">
+                <dt>{% trans %}Zapisane osoby{% endtrans %}:</dt>
+                <dd class="font-medium">{{ registration.registeredStudents|length }} / {{ registration.capacity }}</dd>
+            </div>
+            <span>{{ procent }}%</span>
+        </div>
+    </dl>
+
+    <div class="mb-8 space-y-1">
+        {% if procent == 100 %}
+            {% set classes = 'bg-red-600 dark:bg-red-300' %}
+        {% elseif procent >= 75 %}
+            {% set classes = 'bg-yellow-600 dark:bg-yellow-300' %}
+        {% else %}
+            {% set classes = 'bg-emerald-600 dark:bg-emerald-300' %}
+        {% endif %}
+
+        <div class="bg-zinc-200 h-2 overflow-hidden rounded-full w-full dark:bg-zinc-700" role="progressbar" aria-label="Procent zapisanych osób" aria-valuemin="0" aria-valuemax="100"
+            aria-valuenow="{{ procent }}">
+            <div class="w-full bg-zinc-200 rounded-full h-2.5 dark:bg-zinc-700">
+                <div class="h-2 rounded-full {{ classes }}" style="width: {{ procent }}%"></div>
+            </div>
+        </div>
+    </div>
+
+    {% if canAccess[registration.id] == false %}
+        {% if capacities[registration.id] == false %}
+            <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_signup_registration', { registrationId: registration.id }) }}">
+                {% trans %}Wybierz termin{% endtrans %}
+            </a>
+        {% else %}
+            <span class="text-sm font-medium text-red-700 dark:text-red-300">
+                {% trans %}Brak możliwości zapisu{% endtrans %}
+            </span>
+        {% endif %}
+    {% else %}
+        <div class="flex items-center justify-between w-full">
+        <span class="text-sm font-medium text-emerald-700 dark:text-emerald-300">
+            {% trans %}Zapisano na termin{% endtrans %}
+        </span>
+
+            <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_read_registration', { registrationId: registration.id }) }}">
+                {% trans %}Szczegóły terminu{% endtrans %}
+            </a>
+        </div>
+    {% endif %}
+</article>

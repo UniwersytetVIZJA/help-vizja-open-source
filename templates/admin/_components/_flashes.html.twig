@@ -1,0 +1,126 @@
+<div id="flash-live-region"
+     class="sr-only"
+     role="alert"
+     aria-live="assertive"
+     aria-atomic="true"></div>
+
+{% for type, messages in app.flashes %}
+    {% for message in messages %}
+        {% set toastId = 'toast-' ~ type ~ '-' ~ loop.index %}
+
+        {% if type in ['success'] %}
+            {% set iconWrap = 'inline-flex items-center justify-center shrink-0 w-7 h-7 text-fg-success bg-green-400 rounded border' %}
+            {% set sr = 'Operacja zakończona sukcesem'|trans %}
+            {% set iconSvg %}
+                <svg class="w-5 h-5"
+                     aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg"
+                     width="24"
+                     height="24"
+                     fill="none"
+                     viewBox="0 0 24 24">
+                    <path stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M5 11.917 9.724 16.5 19 7.5" />
+                </svg>
+            {% endset %}
+        {% elseif type in ['error', 'danger', 'warning'] %}
+            {% set iconWrap = 'inline-flex items-center justify-center shrink-0 w-7 h-7 text-fg-danger bg-red-400 rounded border' %}
+            {% set sr = 'Operacja zakończona niepowodzeniem'|trans %}
+            {% set iconSvg %}
+                <svg class="w-5 h-5"
+                     aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg"
+                     width="24"
+                     height="24"
+                     fill="none"
+                     viewBox="0 0 24 24">
+                    <path stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M6 18 17.94 6M18 18 6.06 6" />
+                </svg>
+            {% endset %}
+        {% else %}
+            {% set iconWrap = 'inline-flex items-center justify-center shrink-0 w-7 h-7 text-fg-warning bg-warning-soft rounded' %}
+            {% set sr = 'Informacja z systemu'|trans %}
+            {% set iconSvg %}
+                <svg class="w-5 h-5"
+                     aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg"
+                     width="24"
+                     height="24"
+                     fill="none"
+                     viewBox="0 0 24 24">
+                    <path stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+            {% endset %}
+        {% endif %}
+
+        <div id="{{ toastId }}"
+             class="flex items-center w-full max-w-sm p-4 text-black {% if type in ['success'] %}bg-green-300{% else %}bg-red-300{% endif %} rounded-lg border border-default"
+             data-flash-message="{{ sr }}. {{ message|striptags|e('html_attr') }}">
+
+            <div class="{{ iconWrap }}">
+                {{ iconSvg }}
+                <span class="sr-only">{{ sr }}</span>
+            </div>
+
+            <div class="ms-3 text-sm font-normal">
+                {{ message }}
+            </div>
+
+            <button type="button"
+                    class="ms-auto flex items-center justify-center text-body hover:text-heading bg-transparent box-border border border-transparent hover:bg-zinc-50 font-medium leading-5 rounded text-sm h-8 w-8 {{ focusPrimaryWithPadding() }}"
+                    data-dismiss-target="#{{ toastId }}"
+                    aria-label="{% trans %}Zamknij{% endtrans %}">
+                <span class="sr-only">
+                    {% trans %}Zamknij{% endtrans %}
+                </span>
+
+                <svg class="w-5 h-5"
+                     aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg"
+                     width="24"
+                     height="24"
+                     fill="none"
+                     viewBox="0 0 24 24">
+                    <path stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M6 18 17.94 6M18 18 6.06 6" />
+                </svg>
+            </button>
+        </div>
+    {% endfor %}
+{% endfor %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const region = document.getElementById('flash-live-region');
+        const flashes = document.querySelectorAll('[data-flash-message]');
+
+        if (!region || !flashes.length) {
+            return;
+        }
+
+        const text = Array.from(flashes)
+            .map(el => el.getAttribute('data-flash-message'))
+            .filter(Boolean)
+            .join('. ');
+
+        region.textContent = '';
+
+        window.setTimeout(() => {
+            region.textContent = text;
+        }, 100);
+    });
+</script>

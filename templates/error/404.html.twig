@@ -1,0 +1,48 @@
+{% extends 'student/_layouts/after-login.html.twig' %}
+
+{% block title %}{% trans %}Nie znaleziono strony{% endtrans %}: 404 | Help VIZJA{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block body %}
+    <div class="min-h-[60vh] flex items-center justify-center px-4 py-8">
+        <div class="w-full max-w-xl rounded-2xl border-4 border-red-500 dark:border-red-300 px-6 py-8 text-center">
+            <div class="w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full border-2 border-rose-400 bg-rose-50 text-2xl font-bold text-black">
+                404
+            </div>
+
+            <section
+                role="status"
+                aria-labelledby="error-title"
+                aria-describedby="error-description error-code"
+            >
+                <h1 id="error-title" class="mb-2 text-2xl font-bold">
+                    {% trans %}Nie znaleziono strony{% endtrans %}
+                </h1>
+
+                <p id="error-description" class="mb-2">
+                    {% trans %}Strona, której szukasz, nie istnieje, została przeniesiona lub adres został wpisany nieprawidłowo{% endtrans %}.
+                </p>
+
+                <p id="error-code" class="mb-8 text-base">
+                    {% trans %}Kod błędu{% endtrans %}:
+                    <span class="font-semibold">
+            {{ status_code }}
+        </span>
+                </p>
+            </section>
+
+            <a href="{{ path('student_dashboard') }}"
+               class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}">
+                {% trans %}Wróć na stronę główną{% endtrans %}
+            </a>
+        </div>
+    </div>
+{% endblock %}
+

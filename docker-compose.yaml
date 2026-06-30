@@ -1,0 +1,77 @@
+services:
+    mysql:
+        container_name: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: docker
+            MYSQL_DATABASE: docker
+            MYSQL_USER: docker
+            MYSQL_PASSWORD: docker
+            MYSQL_TCP_PORT: 3100
+            image: arm64v8/mysql:9
+        image: mysql:8
+        networks:
+            - docker
+        ports:
+            - '3100:3100'
+        volumes:
+            - ./.database:/var/lib/mysql
+            - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+
+    nginx:
+        container_name: nginx
+        image: nginx:1
+        links:
+            - php
+        networks:
+            - docker
+        ports:
+            - '80:80'
+        volumes:
+            - ./.docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+            - ./.docker/nginx/symfony.conf:/etc/nginx/sites-enabled/symfony.conf
+            - .:/var/www/html
+
+    php:
+        build: ./.docker/php
+        container_name: php
+        links:
+            - mysql
+        networks:
+            - docker
+        ports:
+            - '9000:9000'
+        volumes:
+            - ./.docker/php/opcache.ini:/usr/local/etc/php/conf.d/opcache.user.ini
+            - ./.docker/php/php.ini:/usr/local/etc/php/conf.d/php.user.ini
+            - ./.docker/php/symfony.ini:/usr/local/etc/php/conf.d/symfony.ini
+            - ./.docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
+            - .:/var/www/html
+
+    phpmyadmin:
+        container_name: phpmyadmin
+        environment:
+            PMA_HOST: mysql
+            PMA_PORT: 3100
+            PMA_USER: docker
+            PMA_PASSWORD: docker
+            PMA_ARBITRARY: 1
+            MYSQL_ROOT_PASSWORD: docker
+        image: phpmyadmin:5
+        networks:
+            - docker
+        ports:
+            - '81:80'
+
+    rabbitmq_log:
+        container_name: rabbitmq_log
+        image: rabbitmq:4
+        networks:
+            - docker
+        ports:
+            - '5100:5100'
+        volumes:
+            - ./.docker/rabbitmq/log.conf:/etc/rabbitmq/conf.d/30-port.conf
+
+networks:
+    docker:
+        external: false

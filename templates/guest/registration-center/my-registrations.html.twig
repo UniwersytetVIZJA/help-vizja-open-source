@@ -1,0 +1,184 @@
+{% extends 'guest/_layouts/after-login.html.twig' %}
+{% block title %}{% trans %}Moje wizyty w BON{% endtrans %}{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+
+{% block body %}
+    <section class="bg-white py-8 antialiased dark:bg-zinc-900 md:py-16">
+        <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+            <h1 class="mb-4 text-xl font-semibold text-zinc-900 dark:text-white sm:text-2xl md:mb-8">
+                {% trans %}Moje wizyty w BON{% endtrans %}
+            </h1>
+
+            <div class="gap-8 lg:flex">
+                <div class="w-full">
+                    <div class="flex flex-wrap gap-2 mb-5">
+
+                        <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('guest_registration_center_my_registrations_archive') }}">
+                            {% trans %}Archiwum{% endtrans %}
+                        </a>
+                    </div>
+
+                    {% if registrations is empty %}
+                        <div class="rounded-lg bg-zinc-50 p-6 dark:bg-zinc-800 {{ borderPrimary() }}">
+                            <p class="text-zinc-900 dark:text-white">
+                                {% trans %}Brak wizyt w BON.{% endtrans %}
+                            </p>
+                        </div>
+                    {% else %}
+                        {% for registration in registrations %}
+                            <div class="mb-4 rounded-lg
+                            {% if registration.confirmed %}
+                            border-l-4
+                            border-emerald-400
+                            {% elseif registration.confirmed is null %}
+                            border-l-4
+                            border-orange-500
+                            {% else %}
+                            border-l-4
+                            border-red-500
+                            {% endif %}
+                            bg-zinc-50 p-4 dark:bg-zinc-800 {{ borderPrimary() }}">
+                                <div class="items-start justify-between border-b border-zinc-100 pb-4 dark:border-zinc-700 sm:flex">
+                                    <div class="mb-4 space-y-3 sm:mb-0">
+
+                                        <div>
+                                            <p class="text-sm text-zinc-800 dark:text-zinc-400">
+                                                {% trans %}Rodzaj wizyty{% endtrans %}
+                                            </p>
+
+                                            <p class="font-medium text-zinc-900 dark:text-white">
+                                                {% trans %}Wizyta w biurze BON{% endtrans %}
+                                            </p>
+                                        </div>
+
+                                        <div>
+                                            <p class="text-sm text-zinc-800 dark:text-zinc-400">
+                                                {% trans %}Powód wizyty{% endtrans %}
+                                            </p>
+
+                                            <p class="font-medium text-zinc-900 dark:text-white">
+                                                {{ registration.description }}
+                                            </p>
+                                        </div>
+
+                                        <div>
+                                            <p class="text-sm text-zinc-800 dark:text-zinc-400">
+                                                {% trans %}Tryb wizyty{% endtrans %}
+                                            </p>
+
+                                            <p class="font-medium text-zinc-900 dark:text-white">
+                                                {% if registration.meetingMode === 'Spotkanie online' %}
+                                                    {% if registration.registration.teamsMeetingUrl and registration.confirmed %}
+                                                        <a class="mt-2 {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" href="{{ registration.registration.teamsMeetingUrl }}">
+                                                            {% trans %}Spotkanie online (MS Teams){% endtrans %}
+                                                        </a>
+                                                    {% else %}
+                                                        {% trans %}Spotkanie online (MS Teams) - brak utworzonego spotkania{% endtrans %}
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% trans %}Spotkanie stacjonarne w siedzibie BON, pokój 233, piętro 2 (ul. Okopowa 59, Warszawa){% endtrans %}
+                                                {% endif %}
+                                            </p>
+                                        </div>
+
+                                        <div>
+                                            <p class="text-sm text-zinc-800 dark:text-zinc-400">
+                                                {% trans %}Status wizyty{% endtrans %}
+                                            </p>
+
+                                            {% if registration.confirmed is null %}
+                                                <div class="flex items-center gap-2">
+                                                    <svg class="w-6 h-6 text-orange-500 dark:text-orange-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         fill="currentColor" viewBox="0 0 24 24">
+                                                        <path fill-rule="evenodd"
+                                                              d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
+                                                              clip-rule="evenodd" />
+                                                    </svg>
+                                                    <p class="font-medium text-orange-700 dark:text-orange-300">
+                                                        {% trans %}Oczekuje na potwierdzenie pracownika BON{% endtrans %}
+                                                    </p>
+                                                </div>
+                                            {% elseif registration.confirmed %}
+                                                <div class="flex items-center gap-2">
+                                                    <svg class="w-6 h-6 text-emerald-800 dark:text-emerald-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         fill="currentColor" viewBox="0 0 24 24">
+                                                        <path fill-rule="evenodd"
+                                                              d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z"
+                                                              clip-rule="evenodd" />
+                                                    </svg>
+                                                    <p class="font-medium text-emerald-800 dark:text-emerald-200">
+                                                        {% trans %}Wizyta potwierdzona, zapraszamy!{% endtrans %}
+                                                    </p>
+                                                </div>
+                                            {% else %}
+                                                <div class="flex items-center gap-2">
+                                                    <svg class="w-6 h-6 text-red-800 dark:text-red-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         fill="currentColor" viewBox="0 0 24 24">
+                                                        <path fill-rule="evenodd"
+                                                              d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z"
+                                                              clip-rule="evenodd" />
+                                                    </svg>
+                                                    <p class="font-medium text-red-800 dark:text-red-200">
+                                                        {% trans %}Wizyta anulowana{% endtrans %}
+                                                    </p>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    {% if canCancel[registration.id] ?? false %}
+                                        <div class="space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
+                                            <form method="post"
+                                                  action="{{ path('guest_office_registration_cancel', { id: registration.id }) }}">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('cancel_registration_' ~ registration.id) }}">
+
+                                                <button type="submit"
+                                                        class="{{ buttonDelete() }} {{ focusPrimaryWithPadding() }} w-full"
+                                                        onclick="return confirm('{{ "Na pewno chcesz anulować wizytę?"|trans }}')">
+                                                    <strong>{% trans %}Anuluj wizytę{% endtrans %}</strong>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    {% else %}
+                                        <div class="text-sm text-zinc-700 dark:text-zinc-300">
+                                            {% trans %}Brak możliwości anulowania – prosimy o kontakt pod nr 533-118-733{% endtrans %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mb-4 items-center sm:flex sm:flex-wrap xl:flex">
+                                    <dl class="mt-4 flex items-center text-zinc-800 dark:text-zinc-400 sm:me-8">
+                                        <dt class="me-2 font-medium text-zinc-900 dark:text-white">
+                                            {% trans %}Data{% endtrans %}:
+                                        </dt>
+                                        <dd>
+                                            {{ registration.registration.startAt|date('d.m.Y') }}
+                                        </dd>
+                                    </dl>
+
+                                    <dl class="mt-4 flex items-center text-zinc-800 dark:text-zinc-400 sm:me-8">
+                                        <dt class="me-2 font-medium text-zinc-900 dark:text-white">
+                                            {% trans %}Godzina{% endtrans %}:
+                                        </dt>
+                                        <dd>
+                                            {{ registration.registration.startAt|date('H:i') }} - {{ registration.registration.endAt|date('H:i') }}
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

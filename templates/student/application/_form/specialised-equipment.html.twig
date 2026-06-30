@@ -1,0 +1,475 @@
+<p id="form_help" class="sr-only">
+    {% trans %}Formularz zgłoszeniowy. Pola wymagane oznaczono gwiazdką. Użyj klawisza Tab, aby przechodzić między polami.{% endtrans %}
+</p>
+
+
+
+<div class="max-w-2xl space-y-4 w-full">
+
+    <fieldset class="space-y-3">
+        <legend class="
+        font-medium
+        {{ form.equipmentItems.vars.errors|length > 0
+        ? 'font-bold text-red-700 dark:text-red-300'
+        : 'text-zinc-900 dark:text-white' }}
+    ">
+            {% trans %}Sprzęt do wypożyczenia{% endtrans %}*
+        </legend>
+
+        <div class="
+        rounded-lg {{ form.equipmentItems.vars.errors|length > 0 ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : '' }}
+    ">
+            {{ form_widget(form.equipmentItems, {
+                attr: {
+                    fieldset: false,
+                    class: 'space-y-2'
+                }
+            }) }}
+        </div>
+
+        {{ form_errors(form.equipmentItems) }}
+    </fieldset>
+
+    <div class="hidden">
+        {{ form_widget(form.equipment) }}
+    </div>
+
+    <fieldset aria-describedby="rent_period_help" class="space-y-4">
+        <legend class="sr-only">
+            {% trans %}Okres wypożyczenia{% endtrans %}
+        </legend>
+
+        <p id="rent_period_help" class="text-sm text-zinc-600 dark:text-white">
+            {% trans %}Okres wypożyczenia określają daty rozpoczęcia i zakończenia. Maksymalny czas wypożyczenia sprzętu wynosi <strong>12 miesięcy</strong>{% endtrans %}
+        </p>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {{ form_row(form.rentStart, {
+                label: 'Data rozpoczęcia'|trans ~ '*'
+            }) }}
+
+            {{ form_row(form.rentEnd, {
+                label: 'Data zakończenia'|trans ~ '*'
+            }) }}
+        </div>
+    </fieldset>
+
+    <div>
+    {{ form_row(form.description, {
+        attr: {
+            class: 'w-full',
+            rows: 5,
+            maxlength: 1000,
+            placeholder: 'Opisz, dlaczego potrzebujesz wypożyczyć sprzęt'
+        },
+    }) }}
+
+    <div class="text-sm text-zinc-700 dark:text-zinc-100">
+        <span id="desc-count">0</span> / 1000
+    </div>
+    </div>
+</div>
+
+{{ form_rest(form) }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const textarea = document.getElementById('{{ form.description.vars.id }}');
+        const counter = document.getElementById('desc-count');
+        const phoneInput = document.getElementById('{{ form.phone.number.vars.id }}');
+
+        if (textarea && counter) {
+            const update = () => {
+                counter.textContent = textarea.value.length;
+            };
+
+            update();
+            textarea.addEventListener('input', update);
+        }
+
+        if (phoneInput) {
+            const sanitizePhone = () => {
+                phoneInput.value = phoneInput.value.replace(/\D/g, '');
+            };
+
+            phoneInput.addEventListener('input', sanitizePhone);
+            phoneInput.addEventListener('paste', function () {
+                requestAnimationFrame(sanitizePhone);
+            });
+            phoneInput.addEventListener('drop', function () {
+                requestAnimationFrame(sanitizePhone);
+            });
+            phoneInput.addEventListener('beforeinput', function (e) {
+                if (e.data && /\D/.test(e.data)) {
+                    e.preventDefault();
+                }
+            });
+
+            sanitizePhone();
+        }
+    });
+</script>
+
+<script>
+    // Fokus na podsumowaniu błędów po załadowaniu
+    document.addEventListener('DOMContentLoaded', function () {
+        const summary = document.getElementById('form_error_summary');
+        if (summary) summary.focus();
+    });
+
+    // Skok do pola po kliknięciu w pozycję z podsumowania błędów
+    document.addEventListener('click', function (e) {
+        const t = e.target.closest('[data-focus-target]');
+        if (!t) return;
+        const id = t.getAttribute('data-focus-target');
+        const field = document.getElementById(id);
+        if (field) field.focus();
+    });
+</script>
+
+<script>
+    (function () {
+        const whenReady = (cb) => {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', cb);
+                document.addEventListener('turbo:load', cb);
+            } else {
+                cb();
+            }
+        };
+
+        whenReady(async function () {
+            const API_TYPES_URL = '{{ path("api_inventory_types_for_item") }}';
+            const API_RESERVE = '{{ path("api_inventory_reserve_first_free") }}';
+            const API_CANCEL = '{{ path("api_inventory_cancel_reservation") }}';
+            const API_RESERVED_SESSION = '{{ path("api_inventory_reserved_session") }}';
+
+            const equipSelect = document.getElementById('{{ form.equipment.vars.id }}');
+
+            const reservedByItemAndType = new Map();
+            const reservedInventoryIds = new Set();
+            let sessionReserved = {};
+
+            function addInventoryToSelect(inventoryId) {
+                if (!equipSelect || !inventoryId) return;
+
+                let opt = equipSelect.querySelector(`option[value="${ inventoryId }"]`);
+
+                if (!opt) {
+                    opt = new Option(inventoryId, inventoryId, true, true);
+                    equipSelect.add(opt);
+                } else {
+                    opt.selected = true;
+                }
+            }
+
+            function removeInventoryFromSelect(inventoryId) {
+                if (!equipSelect || !inventoryId) return;
+
+                const opt = equipSelect.querySelector(`option[value="${ inventoryId }"]`);
+
+                if (opt) {
+                    equipSelect.remove(opt.index);
+                }
+            }
+
+            async function loadReservedSession() {
+                try {
+                    const res = await fetch(API_RESERVED_SESSION, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+
+                    if (!res.ok) return {};
+
+                    return await res.json();
+                } catch (e) {
+                    console.error('[equip] session load error', e);
+                    return {};
+                }
+            }
+
+            async function reserveFirstFree(itemId, typeId) {
+                const res = await fetch(API_RESERVE, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        itemId,
+                        typeId
+                    })
+                });
+
+                if (!res.ok) {
+                    throw new Error('reserve HTTP ' + res.status);
+                }
+
+                return res.json();
+            }
+
+            async function cancelReservation(inventoryId, { beacon = false } = {}) {
+                try {
+                    const payload = JSON.stringify({ inventoryId });
+
+                    if (beacon && navigator.sendBeacon) {
+                        navigator.sendBeacon(API_CANCEL, payload);
+                    } else {
+                        await fetch(API_CANCEL, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: payload
+                        });
+                    }
+                } catch (e) {
+                    console.error('[equip] cancel error', e);
+                } finally {
+                    reservedInventoryIds.delete(inventoryId);
+                }
+            }
+
+            const namePrefix = '{{ form.equipmentItems.vars.full_name|e('js') }}';
+
+            const checkboxes = document.querySelectorAll(
+                `input[type="checkbox"][name^="${ namePrefix }"]`
+            );
+
+            if (!checkboxes.length) {
+                console.warn('[equip] nie znaleziono checkboxów');
+                return;
+            }
+
+            function ensureTypesContainer(itemId, itemLabel, checkbox) {
+                let box = document.getElementById('types-for-' + itemId);
+
+                if (box) return box;
+
+                box = document.createElement('div');
+                box.id = 'types-for-' + itemId;
+                box.className = 'ml-6 mt-2 pl-4 border-l border-zinc-200 dark:border-zinc-700 w-full';
+
+                box.innerHTML =
+                    '<fieldset class="space-y-2">' +
+                    '<legend class="text-sm font-medium text-zinc-700 dark:text-zinc-300">' +
+                    (itemLabel || '{{ "Typ"|trans|e("js") }}') +
+                    '</legend>' +
+                    '<div class="types-list space-y-2"></div>' +
+                    '</fieldset>';
+
+                const itemRow =
+                    checkbox.closest('.form-check') ||
+                    checkbox.closest('.checkbox') ||
+                    checkbox.closest('label')?.parentElement ||
+                    checkbox.parentElement;
+
+                if (itemRow && itemRow.parentNode) {
+                    itemRow.insertAdjacentElement('afterend', box);
+                } else {
+                    checkbox.insertAdjacentElement('afterend', box);
+                }
+
+                return box;
+            }
+
+            function removeTypesContainer(itemId) {
+                const box = document.getElementById('types-for-' + itemId);
+
+                if (box) {
+                    box.remove();
+                }
+            }
+
+            async function loadAndRenderTypes(itemId, itemLabel, checkbox) {
+                const box = ensureTypesContainer(itemId, itemLabel, checkbox);
+                const list = box.querySelector('.types-list');
+
+                list.textContent = '{{ "Ładowanie..."|trans }}';
+
+                try {
+                    const res = await fetch(
+                        `${ API_TYPES_URL }?itemId=${ encodeURIComponent(itemId) }`,
+                        {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        }
+                    );
+
+                    if (!res.ok) {
+                        throw new Error(`HTTP ${ res.status }`);
+                    }
+
+                    const data = await res.json();
+
+                    if (!Array.isArray(data) || data.length === 0) {
+                        list.textContent = '{{ "Brak zdefiniowanych typów."|trans }}';
+                        return;
+                    }
+
+                    list.innerHTML = '';
+
+                    data.forEach(t => {
+                        const id = `subtype_${ itemId }_${ t.id }`;
+                        const key = itemId + '::' + t.id;
+                        const sessionInventoryId = sessionReserved[key];
+
+                        const label = document.createElement('label');
+                        label.className =
+                            'flex items-center gap-2 text-sm text-zinc-800 dark:text-zinc-200';
+
+                        const input = document.createElement('input');
+                        input.type = 'checkbox';
+                        input.name = `subtype_${ itemId }_${ t.id }`;
+                        input.value = t.id;
+                        input.id = id;
+                        input.className =
+                            'rounded border-zinc-300 text-indigo-600 focus:ring-indigo-500';
+
+                        if (sessionInventoryId) {
+                            input.checked = true;
+                            reservedByItemAndType.set(key, sessionInventoryId);
+                            reservedInventoryIds.add(sessionInventoryId);
+                            addInventoryToSelect(sessionInventoryId);
+                        }
+
+                        const span = document.createElement('span');
+                        span.textContent =
+                            t.type +
+                            (t.available !== undefined
+                                ? ` ({{ "Liczba dostępnych sztuk: "|trans }}${ t.available })`
+                                : '');
+
+                        label.appendChild(input);
+                        label.appendChild(span);
+                        list.appendChild(label);
+
+                        input.addEventListener('change', async () => {
+                            const key = itemId + '::' + t.id;
+
+                            if (input.checked) {
+                                try {
+                                    const payload = await reserveFirstFree(itemId, t.id);
+                                    const invId = payload.inventoryId;
+
+                                    reservedByItemAndType.set(key, invId);
+                                    reservedInventoryIds.add(invId);
+                                    sessionReserved[key] = invId;
+
+                                    addInventoryToSelect(invId);
+                                } catch (e) {
+                                    console.error('[equip] reserve error', e);
+                                    input.checked = false;
+                                }
+                            } else {
+                                const prevInv = reservedByItemAndType.get(key);
+
+                                if (prevInv) {
+                                    await cancelReservation(prevInv);
+                                    removeInventoryFromSelect(prevInv);
+
+                                    reservedByItemAndType.delete(key);
+                                    delete sessionReserved[key];
+                                }
+                            }
+                        });
+                    });
+                } catch (e) {
+                    console.error('[equip] fetch error', e);
+                    list.textContent = '{{ "Nie udało się załadować typów."|trans }}';
+                }
+            }
+
+            function onToggle(e) {
+                const cb = e.currentTarget;
+                const itemId = cb.value;
+                const labelEl = cb.closest('label') || cb.parentElement;
+                const itemLabel = labelEl ? labelEl.textContent.trim() : '';
+
+                if (cb.checked) {
+                    loadAndRenderTypes(itemId, itemLabel + ' — {{ "typ"|trans }}', cb);
+                } else {
+                    const prefix = itemId + '::';
+                    const keysToDelete = [];
+
+                    for (const [key, invId] of reservedByItemAndType.entries()) {
+                        if (key.startsWith(prefix)) {
+                            cancelReservation(invId);
+                            removeInventoryFromSelect(invId);
+                            keysToDelete.push(key);
+                        }
+                    }
+
+                    keysToDelete.forEach(key => {
+                        reservedByItemAndType.delete(key);
+                        delete sessionReserved[key];
+                    });
+
+                    removeTypesContainer(itemId);
+                }
+            }
+
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', onToggle);
+            });
+
+            sessionReserved = await loadReservedSession();
+
+            Object.entries(sessionReserved).forEach(([key, invId]) => {
+                reservedByItemAndType.set(key, invId);
+                reservedInventoryIds.add(invId);
+                addInventoryToSelect(invId);
+
+                const itemId = key.split('::')[0];
+                const cb = Array.from(checkboxes).find(c => c.value === itemId);
+
+                if (cb) {
+                    cb.checked = true;
+                }
+            });
+
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    const labelEl = cb.closest('label') || cb.parentElement;
+                    const itemLabel = labelEl ? labelEl.textContent.trim() : '';
+
+                    loadAndRenderTypes(
+                        cb.value,
+                        itemLabel + ' — {{ "typ"|trans }}',
+                        cb
+                    );
+                }
+            });
+
+            let formSubmitted = false;
+            const formEl = equipSelect ? equipSelect.closest('form') : null;
+
+            if (formEl) {
+                formEl.addEventListener('submit', () => {
+                    formSubmitted = true;
+                });
+            }
+
+            window.addEventListener('beforeunload', () => {
+                if (formSubmitted) return;
+
+                const ids = Array.from(reservedInventoryIds);
+
+                ids.forEach(invId => {
+                    cancelReservation(invId, { beacon: true });
+                    removeInventoryFromSelect(invId);
+                });
+
+                reservedByItemAndType.clear();
+                reservedInventoryIds.clear();
+                sessionReserved = {};
+            });
+
+            console.log('[equip] checkboxy:', checkboxes.length, checkboxes);
+        });
+    })();
+</script>

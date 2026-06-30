@@ -1,0 +1,49 @@
+{% extends 'student/_layouts/before-login.html.twig' %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block title %}{% trans %}Błąd strony{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block body %}
+    <div class="min-h-[60vh] flex items-center justify-center px-4 py-8">
+        <div class="w-full max-w-xl rounded-2xl border-4 border-red-500 dark:border-red-300 px-6 py-8 text-center">
+            <div class="w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-full border-2 border-rose-400 bg-rose-50 text-2xl font-bold text-black">
+                ?
+            </div>
+
+            <section
+                role="alert"
+                aria-labelledby="error-title"
+                aria-describedby="error-description error-code"
+            >
+                <h1 id="error-title" class="mb-2 text-2xl font-bold">
+                    {% trans %}Coś poszło nie tak{% endtrans %}
+                </h1>
+
+                <p id="error-description" class="mb-2">
+                    {% trans %}Wystąpił nieoczekiwany problem podczas przetwarzania żądania. Spróbuj ponownie za chwilę{% endtrans %}.
+                    {% trans %}Jeżeli problem będzie się powtarzał, skontaktuj się z administratorem{% endtrans %}.
+                </p>
+
+                <p id="error-code" class="mb-8 text-base">
+                    {% trans %}Kod błędu{% endtrans %}:
+                    <span class="font-semibold">
+            {{ status_code }}
+        </span>
+                </p>
+
+            </section>
+
+            <a href="{{ path('student_dashboard') }}"
+               class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}">
+                {% trans %}Wróć na stronę główną{% endtrans %}
+            </a>
+        </div>
+    </div>
+{% endblock %}
+

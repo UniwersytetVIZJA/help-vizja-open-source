@@ -1,0 +1,41 @@
+<li class="py-2">
+    <span class="block font-bold mb-3">
+        {% trans %}Rodzaje adaptacji{% endtrans %}
+    </span>
+
+    <div class="font-medium mt-1">
+        {% if application.adaptations|length > 0 %}
+            <ul class="list-disc list-inside space-y-1">
+                {% for item in application.adaptations %}
+                    <li>
+                        {{ app.locale == 'pl' ? item.value : item.valueEnglish }}
+                    </li>
+                {% endfor %}
+            </ul>
+
+            {% if application.adaptation_another %}
+                <div class="mt-4">
+                    <p class="font-semibold">
+                        {% trans %}Inne{% endtrans %}:
+                    </p>
+
+                    <p class="mt-1 whitespace-wrap break-words">
+                        {{ application.adaptation_another }}
+                    </p>
+                </div>
+            {% endif %}
+        {% else %}
+            &mdash;
+        {% endif %}
+    </div>
+</li>
+
+<li class="py-2">
+    <span class="block mb-3 font-bold">
+        {% trans %}Uzasadnienie{% endtrans %}
+    </span>
+
+    <span class="mt-1 block whitespace-wrap font-medium break-words">
+        {{ application.description }}
+    </span>
+</li>

@@ -1,0 +1,16 @@
+framework:
+    rate_limiter:
+        guest_create_account:
+            policy: 'sliding_window'
+            limit: 3
+            interval: '60 minutes'
+
+        password_reset_request:
+            policy: 'sliding_window'
+            limit: 3
+            interval: '60 minutes'
+
+        questionnaire_submit:
+            policy: 'fixed_window'
+            limit: 1
+            interval: '24 hours'

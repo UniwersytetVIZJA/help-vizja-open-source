@@ -1,0 +1,243 @@
+{% extends 'guest/_layouts/after-login.html.twig' %}
+{% block title %}{% trans %}Załóż konto{% endtrans %} | Help VIZJA{% endblock %}
+{% form_theme form 'student/_layouts/form-tailwind.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const passwordInput = document.getElementById('{{ form.password.first.vars.id }}');
+            const passwordRepeatInput = document.getElementById('{{ form.password.second.vars.id }}');
+
+            if (!passwordInput || !passwordRepeatInput) {
+                return;
+            }
+
+            const rules = {
+                length: document.getElementById('password-rule-length'),
+                lowercase: document.getElementById('password-rule-lowercase'),
+                uppercase: document.getElementById('password-rule-uppercase'),
+                digit: document.getElementById('password-rule-digit'),
+                special: document.getElementById('password-rule-special'),
+                match: document.getElementById('password-rule-match')
+            };
+
+            const strengthBar = document.getElementById('password-strength-bar');
+            const strengthText = document.getElementById('password-strength-text');
+
+            const regex = {
+                lowercase: /[a-z]/,
+                uppercase: /[A-Z]/,
+                digit: /\d/,
+                special: /[^\w\s]/
+            };
+
+            function setRuleState(element, isValid) {
+                if (!element) return;
+
+                const icon = element.querySelector('[data-rule-icon]');
+                const text = element.querySelector('[data-rule-text]');
+                const srStatus = element.querySelector('[data-rule-status]');
+
+                element.setAttribute('data-valid', isValid ? 'true' : 'false');
+                element.classList.toggle('text-emerald-700', isValid);
+                element.classList.toggle('dark:text-emerald-400', isValid);
+                element.classList.toggle('text-zinc-600', !isValid);
+                element.classList.toggle('dark:text-zinc-300', !isValid);
+
+                if (icon) {
+                    icon.textContent = isValid ? '✓' : '•';
+                    icon.setAttribute('aria-hidden', 'true');
+                    icon.classList.toggle('text-emerald-600', isValid);
+                    icon.classList.toggle('dark:text-emerald-400', isValid);
+                    icon.classList.toggle('text-zinc-400', !isValid);
+                    icon.classList.toggle('dark:text-zinc-500', !isValid);
+                }
+
+                if (srStatus) {
+                    srStatus.textContent = isValid
+                        ? '{{ "spełniono"|trans }}'
+                        : '{{ "nie spełniono"|trans }}';
+                }
+
+                if (text) {
+                    text.classList.toggle('font-medium', isValid);
+                }
+            }
+
+            function updateStrength(score, passwordLength) {
+                if (!strengthBar || !strengthText) return;
+
+                strengthBar.className = 'h-2 rounded-full transition-all duration-300';
+                strengthBar.style.width = '0%';
+
+                if (passwordLength === 0) {
+                    strengthText.textContent = '{{ "Wpisz hasło"|trans }}';
+                    strengthText.className = 'text-base text-zinc-600 dark:text-zinc-300';
+                    strengthBar.classList.add('bg-zinc-300', 'dark:bg-zinc-600');
+                    return;
+                }
+
+                if (score <= 2) {
+                    strengthBar.style.width = '25%';
+                    strengthBar.classList.add('bg-red-500');
+                    strengthText.textContent = '{{ "Słabe hasło"|trans }}';
+                    strengthText.className = 'text-base text-red-700 dark:text-red-400';
+                    return;
+                }
+
+                if (score === 3 || score === 4) {
+                    strengthBar.style.width = '60%';
+                    strengthBar.classList.add('bg-amber-500');
+                    strengthText.textContent = '{{ "Średnie hasło"|trans }}';
+                    strengthText.className = 'text-base text-amber-700 dark:text-amber-400';
+                    return;
+                }
+
+                strengthBar.style.width = '100%';
+                strengthBar.classList.add('bg-emerald-500');
+                strengthText.textContent = '{{ "Mocne hasło"|trans }}';
+                strengthText.className = 'text-base text-emerald-700 dark:text-emerald-400';
+            }
+
+            function validatePassword() {
+                const password = passwordInput.value || '';
+                const passwordRepeat = passwordRepeatInput.value || '';
+
+                const checks = {
+                    length: password.length >= 12,
+                    lowercase: regex.lowercase.test(password),
+                    uppercase: regex.uppercase.test(password),
+                    digit: regex.digit.test(password),
+                    special: regex.special.test(password),
+                    match: password.length > 0 && passwordRepeat.length > 0 && password === passwordRepeat
+                };
+
+                setRuleState(rules.length, checks.length);
+                setRuleState(rules.lowercase, checks.lowercase);
+                setRuleState(rules.uppercase, checks.uppercase);
+                setRuleState(rules.digit, checks.digit);
+                setRuleState(rules.special, checks.special);
+                setRuleState(rules.match, passwordRepeat.length > 0 && checks.match);
+
+                let score = 0;
+                if (checks.length) score++;
+                if (checks.lowercase) score++;
+                if (checks.uppercase) score++;
+                if (checks.digit) score++;
+                if (checks.special) score++;
+
+                updateStrength(score, password.length);
+            }
+
+            passwordInput.addEventListener('input', validatePassword);
+            passwordRepeatInput.addEventListener('input', validatePassword);
+            passwordInput.addEventListener('focus', validatePassword);
+            passwordRepeatInput.addEventListener('focus', validatePassword);
+
+            validatePassword();
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <section>
+        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto">
+            <div class="w-full bg-zinc-50 rounded-lg md:mt-0 sm:max-w-md xl:p-0 dark:bg-zinc-800 {{ borderPrimary() }}">
+                <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                    <h1 class="text-xl font-bold leading-tight tracking-tight text-zinc-900 md:text-2xl dark:text-white">
+                        {% trans %}Zarejestruj się{% endtrans %}
+                    </h1>
+
+                    {{ form_start(form, { attr: { class: 'space-y-4 md:space-y-6', novalidate: 'novalidate' } }) }}
+
+                    <div>{{ form_row(form.firstName) }}</div>
+                    <div>{{ form_row(form.lastName) }}</div>
+                    <div>{{ form_row(form.email) }}</div>
+                    <div>{{ form_row(form.notificationLanguage) }}</div>
+
+                    <div class="mb-6">
+                        {{ form_label(form.password.first) }}
+
+                        {{ form_widget(form.password.first, {
+                            attr: {
+                                autocomplete: 'new-password',
+                                'aria-describedby': 'password-help password-requirements'
+                            }
+                        }) }}
+
+                        <div id="password-help" class="mt-2 text-base text-zinc-600 dark:text-zinc-300">
+                            {% trans %}Hasło musi spełniać poniższe wymagania.{% endtrans %}
+                        </div>
+
+                        <div id="password-strength" class="mt-4 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900">
+                            <div class="mb-2 flex items-center justify-between gap-3">
+                                <span class="text-base font-medium text-zinc-900 dark:text-white">
+                                    {% trans %}Siła hasła{% endtrans %}
+                                </span>
+                                <span id="password-strength-text" class="text-base text-zinc-600 dark:text-zinc-300">
+                                    {% trans %}Wpisz hasło{% endtrans %}
+                                </span>
+                            </div>
+
+                            <div class="h-2 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700">
+                                <div id="password-strength-bar" class="h-2 rounded-full transition-all duration-300 bg-zinc-300 dark:bg-zinc-600" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div id="password-requirements" class="mt-4 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900">
+                            <h2 class="mb-3 text-base font-semibold text-zinc-900 dark:text-white">
+                                {% trans %}Wymagania hasła{% endtrans %}
+                            </h2>
+
+                            <ul class="space-y-2 text-base">
+                                {% for id, label in {
+                                    'length': 'Minimum 12 znaków',
+                                    'lowercase': 'Mała litera',
+                                    'uppercase': 'Wielka litera',
+                                    'digit': 'Cyfra',
+                                    'special': 'Znak specjalny, np. !@#$%^&*',
+                                    'match': 'Hasła są identyczne'
+                                } %}
+                                    <li id="password-rule-{{ id }}" class="flex items-center gap-3 text-zinc-600 dark:text-zinc-300" data-valid="false">
+                                        <span data-rule-icon aria-hidden="true" class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-zinc-100 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500">•</span>
+                                        <span data-rule-text>{{ label|trans }}</span>
+                                        <span data-rule-status class="sr-only">{% trans %}nie spełniono{% endtrans %}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        {{ form_errors(form.password.first) }}
+                    </div>
+
+                    <div>
+                        {{ form_row(form.password.second, {
+                            attr: {
+                                'aria-describedby': 'password-requirements'
+                            }
+                        }) }}
+                    </div>
+
+                    <button type="submit" class="cursor-pointer w-full {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}">
+                        {% trans %}Załóż konto{% endtrans %}
+                    </button>
+
+                    <p class="text-base font-light">
+                        {% trans %}Masz już konto?{% endtrans %}
+                        <a href="{{ url('student_login') }}" class="font-medium text-primary-600 hover:underline dark:text-yellow-400 {{ focusPrimary() }}">
+                            {% trans %}Zaloguj się{% endtrans %}
+                        </a>
+                    </p>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

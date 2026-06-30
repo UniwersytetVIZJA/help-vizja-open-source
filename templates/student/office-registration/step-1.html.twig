@@ -1,0 +1,529 @@
+{% extends 'student/_layouts/after-login.html.twig' %}
+{% form_theme form 'student/_layouts/form-tailwind.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+{% block title %}{% trans %}Zapis na wizytę w BON - krok 1{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block body %}
+    <section class="space-y-8">
+
+        <h1 id="page-title" class="font-semibold text-xl md:text-2xl lg:text-3xl">
+            {% trans %}Wizyta w BON{% endtrans %}
+        </h1>
+
+        {% include 'student/office-registration/_partials/stepper.html.twig' with { currentStep: 1 } %}
+
+        {{ form_start(form, {'attr': { 'novalidate': 'novalidate' }}) }}
+
+        {{ form_widget(form.termId, { id: 'termIdValue' }) }}
+
+        <div class="pt-5">
+            <div class="gap-4 grid grid-cols-1 md:grid-cols-2 md:gap-6">
+                <div>
+                    <h2 class="text-lg sm:text-xl md:text-2xl font-semibold text-zinc-900 dark:text-white mb-4 lg:mb-8">
+                        {% trans %}Dni z dostępnymi terminami{% endtrans %}
+                    </h2>
+                    <div class="w-full min-w-0 max-w-full">
+                        <div class="flex gap-x-4 items-center justify-between mb-6 w-full sm:gap-x-6">
+                            <div class="flex items-center justify-end flex-1">
+                                <button type="button" aria-label="Poprzedni miesiąc" id="cal-prev"
+                                    class="border border-default h-10 rounded-xl shrink-0 text-center text-lg w-10 hover:opacity-80 {{ focusPrimaryWithPadding() }}">
+                                    &laquo;
+                                </button>
+                            </div>
+                            <div class="flex flex-col items-center gap-y-1 shrink-0 sm:mx-10">
+                                <div id="cal-title" class="font-semibold text-heading capitalize text-center text-md sm:text-lg truncate max-w-full"></div>
+                                <button type="button" aria-label="Przejdź do najbliższego wolnego terminu" id="cal-next-available"
+                                    class="px-2.5 sm:px-3 py-1 text-sm min-[w-200px] border border-default rounded-xl hover:opacity-80 {{ focusPrimaryWithPadding() }}">
+                                    {% trans %}Najbliższy wolny termin{% endtrans %}
+                                </button>
+                            </div>
+                            <div class="flex items-center justify-start flex-1">
+                                <button type="button" aria-label="Następny miesiąc" id="cal-next"
+                                    class="border border-default h-10 rounded-xl shrink-0 text-center text-lg w-10 hover:opacity-80 {{ focusPrimaryWithPadding() }}">
+                                    &raquo;
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="w-full">
+                            <div class="inline-block w-full">
+                                <div class="grid grid-cols-7 sm:gap-2 text-center text-xs opacity-70 mb-2 select-none">
+                                    <div>{% trans %}Pn{% endtrans %}</div>
+                                    <div>{% trans %}Wt{% endtrans %}</div>
+                                    <div>{% trans %}Śr{% endtrans %}</div>
+                                    <div>{% trans %}Cz{% endtrans %}</div>
+                                    <div>{% trans %}Pt{% endtrans %}</div>
+                                    <div>{% trans %}So{% endtrans %}</div>
+                                    <div>{% trans %}Nd{% endtrans %}</div>
+                                </div>
+                                <div id="cal-grid" class="grid grid-cols-7 gap-1 sm:gap-2 md:gap-3"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="mt-4 text-sm">
+                        {% trans %}Wybierz dzień, aby zobaczyć dostępne godziny{% endtrans %}
+                    </p>
+
+                    <p class="font-semibold mt-4 text-sm">
+                        {% trans %}Legenda{% endtrans %}:
+                    </p>
+
+                    <div class="mt-3 flex flex-wrap gap-4 text-sm mb-10">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-emerald-600 dark:bg-emerald-300"></span>
+                            <span>{% trans %}Dostępne terminy{% endtrans %}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="">
+                    <h3
+                        id="available-hours-title"
+                        tabindex="-1"
+                        class="rounded-lg text-xl font-semibold text-zinc-900 dark:text-white mb-4 {{ focusPrimaryWithPadding() }}"
+                    >
+                        {% trans %}Dostępne godziny,{% endtrans %}
+                        <span id="selected-date"></span>
+                    </h3>
+
+                    <label class="sr-only">{% trans %}Wybierz godzinę{% endtrans %}</label>
+
+                    <ul id="timetable" class="grid w-full grid-cols-1 gap-2 mt-5">
+                        <li class="col-span-2 text-center text-sm opacity-70">
+                            {% trans %}Wybierz datę, aby zobaczyć godziny{% endtrans %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-10 space-x-1">
+            <button class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+                {% trans %}Przejdź dalej{% endtrans %}
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+
+    </section>
+
+
+
+
+    <script>
+        (function () {
+            const slotBtnClass = {{ buttonSecondary()|json_encode|raw }};
+            const apiBaseUrl = {{ path('student_office_terms')|json_encode|raw }};
+            const monthDaysUrl = {{ path('student_office_terms_days')|json_encode|raw }};
+            const locale = {{ app.request.locale|default('pl')|json_encode|raw }};
+
+            const i18n = {
+                loadingHours: {{ 'Ładowanie godzin...'|trans|json_encode|raw }},
+                loadingError: {{ 'Błąd ładowania godzin'|trans|json_encode|raw }},
+                missingTermId: {{ 'Błąd: brak pola termId'|trans|json_encode|raw }},
+                noFreeHours: {{ 'Brak wolnych godzin'|trans|json_encode|raw }},
+                availableTerms: {{ 'dostępne terminy'|trans|json_encode|raw }},
+                noTerms: {{ 'brak terminów'|trans|json_encode|raw }}
+            };
+
+            function pad2(n) {
+                return String(n).padStart(2, '0');
+            }
+
+            function ymd(d) {
+                return `${ d.getFullYear() }-${ pad2(d.getMonth() + 1) }-${ pad2(d.getDate()) }`;
+            }
+
+            function startOffsetMonday(dateObj) {
+                const jsDay = dateObj.getDay();
+                return (jsDay + 6) % 7;
+            }
+
+            function setHumanDate(output, dateObj) {
+                output.textContent = dateObj.toLocaleDateString(locale, {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric'
+                });
+            }
+
+            function focusAvailableHoursTitle() {
+                const heading = document.getElementById('available-hours-title');
+
+                if (!heading) {
+                    return;
+                }
+
+                heading.setAttribute('tabindex', '-1');
+
+                window.setTimeout(() => {
+                    heading.focus({ preventScroll: true });
+
+                    heading.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center',
+                        inline: 'nearest'
+                    });
+                }, 50);
+            }
+
+            let monthWithSlots = new Set();
+
+            async function fetchMonthDays(viewDate) {
+                const month = `${ viewDate.getFullYear() }-${ pad2(viewDate.getMonth() + 1) }`;
+
+                try {
+                    const res = await fetch(`${ monthDaysUrl }?month=${ encodeURIComponent(month) }`, {
+                        headers: { Accept: 'application/json' },
+                        credentials: 'same-origin'
+                    });
+
+                    if (!res.ok) {
+                        throw new Error('HTTP ' + res.status);
+                    }
+
+                    const json = await res.json();
+
+                    monthWithSlots = new Set(json.days || []);
+                } catch (e) {
+                    console.error('MONTH DAYS ERROR:', e);
+
+                    monthWithSlots = new Set();
+                }
+            }
+
+            async function fetchSlots(dateStr, timetable) {
+                const url = `${ apiBaseUrl }?date=${ encodeURIComponent(dateStr) }`;
+
+                timetable.innerHTML =
+                    `<li class="col-span-2 text-center text-sm opacity-70">${ i18n.loadingHours }</li>`;
+
+                try {
+                    const res = await fetch(url, {
+                        headers: { Accept: 'application/json' },
+                        credentials: 'same-origin'
+                    });
+
+                    const text = await res.text();
+
+                    if (!res.ok) {
+                        throw new Error('HTTP ' + res.status);
+                    }
+
+                    const json = JSON.parse(text);
+
+                    renderSlots(json.slots || [], timetable);
+                } catch (e) {
+                    console.error('FETCH ERROR:', e);
+
+                    timetable.innerHTML =
+                        `<li class="col-span-2 text-center text-sm text-red-500">${ i18n.loadingError }</li>`;
+                }
+            }
+
+            function renderSlots(slots, timetable) {
+                const termIdInput = document.querySelector(
+                    'input[name="{{ form.termId.vars.full_name }}"]'
+                );
+
+                if (!termIdInput) {
+                    timetable.innerHTML =
+                        `<li class="col-span-2 text-center text-sm text-red-500">${ i18n.missingTermId }</li>`;
+                    return;
+                }
+
+                timetable.innerHTML = '';
+                termIdInput.value = '';
+
+                if (!slots.length) {
+                    timetable.innerHTML =
+                        `<li class="col-span-2 text-center text-sm opacity-70">${ i18n.noFreeHours }</li>`;
+                    return;
+                }
+
+                for (const slot of slots) {
+                    const id = `slot-${ slot.id }`;
+                    const li = document.createElement('li');
+                    const peerFocusClass = {{ peerFocusPrimaryWithPadding()|json_encode|raw }};
+
+                    li.innerHTML = `
+                    <input type="radio" id="${ id }" value="${ slot.id }" class="peer sr-only" name="timetable">
+
+                    <label for="${ id }"
+                           class="cursor-pointer ${ slotBtnClass }
+                                  transition
+                                  peer-checked:bg-blue-600
+                                  peer-checked:text-white
+                                  peer-checked:border-blue-600
+                                  ${ peerFocusClass }
+                                  dark:peer-checked:bg-yellow-400
+                                  dark:peer-checked:border-yellow-400
+                                  dark:peer-checked:text-black">
+                        ${ slot.time }
+                    </label>
+                `;
+
+                    timetable.appendChild(li);
+                }
+
+                timetable.querySelectorAll('input[name="timetable"]').forEach((radio) => {
+                    radio.addEventListener('change', () => {
+                        termIdInput.value = radio.value;
+                    });
+                });
+            }
+
+            function buildCalendarGrid(gridEl, titleEl, viewDate, selectedDateStr, onPick) {
+                gridEl.innerHTML = '';
+
+                const year = viewDate.getFullYear();
+                const month = viewDate.getMonth();
+
+                const first = new Date(year, month, 1);
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const offset = startOffsetMonday(first);
+
+                titleEl.textContent = first.toLocaleDateString(locale, {
+                    month: 'long',
+                    year: 'numeric'
+                });
+
+                for (let i = 0; i < offset; i++) {
+                    const div = document.createElement('div');
+
+                    div.className = 'h-10 w-10';
+
+                    gridEl.appendChild(div);
+                }
+
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const d = new Date(year, month, day);
+                    const dStr = ymd(d);
+
+                    const isSelected = dStr === selectedDateStr;
+                    const hasSlots = monthWithSlots.has(dStr);
+
+                    const btn = document.createElement('button');
+
+                    btn.type = 'button';
+                    btn.dataset.date = dStr;
+
+                    let ariaLabel = d.toLocaleDateString(locale, {
+                        weekday: 'long',
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    });
+
+                    ariaLabel += hasSlots ? `, ${ i18n.availableTerms }` : `, ${ i18n.noTerms }`;
+
+                    btn.setAttribute('aria-label', ariaLabel);
+                    btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+
+                    let classes = [
+                        'inline-block',
+                        'h-12',
+                        'w-full',
+                        'relative rounded-xl text-sm transition',
+                        'hover:opacity-90',
+                        {{ focusPrimaryWithPadding()|json_encode|raw }}
+                    ];
+
+                    const now = new Date();
+
+                    now.setHours(0, 0, 0, 0);
+
+                    const cellDate = new Date(d);
+
+                    cellDate.setHours(0, 0, 0, 0);
+
+                    const isPast = cellDate < now;
+                    const isDisabled = isPast || !hasSlots;
+
+                    if (isDisabled) {
+                        btn.disabled = true;
+                        btn.setAttribute('aria-disabled', 'true');
+
+                        classes.push(
+                            'bg-zinc-100',
+                            'text-black',
+                            'dark:bg-zinc-800',
+                            'dark:text-zinc-400',
+                            'cursor-not-allowed',
+                            'opacity-60'
+                        );
+                    } else {
+                        if (isSelected) {
+                            classes.push(
+                                'border-3',
+                                'border-blue-600',
+                                'bg-blue-50',
+                                'text-black',
+                                'font-semibold',
+                                'dark:bg-yellow-700',
+                                'dark:border-yellow-300',
+                                'dark:text-white'
+                            );
+                        } else {
+                            classes.push(
+                                'bg-white',
+                                'border-2',
+                                'border-emerald-600',
+                                'text-black',
+                                'dark:bg-zinc-700',
+                                'dark:text-white'
+                            );
+                        }
+
+                        classes.push('font-medium');
+                    }
+
+                    btn.className = classes.join(' ');
+
+                    btn.innerHTML = `
+                    <span class="relative flex items-center justify-center w-full h-full">
+                        ${ day }
+                        ${
+                        isSelected
+                            ? `<span class="absolute top-1 right-1 h-2 w-2 rounded-full bg-emerald-600 dark:bg-black"></span>`
+                            : hasSlots && !isDisabled
+                                ? `<span class="absolute top-1 right-1 h-2 w-2 rounded-full bg-emerald-600 dark:bg-emerald-400"></span>`
+                                : ''
+                    }
+                    </span>
+                `;
+
+                    if (!isDisabled) {
+                        btn.addEventListener('click', () => onPick(dStr, true));
+                    }
+
+                    gridEl.appendChild(btn);
+                }
+            }
+
+            function initOfficeSlots() {
+                const root = document.querySelector('section.space-y-8');
+
+                if (!root || root.dataset.officeSlotsInit === '1') {
+                    return;
+                }
+
+                root.dataset.officeSlotsInit = '1';
+
+                const output = document.getElementById('selected-date');
+                const timetable = document.getElementById('timetable');
+                const grid = document.getElementById('cal-grid');
+                const title = document.getElementById('cal-title');
+                const prev = document.getElementById('cal-prev');
+                const next = document.getElementById('cal-next');
+                const nextAvailableBtn = document.getElementById('cal-next-available');
+
+                if (!output || !timetable || !grid || !title || !prev || !next || !nextAvailableBtn) {
+                    return;
+                }
+
+                let selected = new Date();
+                let view = new Date(selected.getFullYear(), selected.getMonth(), 1);
+
+                async function applyPickedDate(dateStr, shouldMoveFocus = true) {
+                    if (!dateStr) {
+                        return;
+                    }
+
+                    const d = new Date(dateStr + 'T00:00:00');
+
+                    selected = d;
+
+                    setHumanDate(output, d);
+
+                    buildCalendarGrid(grid, title, view, dateStr, applyPickedDate);
+
+                    await fetchSlots(dateStr, timetable);
+
+                    if (shouldMoveFocus) {
+                        focusAvailableHoursTitle();
+                    }
+                }
+
+                async function render() {
+                    await fetchMonthDays(view);
+
+                    buildCalendarGrid(grid, title, view, ymd(selected), applyPickedDate);
+                }
+
+                async function findNextAvailableDate() {
+                    const now = new Date();
+
+                    now.setHours(0, 0, 0, 0);
+
+                    let searchView = new Date(now.getFullYear(), now.getMonth(), 1);
+
+                    for (let i = 0; i < 24; i++) {
+                        await fetchMonthDays(searchView);
+
+                        const availableDates = [...monthWithSlots]
+                            .filter((dateStr) => {
+                                const date = new Date(dateStr + 'T00:00:00');
+
+                                return date >= now;
+                            })
+                            .sort();
+
+                        if (availableDates.length) {
+                            return availableDates[0];
+                        }
+
+                        searchView = new Date(searchView.getFullYear(), searchView.getMonth() + 1, 1);
+                    }
+
+                    return null;
+                }
+
+                prev.addEventListener('click', async () => {
+                    view = new Date(view.getFullYear(), view.getMonth() - 1, 1);
+
+                    await render();
+                });
+
+                next.addEventListener('click', async () => {
+                    view = new Date(view.getFullYear(), view.getMonth() + 1, 1);
+
+                    await render();
+                });
+
+                nextAvailableBtn.addEventListener('click', async () => {
+                    const nextDate = await findNextAvailableDate();
+
+                    if (!nextDate) {
+                        return;
+                    }
+
+                    const d = new Date(nextDate + 'T00:00:00');
+
+                    selected = d;
+                    view = new Date(d.getFullYear(), d.getMonth(), 1);
+
+                    await render();
+                    await applyPickedDate(nextDate, true);
+                });
+
+                (async () => {
+                    await render();
+
+                    await applyPickedDate(ymd(selected), false);
+                })();
+            }
+
+            document.addEventListener('DOMContentLoaded', initOfficeSlots);
+            document.addEventListener('turbo:load', initOfficeSlots);
+        })();
+    </script>
+{% endblock %}

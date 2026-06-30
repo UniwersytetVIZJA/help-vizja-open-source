@@ -1,0 +1,39 @@
+{% extends 'guest/_layouts/after-login.html.twig' %}
+{% block title %}{% trans %}Resetowanie hasła{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+
+
+{% block body %}
+    <div class="container mt-5 py-5">
+        <div class="card p-4 bg-zinc-50 dark:bg-zinc-800 {{ borderPrimary() }}">
+            <h2 class="mb-3">Sprawdź swoją skrzynkę email</h2>
+
+            <p>
+                Jeśli konto istnieje w naszym systemie, wysłaliśmy wiadomość z linkiem
+                do resetowania hasła.
+            </p>
+
+            <p>
+                Link do zmiany hasła wygaśnie za:
+                <strong>
+                    {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}
+                </strong>
+            </p>
+
+            <p class="text-muted small">
+                Jeśli nie otrzymałeś wiadomości, sprawdź folder SPAM lub spróbuj ponownie.
+            </p>
+        </div>
+    </div>
+
+    <a href="{{ path('student_login') }}" class="{{ buttonPrimary() }}">{% trans %}Wróć do logowania{% endtrans %}</a>
+
+{% endblock %}
+

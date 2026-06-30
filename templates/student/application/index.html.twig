@@ -1,0 +1,152 @@
+{% extends 'student/_layouts/after-login.html.twig' %}
+{% block title %}{% trans %}Wnioski{% endtrans %} | Help VIZJA{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin_default') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin_default') }}
+{% endblock %}
+{% block body %}
+    <section class="space-y-8">
+        <h1 id="page-title" class="font-semibold text-xl md:text-2xl lg:text-3xl">
+            {% trans %}Moje wnioski{% endtrans %}
+        </h1>
+
+        <div class="mt-10 space-x-1">
+            <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_dashboard') }}">
+                {% trans %}Wróć do Pulpitu{% endtrans %}
+            </a>
+            <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('student_choose_application_type') }}">
+                {% trans %}Nowy wniosek{% endtrans %}
+            </a>
+        </div>
+
+        {% if applications is empty %}
+            <p>
+                {% trans %}Nie posiadasz jeszcze żadnego wniosku.{% endtrans %}
+            </p>
+        {% else %}
+            <div class="space-y-8">
+                {% for application in pagination %}
+                    <article class="bg-zinc-50 border-2 p-4 rounded-lg space-y-4 dark:bg-zinc-800 {{ borderPrimary() }}">
+                        <h2 class="flex font-medium items-center text-md md:text-lg lg:text-xl">
+                            {{ application.type.value }}
+                        </h2>
+
+                        {% if application.employeeCommentDate
+                            and (application.applicationDetailsSeen is null
+                            or application.employeeCommentDate > application.applicationDetailsSeen) %}
+                            <div>
+                                <div class="flex space-x-2">
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-6 h-6 text-red-800 dark:text-red-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path
+                                                d="M17.133 12.632v-1.8a5.407 5.407 0 0 0-4.154-5.262.955.955 0 0 0 .021-.106V3.1a1 1 0 0 0-2 0v2.364a.933.933 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C6.867 15.018 5 15.614 5 16.807 5 17.4 5 18 5.538 18h12.924C19 18 19 17.4 19 16.807c0-1.193-1.867-1.789-1.867-4.175Zm-13.267-.8a1 1 0 0 1-1-1 9.424 9.424 0 0 1 2.517-6.391A1.001 1.001 0 1 1 6.854 5.8a7.43 7.43 0 0 0-1.988 5.037 1 1 0 0 1-1 .995Zm16.268 0a1 1 0 0 1-1-1A7.431 7.431 0 0 0 17.146 5.8a1 1 0 0 1 1.471-1.354 9.424 9.424 0 0 1 2.517 6.391 1 1 0 0 1-1 .995ZM8.823 19a3.453 3.453 0 0 0 6.354 0H8.823Z" />
+                                        </svg>
+
+                                        <span>
+                        <div class="text-red-800 dark:text-red-300">
+                        <strong>
+                        {% trans %}Masz nowy komentarz z dnia{% endtrans %}
+                            {{ application.employeeCommentDate|date('d.m.Y') }}
+                        </strong>
+                        </div>
+                </span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div>
+                            <div class="flex space-x-2">
+                                <div class="flex items-center space-x-2">
+                                    <svg class="h-4 w-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M8.6 5.2A1 1 0 0 0 7 6v12a1 1 0 0 0 1.6.8l8-6a1 1 0 0 0 0-1.6l-8-6Z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>
+                                        {% trans %}Numer wniosku{% endtrans %}:
+                                    </span>
+                                </div>
+                                <div>
+                                    {{ application.applicationNumber }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex space-x-2">
+                                <div class="flex items-center space-x-2">
+                                    <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd"
+                                            d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span>
+                                        {% trans %}Data złożenia{% endtrans %}:
+                                    </span>
+                                </div>
+                                <div>
+                                    {{ (application.createdAt)|date('d.m.Y') }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex space-x-2">
+                                <div class="flex items-center space-x-2">
+                                    <svg class="h-4 w-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd"
+                                            d="M5.617 2.076a1 1 0 0 1 1.09.217L8 3.586l1.293-1.293a1 1 0 0 1 1.414 0L12 3.586l1.293-1.293a1 1 0 0 1 1.414 0L16 3.586l1.293-1.293A1 1 0 0 1 19 3v18a1 1 0 0 1-1.707.707L16 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L12 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L8 20.414l-1.293 1.293A1 1 0 0 1 5 21V3a1 1 0 0 1 .617-.924ZM9 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+
+                                    <span>
+                                        {% trans %}Status{% endtrans %}:
+                                    </span>
+                                </div>
+                                {% set statuses = {
+                                    'Nowy': {
+                                        'pl': 'Nowy',
+                                        'en': 'New'
+                                    },
+                                    'W trakcie': {
+                                        'pl': 'W trakcie',
+                                        'en': 'In progress'
+                                    },
+                                    'Odrzucony': {
+                                        'pl': 'Odrzucony',
+                                        'en': 'Rejected'
+                                    },
+                                    'Zaakceptowany': {
+                                        'pl': 'Zaakceptowany',
+                                        'en': 'Accepted'
+                                    }
+                                } %}
+
+                                <div>
+                                    {{ statuses[application.status][app.request.locale]|default(application.status) }}
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="flex items-center mt-4 space-x-4">
+                            <a class="{{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" href="{{ path('student_application_details', { applicationId: application.id }) }}">
+                                {% trans %}Zobacz szczegóły{% endtrans %}
+                            </a>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    </section>
+
+    {% include '_paginator/paginator.html.twig' with { pagination: pagination } %}
+
+{% endblock %}
+

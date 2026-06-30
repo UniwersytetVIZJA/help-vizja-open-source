@@ -1,0 +1,114 @@
+{% extends 'admin/_layouts/after-login.html.twig' %}
+{% form_theme form 'student/_layouts/form-tailwind.html.twig' %}
+
+{% block stylesheets %}{{ encore_entry_link_tags('admin_default') }}{% endblock %}
+{% block javascripts %}{{ encore_entry_script_tags('admin_default') }}{% endblock %}
+{% block title %}{% trans %}Nowy termin - wizyty w BON{% endtrans %} | Admin Help VIZJA{% endblock %}
+{% block body %}
+    <section class="space-y-6 max-w-7xl mx-5">
+        <header class="mb-6 flex items-start justify-between gap-4">
+            {{ website_path([
+                { label: 'Wizyty w biurze'|trans, route: 'admin_office_registration_terms' },
+                { label: 'Utwórz terminy wizyt w BON'|trans },
+            ]) }}
+        </header>
+        <h1 id="page-title" class="font-semibold text-xl md:text-2xl lg:text-3xl">
+            {% trans %}Utwórz terminy wizyt w BON{% endtrans %}
+        </h1>
+
+        {{ form_start(form, {
+            attr: {
+                class: 'space-y-8',
+                novalidate: 'novalidate',
+                role: 'form'
+            }
+        }) }}
+
+        <fieldset class="space-y-8 border-0 p-0 m-0">
+            <legend class="sr-only">
+                {% trans %}Utwórz terminy wizyt w BON{% endtrans %}
+            </legend>
+
+            <p class="text-sm ">
+                {% trans %}Wybierz zakres kilku dni, aby utworzyć powtarzalne wizyty w tych samych godzinach{% endtrans %}
+            </p>
+
+            {# ===== Podsumowanie błędów ===== #}
+            {% set childErrors = [] %}
+            {% for child in form %}
+                {% if child.vars.errors|length %}
+                    {% set childErrors = childErrors|merge([{
+                        id: child.vars.id,
+                        label: child.vars.label is not empty ? child.vars.label : child.vars.name|capitalize,
+                        errors: child.vars.errors
+                    }]) %}
+                {% endif %}
+            {% endfor %}
+
+            {% if form_errors(form) is not empty or childErrors is not empty %}
+                {% include '_partials/form-errors.html.twig' with { form: form, childErrors: childErrors } %}
+            {% endif %}
+
+            <div class="max-w-2xl space-y-4 w-full">
+                {{ form_row(form.from) }}
+                {{ form_row(form.to) }}
+
+                <div class="relative">
+                    {{ form_row(form.timeFrom) }}
+                    <svg class="pointer-events-none absolute right-3 top-[42px] h-6 w-6 text-primary-600 dark:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                        height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+
+                </div>
+                <div class="relative">
+                    {{ form_row(form.timeTo) }}
+
+                    <svg class="pointer-events-none absolute right-3 top-[42px] h-6 w-6 text-primary-600 dark:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                        height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+
+                </div>
+            </div>
+
+            <div class="gap-4 sm:flex sm:items-center">
+                <button class="cursor-pointer {{ buttonPrimary() }} {{ focusPrimaryWithPadding() }}" type="submit">
+                    {% trans %}Zapisz{% endtrans %}
+                </button>
+
+                <a class="{{ buttonSecondary() }} {{ focusPrimaryWithPadding() }}" href="{{ url('admin_office_registration_terms') }}">
+                    {% trans %}Wróć do kalendarza{% endtrans %}
+                </a>
+            </div>
+        </fieldset>
+
+        {{ form_end(form) }}
+    </section>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dateInputs = document.querySelectorAll('input[type="date"]');
+
+            dateInputs.forEach(input => {
+                input.setAttribute('max', '2099-12-31');
+
+                input.addEventListener('input', (e) => {
+                    const value = e.target.value; // Format: YYYY-MM-DD
+
+                    if (value) {
+                        const parts = value.split('-');
+                        const yearStr = parts[0];
+                        const year = parseInt(yearStr, 10);
+
+                        if ((yearStr.length === 4 && year > 2099) || yearStr.length > 4) {
+                            parts[0] = '2099';
+                            e.target.value = parts.join('-');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
